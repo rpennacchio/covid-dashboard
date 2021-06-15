@@ -11,19 +11,31 @@ function showData(data) {
       month: 9,
       year: 2020,
     },
+    size: {
+      svg: {
+        width: 500,
+        height: 200,
+      },
+      margin: {
+        horizontal: 80,
+        vertical: 20,
+      },
+      legend: {
+        height: 40,
+        font: 14,
+      }
+    }
   }
 
   // Traitement des données
 
   // Sélection des variables nécessaires pour le graphique
-  const tempData = data.map((d) => {
-    let newData = {
+  const tempData = data.map(d => {
+    return {
       date: new Date(d.date), // ATTENTION À TRANSPOSER EN FORMAT DATE
       new_cases: +d.new_cases, // ATTENTION STRING A TRANSPOSER EN FLOAT
       roll_cases: +d.roll_cases, // ATTENTION STRING A TRANSPOSER EN FLOAT
-    };
-
-    return newData;
+    }
   });
 
   // Filtre les données uniquement à partir du 1er septembre
@@ -34,11 +46,11 @@ function showData(data) {
 
   // Création du canevas SVG
 
-  const width = 500;
-  const height = 200;
-  const marginH = 80;
-  const marginV = 20;
-  const leg = 40;
+  const width = graphCfg?.size?.svg?.width || commonGraph.size.svg.width;
+  const height = graphCfg?.size?.svg?.height || commonGraph.size.svg.height;
+  const marginH = graphCfg?.size?.margin?.horizontal || commonGraph.size.margin.horizontal;
+  const marginV = graphCfg?.size?.margin?.vertical || commonGraph.size.margin.vertical;
+  const leg = graphCfg?.size?.legend?.height || commonGraph.size.legend.height;
 
   const viewBox = {
     width: width + marginH * 2,
@@ -69,7 +81,10 @@ function showData(data) {
 
   // Définition du padding à appliquer aux titres, sous-titres, source
   // pour une titraille toujours alignée avec le graphique
-  const paddingTxt = `0 ${ marginH / viewBox.width * 100 }%`
+  const padding = marginH / viewBox.width * 100
+  const paddingTxt = `0 ${ padding }%`
+
+  document.documentElement.style.setProperty('--gutter-size', `${ padding }%`)
 
   // Écriture du titre
   d3.select(graphCfg.target)
@@ -254,7 +269,7 @@ function showData(data) {
     .attr("x", 24)
     .attr("y", 10)
     .text((d) => d.label.toLocaleString("fr-FR"))
-    .attr("font-size", "14px");
+    .attr("font-size", `${ graphCfg?.size?.legend?.font || commonGraph.size.legend.font }px`);
 
   //---------------------------------------------------------------------------------------
 
@@ -298,7 +313,7 @@ function showData(data) {
         .attr("x", 5)
         .attr("y", 20)
         .text(`${instantT}`)
-        .attr("font-size", "10px");
+        .attr("font-size", `${ graphCfg?.size?.tooltip?.font || commonGraph.size.tooltip.font }px`);
 
       // écriture texte dans le tooltip : ici la MOYENNE LISSÉE
       tooltip
@@ -308,7 +323,7 @@ function showData(data) {
         .text(
           `Moyenne lissée: ${Math.round(d.roll_cases).toLocaleString("fr-FR")}`
         )
-        .attr("font-size", "10px")
+        .attr("font-size", `${ graphCfg?.size?.tooltip?.font || commonGraph.size.tooltip.font }px`)
         .attr("font-weight", "bold");
 
       // écriture texte dans le tooltip : ici le NOMBRE PAR JOUR
@@ -317,7 +332,7 @@ function showData(data) {
         .attr("x", 5)
         .attr("y", 44)
         .text(`Nombre par jour: ${d.new_cases.toLocaleString("fr-FR")}`)
-        .attr("font-size", "10px");
+        .attr("font-size", `${ graphCfg?.size?.tooltip?.font || commonGraph.size.tooltip.font }px`);
     });
 
     // efface le contenu du groupe g lorsque la souris ne survole plus la barre

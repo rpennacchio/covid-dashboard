@@ -7,8 +7,25 @@ const commonGraph = {
     days: ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'],
     shortDays: ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'],
     months: ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
-    shortMonths: ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.']
-  }
+    shortMonths: ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'],
+  },
+  size: {
+    svg: {
+      width: 500,
+      height: 200,
+    },
+    margin: {
+      horizontal: 80,
+      vertical: 20,
+    },
+    legend: {
+      height: 40,
+      font: 14,
+    },
+    tooltip: {
+      font: 10,
+    },
+  },
 }
 
 // Mise en français des dates.
