@@ -164,7 +164,7 @@ d3.csv('data/spf_fra_data.csv').then(data => {
 
   // Création du Bar Chart
 
-  if (graphCfg.device !== 'mobile') {
+  // if (graphCfg.device !== 'mobile') {
     const rect = svgPlot
       .selectAll("rect")
       .data(tidyData)
@@ -175,21 +175,21 @@ d3.csv('data/spf_fra_data.csv').then(data => {
       .attr("width", scaleX.bandwidth()) // width des barres avec l'échelle d'épaiseur
       .attr("fill", "#0072B2")
       .attr("opacity", 0.6);
-  } else {
-    const areaHosp = d3
-      .area()
-      .curve(d3.curveLinear)
-      .x(d => scaleT(d.date))
-      // .y0((d) => scaleY(d.part_rea))
-      .y(d => scaleY(d.roll_cases));
+  // } else {
+  //   const areaHosp = d3
+  //     .area()
+  //     .curve(d3.curveLinear)
+  //     .x(d => scaleT(d.date))
+  //     // .y0((d) => scaleY(d.part_rea))
+  //     .y(d => scaleY(d.roll_cases));
 
-    svgPlot
-      .append("path")
-      .datum(tidyData)
-      .attr("fill", "#0072B2")
-      .attr("d", areaHosp)
-      .attr("opacity", 0.6);
-    }
+  //   svgPlot
+  //     .append("path")
+  //     .datum(tidyData)
+  //     .attr("fill", "#0072B2")
+  //     .attr("d", areaHosp)
+  //     .attr("opacity", 0.6);
+  //   }
 
   //---------------------------------------------------------------------------------------
 
