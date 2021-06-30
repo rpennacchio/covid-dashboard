@@ -1,6 +1,4 @@
-d3.csv('data/spf_fra_data.csv').then(showData);
-
-function showData(data) {
+d3.csv('data/spf_fra_data.csv').then(data => {
   const graphCfg = {
     target: `#fra-nat-graph01`,
     title: `Evolution du nombre de contaminations au Covid-19`,
@@ -11,20 +9,8 @@ function showData(data) {
       month: 9,
       year: 2020,
     },
-    size: {
-      svg: {
-        width: 500,
-        height: 200,
-      },
-      margin: {
-        horizontal: 80,
-        vertical: 20,
-      },
-      legend: {
-        height: 40,
-        font: 14,
-      }
-    }
+    type: 'landscape',
+    device: window.screenDevice,
   }
 
   // Traitement des données
@@ -46,11 +32,11 @@ function showData(data) {
 
   // Création du canevas SVG
 
-  const width = graphCfg?.size?.svg?.width || commonGraph.size.svg.width;
-  const height = graphCfg?.size?.svg?.height || commonGraph.size.svg.height;
-  const marginH = graphCfg?.size?.margin?.horizontal || commonGraph.size.margin.horizontal;
-  const marginV = graphCfg?.size?.margin?.vertical || commonGraph.size.margin.vertical;
-  const leg = graphCfg?.size?.legend?.height || commonGraph.size.legend.height;
+  const width = graphCfg?.size?.svg?.width || commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
+  const height = graphCfg?.size?.svg?.height || commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
+  const marginH = graphCfg?.size?.margin?.horizontal || commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
+  const marginV = graphCfg?.size?.margin?.vertical || commonGraph.size[graphCfg.type][graphCfg.device].margin.vertical;
+  const leg = graphCfg?.size?.legend?.height || commonGraph.size[graphCfg.type][graphCfg.device].legend.height;
 
   const viewBox = {
     width: width + marginH * 2,
@@ -146,12 +132,13 @@ function showData(data) {
       .call(
         d3
           .axisLeft(scaleY)
-          .ticks(8) // Nombre de ticks
+          .ticks(graphCfg?.ticksY && graphCfg?.ticksY[graphCfg.device] || commonGraph.ticksY[graphCfg.device])
           .tickFormat((d) => d.toLocaleString("fr-FR"))
       ) // formatage grands nombre avec espace entre milliers
       .call((g) => g.select(".domain").remove()) // supprime la ligne de l'axe
       .selectAll("text")
-      .style("fill", "grey"); // couleur du texte
+      .style("fill", "grey") // couleur du texte
+      .style("font-size", "14px")
 
   //---------------------------------------------------------------------------------------
 
@@ -177,16 +164,32 @@ function showData(data) {
 
   // Création du Bar Chart
 
-  const rect = svgPlot
-    .selectAll("rect")
-    .data(tidyData)
-    .join("rect")
-    .attr("x", (d) => scaleT(d.date))
-    .attr("y", (d) => scaleY(d.new_cases))
-    .attr("height", (d) => scaleY(0) - scaleY(d.new_cases))
-    .attr("width", scaleX.bandwidth()) // width des barres avec l'échelle d'épaiseur
-    .attr("fill", "#0072B2")
-    .attr("opacity", 0.6);
+  if (graphCfg.device !== 'mobile') {
+    const rect = svgPlot
+      .selectAll("rect")
+      .data(tidyData)
+      .join("rect")
+      .attr("x", (d) => scaleT(d.date))
+      .attr("y", (d) => scaleY(d.new_cases))
+      .attr("height", (d) => scaleY(0) - scaleY(d.new_cases))
+      .attr("width", scaleX.bandwidth()) // width des barres avec l'échelle d'épaiseur
+      .attr("fill", "#0072B2")
+      .attr("opacity", 0.6);
+  } else {
+    const areaHosp = d3
+      .area()
+      .curve(d3.curveLinear)
+      .x(d => scaleT(d.date))
+      // .y0((d) => scaleY(d.part_rea))
+      .y(d => scaleY(d.roll_cases));
+
+    svgPlot
+      .append("path")
+      .datum(tidyData)
+      .attr("fill", "#0072B2")
+      .attr("d", areaHosp)
+      .attr("opacity", 0.6);
+    }
 
   //---------------------------------------------------------------------------------------
 
@@ -269,7 +272,7 @@ function showData(data) {
     .attr("x", 24)
     .attr("y", 10)
     .text((d) => d.label.toLocaleString("fr-FR"))
-    .attr("font-size", `${ graphCfg?.size?.legend?.font || commonGraph.size.legend.font }px`);
+    .attr("font-size", `${ graphCfg?.size?.legend?.font || commonGraph.size[graphCfg.type][graphCfg.device].legend.font }px`);
 
   //---------------------------------------------------------------------------------------
 
@@ -280,67 +283,67 @@ function showData(data) {
 
   // condition pour que l'animation ne fonctionne que sur desktop
   // voir script device_detector pour la fonction deviceType()
-  if (deviceType() == "desktop") {
-    rect.on("mouseover", function (d) {
-      // lors du survol avec la souris l'opacité des barres passe à 1
-      d3.select(this).attr("opacity", 1);
+  // rect.on('mouseover', doMouseOver);
 
-      // stockage dans deux deux variables des positions x et y de la barre survolée
-      let xPosition = +scaleT(d.date);
-      let yPosition = +scaleY(d.new_cases);
-      const largeurBande = scaleX.bandwidth();
+  function doMouseOver (d) {
+    // lors du survol avec la souris l'opacité des barres passe à 1
+    d3.select(this).attr("opacity", 1);
 
-      // format de la date affichée dans le tooltip
-      // stockage de la date de la barre survolée au format XX mois XXXX dans une variable
-      const formatTime = d3.timeFormat("%d %b %Y");
-      const instantT = formatTime(d.date);
+    // stockage dans deux deux variables des positions x et y de la barre survolée
+    let xPosition = +scaleT(d.date);
+    let yPosition = +scaleY(d.new_cases);
+    const largeurBande = scaleX.bandwidth();
 
-      // création d'un rectangle blanc pour le tooltip
-      tooltip
-        .attr(
-          "transform",
-          `translate(${xPosition - 70 + largeurBande / 2},
-            ${yPosition - 50})`
-        )
-        .append("rect")
-        .attr("width", 140)
-        .attr("height", 50)
-        .attr("fill", "#ffffff");
+    // format de la date affichée dans le tooltip
+    // stockage de la date de la barre survolée au format XX mois XXXX dans une variable
+    const formatTime = d3.timeFormat("%d %b %Y");
+    const instantT = formatTime(d.date);
 
-      // écriture texte dans le tooltip : ici la DATE
-      tooltip
-        .append("text")
-        .attr("x", 5)
-        .attr("y", 20)
-        .text(`${instantT}`)
-        .attr("font-size", `${ graphCfg?.size?.tooltip?.font || commonGraph.size.tooltip.font }px`);
+    // création d'un rectangle blanc pour le tooltip
+    tooltip
+      .attr(
+        "transform",
+        `translate(${xPosition - 70 + largeurBande / 2},
+          ${yPosition - 50})`
+      )
+      .append("rect")
+      .attr("width", 140)
+      .attr("height", 50)
+      .attr("fill", "#ffffff");
 
-      // écriture texte dans le tooltip : ici la MOYENNE LISSÉE
-      tooltip
-        .append("text")
-        .attr("x", 5)
-        .attr("y", 32)
-        .text(
-          `Moyenne lissée: ${Math.round(d.roll_cases).toLocaleString("fr-FR")}`
-        )
-        .attr("font-size", `${ graphCfg?.size?.tooltip?.font || commonGraph.size.tooltip.font }px`)
-        .attr("font-weight", "bold");
+    // écriture texte dans le tooltip : ici la DATE
+    tooltip
+      .append("text")
+      .attr("x", 5)
+      .attr("y", 20)
+      .text(`${instantT}`)
+      .attr("font-size", `${ graphCfg?.size?.tooltip?.font || commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font }px`);
 
-      // écriture texte dans le tooltip : ici le NOMBRE PAR JOUR
-      tooltip
-        .append("text")
-        .attr("x", 5)
-        .attr("y", 44)
-        .text(`Nombre par jour: ${d.new_cases.toLocaleString("fr-FR")}`)
-        .attr("font-size", `${ graphCfg?.size?.tooltip?.font || commonGraph.size.tooltip.font }px`);
-    });
+    // écriture texte dans le tooltip : ici la MOYENNE LISSÉE
+    tooltip
+      .append("text")
+      .attr("x", 5)
+      .attr("y", 32)
+      .text(
+        `Moyenne lissée: ${Math.round(d.roll_cases).toLocaleString("fr-FR")}`
+      )
+      .attr("font-size", `${ graphCfg?.size?.tooltip?.font || commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font }px`)
+      .attr("font-weight", "bold");
 
-    // efface le contenu du groupe g lorsque la souris ne survole plus la barre
-    rect.on("mouseout", function () {
-      d3.select(this).attr("opacity", 0.6); // rétablit l'opacité à 0.6
+    // écriture texte dans le tooltip : ici le NOMBRE PAR JOUR
+    tooltip
+      .append("text")
+      .attr("x", 5)
+      .attr("y", 44)
+      .text(`Nombre par jour: ${d.new_cases.toLocaleString("fr-FR")}`)
+      .attr("font-size", `${ graphCfg?.size?.tooltip?.font || commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font }px`);
+  };
 
-      tooltip.select("rect").remove();
-      tooltip.selectAll("text").remove();
-    });
-  }
-}
+  // efface le contenu du groupe g lorsque la souris ne survole plus la barre
+  rect.on("mouseout", function () {
+    d3.select(this).attr("opacity", 0.6); // rétablit l'opacité à 0.6
+
+    tooltip.select("rect").remove();
+    tooltip.selectAll("text").remove();
+  });
+});

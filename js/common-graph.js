@@ -10,32 +10,191 @@ const commonGraph = {
     shortMonths: ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'],
   },
   size: {
-    svg: {
-      width: 500,
-      height: 200,
+    landscape: {
+      mobile: {
+        svg: {
+          width: 500,
+          height: 400,
+        },
+        margin: {
+          horizontal: 80,
+          vertical: 20,
+        },
+        legend: {
+          height: 40,
+          font: 14,
+        },
+        tooltip: {
+          font: 10,
+        },
+      },
+      tablet: {
+        svg: {
+          width: 500,
+          height: 300,
+        },
+        margin: {
+          horizontal: 80,
+          vertical: 20,
+        },
+        legend: {
+          height: 40,
+          font: 14,
+        },
+        tooltip: {
+          font: 10,
+        },
+      },
+      desktop: {
+        svg: {
+          width: 500,
+          height: 200,
+        },
+        margin: {
+          horizontal: 80,
+          vertical: 20,
+        },
+        legend: {
+          height: 40,
+          font: 14,
+        },
+        tooltip: {
+          font: 10,
+        },
+      },
     },
-    margin: {
-      horizontal: 80,
-      vertical: 20,
+    square: {
+      mobile: {
+        svg: {
+          width: 500,
+          height: 200,
+        },
+        margin: {
+          horizontal: 80,
+          vertical: 20,
+        },
+        legend: {
+          height: 40,
+          font: 14,
+        },
+        tooltip: {
+          font: 10,
+        },
+      },
+      tablet: {
+        svg: {
+          width: 500,
+          height: 200,
+        },
+        margin: {
+          horizontal: 80,
+          vertical: 20,
+        },
+        legend: {
+          height: 40,
+          font: 14,
+        },
+        tooltip: {
+          font: 10,
+        },
+      },
+      desktop: {
+        svg: {
+          width: 500,
+          height: 200,
+        },
+        margin: {
+          horizontal: 80,
+          vertical: 20,
+        },
+        legend: {
+          height: 40,
+          font: 14,
+        },
+        tooltip: {
+          font: 10,
+        },
+      },
     },
-    legend: {
-      height: 40,
-      font: 14,
+    portrait: {
+      mobile: {
+        svg: {
+          width: 500,
+          height: 200,
+        },
+        margin: {
+          horizontal: 80,
+          vertical: 20,
+        },
+        legend: {
+          height: 40,
+          font: 14,
+        },
+        tooltip: {
+          font: 10,
+        },
+      },
+      tablet: {
+        svg: {
+          width: 500,
+          height: 200,
+        },
+        margin: {
+          horizontal: 80,
+          vertical: 20,
+        },
+        legend: {
+          height: 40,
+          font: 14,
+        },
+        tooltip: {
+          font: 10,
+        },
+      },
+      desktop: {
+        svg: {
+          width: 500,
+          height: 200,
+        },
+        margin: {
+          horizontal: 80,
+          vertical: 20,
+        },
+        legend: {
+          height: 40,
+          font: 14,
+        },
+        tooltip: {
+          font: 10,
+        },
+      },
     },
-    tooltip: {
-      font: 10,
-    },
+  },
+  ticksY: {
+    mobile: 4,
+    tablet: 6,
+    desktop: 8,
   },
 }
 
 // Mise en français des dates.
 d3.timeFormatDefaultLocale(commonGraph.locale)
 
-// Détection du mobile.
-if ('isMobileDevice' in window) {
-  document.body.classList.add(window.isMobileDevice ? 'mobile' : 'desktop')
+// Détection de la largeur de la page.
+{
+  getScreenDevice()
 
-  commonGraph.isMobile = window.isMobileDevice
-// } else {
-//   const isMobile = (!!navigator.userAgent.match(/Android|iPhone|iPad|iPod|BlackBerry|Mobi/i) && 'ontouchstart' in document.documentElement)
+  window.addEventListener('resize', getScreenDevice)
+
+  function getScreenDevice () {
+    window.screenDevice = window.innerWidth >= 2560
+    ? '4k'
+    : window.innerWidth >= 1600
+      ? 'wide'
+      : window.innerWidth >= 1024
+          ? 'desktop'
+          : window.innerWidth >= 768
+            ? 'tablet'
+            : 'mobile'
+  }
 }

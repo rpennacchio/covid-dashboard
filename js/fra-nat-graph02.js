@@ -1,6 +1,4 @@
-d3.csv("data/spf_fra_test.csv").then(showData);
-
-function showData(data) {
+d3.csv("data/spf_fra_test.csv").then(data => {
   const graphCfg = {
     target: `#fra-nat-graph02`,
     title: `Taux de positivité et nombre de tests réalisés`,
@@ -11,20 +9,20 @@ function showData(data) {
       month: 9,
       year: 2020,
     },
+    type: 'landscape',
+    device: window.screenDevice,
   }
 
   // Traitement des données
 
   // Sélection des variables nécessaires pour le graphique
-  const tempData = data.map((d) => {
-    let newData = {
+  const tempData = data.map(d => {
+    return {
       date: new Date(d.date), // ATTENTION À TRANSPOSER EN FORMAT DATE
       positif: +d.roll_cas, // ATTENTION STRING A TRANSPOSER EN FLOAT
       test: +d.roll_test, // ATTENTION STRING A TRANSPOSER EN FLOAT
       taux: +d.percent / 100, // ATTENTION STRING A TRANSPOSER EN FLOAT et À DIVISER PAR 100
     };
-
-    return newData;
   });
 
   // Filtre les données uniquement à partir du 1er septembre
@@ -35,11 +33,11 @@ function showData(data) {
 
   // Création du canevas SVG
 
-  const width = 500;
-  const height = 200;
-  const marginH = 80;
-  const marginV = 20;
-  const leg = 40;
+  const width = graphCfg?.size?.svg?.width || commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
+  const height = graphCfg?.size?.svg?.height || commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
+  const marginH = graphCfg?.size?.margin?.horizontal || commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
+  const marginV = graphCfg?.size?.margin?.vertical || commonGraph.size[graphCfg.type][graphCfg.device].margin.vertical;
+  const leg = graphCfg?.size?.legend?.height || commonGraph.size[graphCfg.type][graphCfg.device].legend.height;
 
   const viewBox = {
     width: width + marginH * 2,
@@ -70,7 +68,10 @@ function showData(data) {
 
   // Définition du padding à appliquer aux titres, sous-titres, source
   // pour une titraille toujours alignée avec le graphique
-  const paddingTxt = `0 ${ marginH / viewBox.width * 100 }%`
+  const padding = marginH / viewBox.width * 100
+  const paddingTxt = `0 ${ padding }%`
+
+  document.documentElement.style.setProperty('--gutter-size', `${ padding }%`)
 
   // Écriture du titre
   d3.select(graphCfg.target)
@@ -111,7 +112,7 @@ function showData(data) {
   const scaleY2 = d3
     .scaleLinear()
     .domain([0, d3.max(tidyData, (d) => d.taux)])
-    .range([height, 0]);
+    .range([height, 0])
 
   // échelee temporelle pour l'axe des X
   const scaleT = d3
@@ -151,7 +152,9 @@ function showData(data) {
         .clone()
         .attr("x2", width)
         .attr("stroke-opacity", 0.1)
-    ); // lignes horizontales projetées sur le graphique
+    ) // lignes horizontales projetées sur le graphique
+    .selectAll("text")
+    .style("font-size", "14px")
 
   // Axe Y de droite
   svgPlot
@@ -228,7 +231,7 @@ function showData(data) {
     .attr("x", 24)
     .attr("y", 10)
     .text((d) => d.label)
-    .attr("font-size", "14px");
+    .attr("font-size", `${ graphCfg?.size?.legend?.font || commonGraph.size[graphCfg.type][graphCfg.device].legend.font }px`);
 
   //---------------------------------------------------------------------------------------
 
@@ -300,4 +303,4 @@ function showData(data) {
       tooltip.selectAll("text").remove();
     });
   }
-}
+});

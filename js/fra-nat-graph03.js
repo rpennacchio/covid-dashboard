@@ -11,6 +11,20 @@ function showData(data) {
       month: 3,
       year: 2020,
     },
+    size: {
+      svg: {
+        width: 500,
+        height: 200,
+      },
+      margin: {
+        horizontal: 80,
+        vertical: 20,
+      },
+      legend: {
+        height: 40,
+        font: 18,
+      },
+    },
   }
 
   // Traitement des données
