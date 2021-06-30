@@ -1,6 +1,4 @@
-d3.csv("data/spf_fra_incid_age.csv").then(showData);
-
-function showData(data) {
+d3.csv("data/spf_fra_incid_age.csv").then(data => {
   const graphCfg = {
     target: `#fra-nat-graph06`,
     title: `Evolution du taux d'incidence par classe d'âge`,
@@ -11,19 +9,24 @@ function showData(data) {
       month: 1,
       year: 2020,
     },
+    type: 'landscape',
+    device: window.screenDevice,
+    size: {
+      legend: {
+        font: 12
+      }
+    }
   }
 
   // Traitement des données
 
   // Sélection des variables nécessaires pour le graphique
   const tempData = data.map((d) => {
-    let data = {
+    return {
       date: new Date(d.date), // ATTENTION À TRANSPOSER EN FORMAT DATE
       age_label: d.age_label,
       incid: +d.incid, // ATTENTION STRING A TRANSPOSER EN FLOAT
     };
-
-    return data;
   });
 
   // Filtre les données uniquement à partir du 1er janvier 2021
@@ -44,11 +47,11 @@ function showData(data) {
 
   // Création du canevas SVG
 
-  const width = 500;
-  const height = 200;
-  const marginH = 80;
-  const marginV = 20;
-  const leg = 40;
+  const width = graphCfg?.size?.svg?.width || commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
+  const height = graphCfg?.size?.svg?.height || commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
+  const marginH = graphCfg?.size?.margin?.horizontal || commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
+  const marginV = graphCfg?.size?.margin?.vertical || commonGraph.size[graphCfg.type][graphCfg.device].margin.vertical;
+  const leg = graphCfg?.size?.legend?.height || commonGraph.size[graphCfg.type][graphCfg.device].legend.height;
 
   const viewBox = {
     width: width + marginH * 2,
@@ -79,7 +82,10 @@ function showData(data) {
 
   // Définition du padding à appliquer aux titres, sous-titres, source
   // pour une titraille toujours alignée avec le graphique
-  const paddingTxt = `0 ${ marginH / viewBox.width * 100 }%`
+  const padding = marginH / viewBox.width * 100
+  const paddingTxt = `0 ${ padding }%`
+
+  document.documentElement.style.setProperty('--gutter-size', `${ padding }%`)
 
   // Écriture du titre
   d3.select(graphCfg.target)
@@ -164,7 +170,7 @@ function showData(data) {
       .call(
         d3
           .axisLeft(scaleY)
-          .ticks(8) // Nombre de ticks
+          .ticks(graphCfg.ticksY && graphCfg.device in graphCfg.ticksY ? graphCfg.ticksY[graphCfg.device] : commonGraph.ticksY[graphCfg.device])
           .tickFormat(d3.format(",.2r"))
       ) // formatage grands nombre avec virgule entre milliers
       .call((g) => g.select(".domain").remove()) // supprime la ligne de l'axe
@@ -223,7 +229,7 @@ function showData(data) {
     .attr("x", 22)
     .attr("y", 5)
     .text((d) => d)
-    .attr("font-size", "12px");
+    .attr("font-size", `${ graphCfg?.size?.legend?.font || commonGraph.size[graphCfg.type][graphCfg.device].legend.font }px`);
 
   //---------------------------------------------------------------------------------------
 
@@ -288,4 +294,4 @@ function showData(data) {
         .attr("x2", width)
         .attr("stroke-opacity", 0.1)
     ); // lignes horizontales projetées sur le graphique
-}
+});

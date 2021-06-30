@@ -11,6 +11,10 @@ d3.csv("data/spf_fra_test.csv").then(data => {
     },
     type: 'landscape',
     device: window.screenDevice,
+    ticksY: {
+      tablet: undefined,
+      desktop: undefined,
+    },
   }
 
   // Traitement des données
@@ -144,7 +148,12 @@ d3.csv("data/spf_fra_test.csv").then(data => {
     .append("g")
     .attr("color", "#0072B2") // couleur texte et ticks
     .attr("opacity", 0.6) // opacité texte et ticks
-    .call(d3.axisLeft(scaleY1).tickFormat((d) => d.toLocaleString("fr-FR"))) // formatage grands nombre avec espace entre milliers)
+    .call(
+      d3
+        .axisLeft(scaleY1)
+        .ticks(graphCfg.ticksY && graphCfg.device in graphCfg.ticksY ? graphCfg.ticksY[graphCfg.device] : commonGraph.ticksY[graphCfg.device])
+        .tickFormat((d) => d.toLocaleString("fr-FR")) // formatage grands nombre avec espace entre milliers)
+    )
     .call((g) => g.select(".domain").remove())
     .call((g) =>
       g
@@ -242,65 +251,63 @@ d3.csv("data/spf_fra_test.csv").then(data => {
 
   // condition pour que l'animation ne fonctionne que sur desktop
   // voir script device_detector pour la fonction deviceType()
-  if (deviceType() == "desktop") {
-    rect.on("mouseover", function (d) {
-      // lors du survol avec la souris l'opacité des barres passe à 1
-      d3.select(this).attr("opacity", 1);
+  rect.on("mouseover", function (d) {
+    // lors du survol avec la souris l'opacité des barres passe à 1
+    d3.select(this).attr("opacity", 1);
 
-      // stockage dans deux deux variables des positions x et y de la barre survolée
-      let xPosition = +scaleT(d.date);
-      let yPosition = +scaleY1(d.test);
-      const largeurBande = scaleX.bandwidth();
+    // stockage dans deux deux variables des positions x et y de la barre survolée
+    let xPosition = +scaleT(d.date);
+    let yPosition = +scaleY1(d.test);
+    const largeurBande = scaleX.bandwidth();
 
-      // format de la date affichée dans le tooltip
-      // stockage de la date de la barre survolée au format XX mois XXXX dans une variable
-      const formatTime = d3.timeFormat("%d %b %Y");
-      const instantT = formatTime(d.date);
+    // format de la date affichée dans le tooltip
+    // stockage de la date de la barre survolée au format XX mois XXXX dans une variable
+    const formatTime = d3.timeFormat("%d %b %Y");
+    const instantT = formatTime(d.date);
 
-      // création d'un rectangle blanc pour le tooltip
-      tooltip
-        .attr(
-          "transform",
-          `translate(${xPosition - 70 + largeurBande / 2},
-            ${yPosition - 50})`
-        )
-        .append("rect")
-        .attr("width", 140)
-        .attr("height", 50)
-        .attr("fill", "#ffffff");
+    // création d'un rectangle blanc pour le tooltip
+    tooltip
+      .attr(
+        "transform",
+        `translate(${xPosition - 70 + largeurBande / 2},
+          ${yPosition - 50})`
+      )
+      .append("rect")
+      .attr("width", 140)
+      .attr("height", 50)
+      .attr("fill", "#ffffff");
 
-      // écriture texte dans le tooltip : ici la DATE
-      tooltip
-        .append("text")
-        .attr("x", 5)
-        .attr("y", 20)
-        .text(`${instantT}`)
-        .attr("font-size", "10px");
+    // écriture texte dans le tooltip : ici la DATE
+    tooltip
+      .append("text")
+      .attr("x", 5)
+      .attr("y", 20)
+      .text(`${instantT}`)
+      .attr("font-size", "10px");
 
-      // écriture texte dans le tooltip : ici la MOYENNE LISSÉE
-      tooltip
-        .append("text")
-        .attr("x", 5)
-        .attr("y", 32)
-        .text(`Moyenne lissée: ${Math.round(d.test).toLocaleString("fr-FR")}`)
-        .attr("font-size", "10px")
-        .attr("font-weight", "bold");
+    // écriture texte dans le tooltip : ici la MOYENNE LISSÉE
+    tooltip
+      .append("text")
+      .attr("x", 5)
+      .attr("y", 32)
+      .text(`Moyenne lissée: ${Math.round(d.test).toLocaleString("fr-FR")}`)
+      .attr("font-size", "10px")
+      .attr("font-weight", "bold");
 
-      // écriture texte dans le tooltip : ici le NOMBRE PAR JOUR
-      tooltip
-        .append("text")
-        .attr("x", 5)
-        .attr("y", 44)
-        .text(`Nombre par jour: ${d.test.toLocaleString("fr-FR")}`)
-        .attr("font-size", "10px");
-    });
+    // écriture texte dans le tooltip : ici le NOMBRE PAR JOUR
+    tooltip
+      .append("text")
+      .attr("x", 5)
+      .attr("y", 44)
+      .text(`Nombre par jour: ${d.test.toLocaleString("fr-FR")}`)
+      .attr("font-size", "10px");
+  });
 
-    // efface le contenu du groupe g lorsque la souris ne survole plus la barre
-    rect.on("mouseout", function () {
-      d3.select(this).attr("opacity", 0.6); // rétablit l'opacité à 0.6
+  // efface le contenu du groupe g lorsque la souris ne survole plus la barre
+  rect.on("mouseout", function () {
+    d3.select(this).attr("opacity", 0.6); // rétablit l'opacité à 0.6
 
-      tooltip.select("rect").remove();
-      tooltip.selectAll("text").remove();
-    });
-  }
+    tooltip.select("rect").remove();
+    tooltip.selectAll("text").remove();
+  });
 });

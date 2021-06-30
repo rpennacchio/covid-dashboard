@@ -1,14 +1,19 @@
 Promise.all([
   d3.json("data/carto_ftv_dep.geojson"),
   d3.csv("data/incid_dep.csv"),
-]).then(showData);
-
-function showData(data) {
+]).then(data => {
   const graphCfg = {
     target: `#fra-reg-graph01`,
     title: `Taux d'incidence par département`,
     subtitle: `au [[autoDate]]`,
     caption: `Source. <a href='https://www.data.gouv.fr/fr/organizations/sante-publique-france/' target='_blank'>Santé publique France</a>`,
+    size: {
+      tooltip: {
+        font: 20,
+      },
+    },
+    type: 'square',
+    device: window.screenDevice,
   }
 
   // Tri des données
@@ -46,11 +51,11 @@ function showData(data) {
 
   // Création du canevas SVG
 
-  const width = 500;
-  const height = 500;
-  const marginH = 80;
-  const marginV = 20;
-  const leg = 20;
+  const width = graphCfg?.size?.svg?.width || commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
+  const height = graphCfg?.size?.svg?.height || commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
+  const marginH = graphCfg?.size?.margin?.horizontal || commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
+  const marginV = graphCfg?.size?.margin?.vertical || commonGraph.size[graphCfg.type][graphCfg.device].margin.vertical;
+  const leg = graphCfg?.size?.legend?.height || commonGraph.size[graphCfg.type][graphCfg.device].legend.height;
 
   const viewBox = {
     width: width + marginH * 2,
@@ -81,7 +86,10 @@ function showData(data) {
 
   // Définition du padding à appliquer aux titres, sous-titres, source
   // pour une titraille toujours alignée avec le graphique
-  const paddingTxt = `0 ${ marginH / viewBox.width * 100 }%`
+  const padding = marginH / viewBox.width * 100
+  const paddingTxt = `0 ${ padding }%`
+
+  document.documentElement.style.setProperty('--gutter-size', `${ padding }%`)
 
   // Écriture du titre
   d3.select(graphCfg.target)
@@ -178,7 +186,7 @@ function showData(data) {
     .labelFormat(d3.format(".0f"))
     .cells(legCells)
     .orient("horizontal")
-    .scale(divScale);
+    .scale(divScale)
 
   // projection de la légende
   svgLegend.call(legend);
@@ -192,52 +200,50 @@ function showData(data) {
 
   // condition pour que l'animation ne fonctionne que sur desktop
   // voir script device_detector pour la fonction deviceType()
-  if (deviceType() == "desktop") {
-    polygons.on("mouseover", function (d) {
-      // lors du survol avec la souris l'opacité des barres passe à 1
-      d3.select(this).attr("opacity", 0.8);
+  polygons.on("mouseover", function (d) {
+    // lors du survol avec la souris l'opacité des barres passe à 1
+    d3.select(this).attr("opacity", 0.8);
 
-      // format de la date affichée dans le tooltip
-      // stockage de la date de la barre survolée au format XX mois XXXX dans une variable
-      const formatTime = d3.timeFormat("%d %b");
-      let dateT = d.properties.date;
-      let instantT = formatTime(dateT);
+    // format de la date affichée dans le tooltip
+    // stockage de la date de la barre survolée au format XX mois XXXX dans une variable
+    const formatTime = d3.timeFormat("%d %b");
+    let dateT = d.properties.date;
+    let instantT = formatTime(dateT);
 
-      // ON ENLÈVE 7 JOURS À LA DATE - ATTENTION car .setDate() modifie l'objet en place
-      let instantT7 = formatTime(dateT.setDate(dateT.getDate() - 7));
+    // ON ENLÈVE 7 JOURS À LA DATE - ATTENTION car .setDate() modifie l'objet en place
+    let instantT7 = formatTime(dateT.setDate(dateT.getDate() - 7));
 
-      // ATTENTION À BIEN RAJOUTER LES 7 JOURS à dateT
-      dateT.setDate(dateT.getDate() + 7);
+    // ATTENTION À BIEN RAJOUTER LES 7 JOURS à dateT
+    dateT.setDate(dateT.getDate() + 7);
 
-      // Affichage du nom du département en gras
-      tooltip
-        .append("text")
-        .attr("y", 0)
-        .text(d.properties.name)
-        .style("font-size", "20px")
-        .style("font-weight", "bold");
+    // Affichage du nom du département en gras
+    tooltip
+      .append("text")
+      .attr("y", 0)
+      .text(d.properties.name)
+      .attr("font-size", `${ graphCfg?.size?.tooltip?.font || commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font }px`)
+      .style("font-weight", "bold");
 
-      // 1e ligne sous le nom du département
-      tooltip
-        .append("text")
-        .attr("y", 20)
-        .text(`${Math.round(d.properties.incid)} nouvelles contaminations`);
+    // 1e ligne sous le nom du département
+    tooltip
+      .append("text")
+      .attr("y", 20)
+      .text(`${Math.round(d.properties.incid)} nouvelles contaminations`);
 
-      // 2e ligne sous le nom du département
-      tooltip.append("text").attr("y", 35).text(`pour 100 000 habitants`);
+    // 2e ligne sous le nom du département
+    tooltip.append("text").attr("y", 35).text(`pour 100 000 habitants`);
 
-      // 3e ligne sous le nom du département
-      tooltip
-        .append("text")
-        .attr("y", 50)
-        .text(`entre le ${instantT7} et le ${instantT}`);
-    });
+    // 3e ligne sous le nom du département
+    tooltip
+      .append("text")
+      .attr("y", 50)
+      .text(`entre le ${instantT7} et le ${instantT}`);
+  });
 
-    // efface le contenu du groupe g lorsque la souris ne survole plus le polygone
-    polygons.on("mouseout", function () {
-      d3.select(this).attr("opacity", 1); // rétablit l'opacité à 1
+  // efface le contenu du groupe g lorsque la souris ne survole plus le polygone
+  polygons.on("mouseout", function () {
+    d3.select(this).attr("opacity", 1); // rétablit l'opacité à 1
 
-      tooltip.selectAll("text").remove();
-    });
-  }
-}
+    tooltip.selectAll("text").remove();
+  });
+});

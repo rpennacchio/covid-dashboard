@@ -1,6 +1,4 @@
-d3.csv("data/spf_fra_data.csv").then(showData);
-
-function showData(data) {
+d3.csv("data/spf_fra_data.csv").then(data => {
   const graphCfg = {
     target: `#fra-nat-graph05`,
     title: `Evolution du nombre de nouveaux décès Covid à l'hôpital`,
@@ -11,6 +9,8 @@ function showData(data) {
       month: 9,
       year: 2020,
     },
+    type: 'landscape',
+    device: window.screenDevice,
   }
 
   // Traitement des données
@@ -33,11 +33,11 @@ function showData(data) {
 
   // Création du canevas SVG
 
-  const width = 500;
-  const height = 200;
-  const marginH = 80;
-  const marginV = 20;
-  const leg = 40;
+  const width = graphCfg?.size?.svg?.width || commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
+  const height = graphCfg?.size?.svg?.height || commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
+  const marginH = graphCfg?.size?.margin?.horizontal || commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
+  const marginV = graphCfg?.size?.margin?.vertical || commonGraph.size[graphCfg.type][graphCfg.device].margin.vertical;
+  const leg = graphCfg?.size?.legend?.height || commonGraph.size[graphCfg.type][graphCfg.device].legend.height;
 
   const viewBox = {
     width: width + marginH * 2,
@@ -68,7 +68,10 @@ function showData(data) {
 
   // Définition du padding à appliquer aux titres, sous-titres, source
   // pour une titraille toujours alignée avec le graphique
-  const paddingTxt = `0 ${ marginH / viewBox.width * 100 }%`
+  const padding = marginH / viewBox.width * 100
+  const paddingTxt = `0 ${ padding }%`
+
+  document.documentElement.style.setProperty('--gutter-size', `${ padding }%`)
 
   // Écriture du titre
   d3.select(graphCfg.target)
@@ -130,7 +133,7 @@ function showData(data) {
       .call(
         d3
           .axisLeft(scaleY)
-          .ticks(8) // Nombre de ticks
+          .ticks(graphCfg.ticksY && graphCfg.device in graphCfg.ticksY ? graphCfg.ticksY[graphCfg.device] : commonGraph.ticksY[graphCfg.device])
           .tickFormat((d) => d.toLocaleString("fr-FR"))
       ) // formatage grands nombre avec espace entre milliers
       .call((g) => g.select(".domain").remove()) // supprime la ligne de l'axe
@@ -253,7 +256,7 @@ function showData(data) {
     .attr("x", 24)
     .attr("y", 10)
     .text((d) => d.label.toLocaleString("fr-FR"))
-    .attr("font-size", "14px");
+    .attr("font-size", `${ graphCfg?.size?.legend?.font || commonGraph.size[graphCfg.type][graphCfg.device].legend.font }px`);
 
   //---------------------------------------------------------------------------------------
 
@@ -264,67 +267,65 @@ function showData(data) {
 
   // condition pour que l'animation ne fonctionne que sur desktop
   // voir script device_detector pour la fonction deviceType()
-  if (deviceType() == "desktop") {
-    rect.on("mouseover", function (d) {
-      // lors du survol avec la souris l'opacité des barres passe à 1
-      d3.select(this).attr("opacity", 1);
+  rect.on("mouseover", function (d) {
+    // lors du survol avec la souris l'opacité des barres passe à 1
+    d3.select(this).attr("opacity", 1);
 
-      // stockage dans deux deux variables des positions x et y de la barre survolée
-      let xPosition = +scaleT(d.date);
-      let yPosition = +scaleY(d.new_dc);
-      const largeurBande = scaleX.bandwidth();
+    // stockage dans deux deux variables des positions x et y de la barre survolée
+    let xPosition = +scaleT(d.date);
+    let yPosition = +scaleY(d.new_dc);
+    const largeurBande = scaleX.bandwidth();
 
-      // format de la date affichée dans le tooltip
-      // stockage de la date de la barre survolée au format XX mois XXXX dans une variable
-      const formatTime = d3.timeFormat("%d %b %Y");
-      const instantT = formatTime(d.date);
+    // format de la date affichée dans le tooltip
+    // stockage de la date de la barre survolée au format XX mois XXXX dans une variable
+    const formatTime = d3.timeFormat("%d %b %Y");
+    const instantT = formatTime(d.date);
 
-      // création d'un rectangle blanc pour le tooltip
-      tooltip
-        .attr(
-          "transform",
-          `translate(${xPosition - 70 + largeurBande / 2},
-            ${yPosition - 50})`
-        )
-        .append("rect")
-        .attr("width", 140)
-        .attr("height", 50)
-        .attr("fill", "#ffffff");
+    // création d'un rectangle blanc pour le tooltip
+    tooltip
+      .attr(
+        "transform",
+        `translate(${xPosition - 70 + largeurBande / 2},
+          ${yPosition - 50})`
+      )
+      .append("rect")
+      .attr("width", 140)
+      .attr("height", 50)
+      .attr("fill", "#ffffff");
 
-      // écriture texte dans le tooltip : ici la DATE
-      tooltip
-        .append("text")
-        .attr("x", 5)
-        .attr("y", 20)
-        .text(`${instantT}`)
-        .attr("font-size", "10px");
+    // écriture texte dans le tooltip : ici la DATE
+    tooltip
+      .append("text")
+      .attr("x", 5)
+      .attr("y", 20)
+      .text(`${instantT}`)
+      .attr("font-size", "10px");
 
-      // écriture texte dans le tooltip : ici la MOYENNE LISSÉE
-      tooltip
-        .append("text")
-        .attr("x", 5)
-        .attr("y", 32)
-        .text(
-          `Moyenne lissée: ${Math.round(d.roll_dc).toLocaleString("fr-FR")}`
-        )
-        .attr("font-size", "10px")
-        .attr("font-weight", "bold");
+    // écriture texte dans le tooltip : ici la MOYENNE LISSÉE
+    tooltip
+      .append("text")
+      .attr("x", 5)
+      .attr("y", 32)
+      .text(
+        `Moyenne lissée: ${Math.round(d.roll_dc).toLocaleString("fr-FR")}`
+      )
+      .attr("font-size", "10px")
+      .attr("font-weight", "bold");
 
-      // écriture texte dans le tooltip : ici le NOMBRE PAR JOUR
-      tooltip
-        .append("text")
-        .attr("x", 5)
-        .attr("y", 44)
-        .text(`Nombre par jour: ${d.new_dc.toLocaleString("fr-FR")}`)
-        .attr("font-size", "10px");
-    });
+    // écriture texte dans le tooltip : ici le NOMBRE PAR JOUR
+    tooltip
+      .append("text")
+      .attr("x", 5)
+      .attr("y", 44)
+      .text(`Nombre par jour: ${d.new_dc.toLocaleString("fr-FR")}`)
+      .attr("font-size", "10px");
+  });
 
-    // efface le contenu du groupe g lorsque la souris ne survole plus la barre
-    rect.on("mouseout", function () {
-      d3.select(this).attr("opacity", 0.6); // rétablit l'opacité à 0.6
+  // efface le contenu du groupe g lorsque la souris ne survole plus la barre
+  rect.on("mouseout", function () {
+    d3.select(this).attr("opacity", 0.6); // rétablit l'opacité à 0.6
 
-      tooltip.select("rect").remove();
-      tooltip.selectAll("text").remove();
-    });
-  }
-}
+    tooltip.select("rect").remove();
+    tooltip.selectAll("text").remove();
+  });
+});

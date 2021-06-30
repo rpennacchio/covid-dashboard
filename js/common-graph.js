@@ -67,14 +67,14 @@ const commonGraph = {
       mobile: {
         svg: {
           width: 500,
-          height: 200,
+          height: 500,
         },
         margin: {
           horizontal: 80,
           vertical: 20,
         },
         legend: {
-          height: 40,
+          height: 20,
           font: 14,
         },
         tooltip: {
@@ -84,14 +84,14 @@ const commonGraph = {
       tablet: {
         svg: {
           width: 500,
-          height: 200,
+          height: 500,
         },
         margin: {
           horizontal: 80,
           vertical: 20,
         },
         legend: {
-          height: 40,
+          height: 20,
           font: 14,
         },
         tooltip: {
@@ -101,14 +101,14 @@ const commonGraph = {
       desktop: {
         svg: {
           width: 500,
-          height: 200,
+          height: 500,
         },
         margin: {
           horizontal: 80,
           vertical: 20,
         },
         legend: {
-          height: 40,
+          height: 20,
           font: 14,
         },
         tooltip: {

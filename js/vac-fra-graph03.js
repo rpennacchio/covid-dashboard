@@ -1,6 +1,4 @@
-d3.csv("data/spf_fra_vacc_dose1_2.csv").then(showData);
-
-function showData(data) {
+d3.csv("data/spf_fra_vacc_dose1_2.csv").then(data => {
   const graphCfg = {
     target: `#vac-fra-graph03`,
     title: `Evolution du nombre d'injections par jour`,
@@ -11,6 +9,8 @@ function showData(data) {
       month: 1,
       year: 2021,
     },
+    type: 'landscape',
+    device: window.screenDevice,
   }
 
   // Traitement des données
@@ -39,11 +39,11 @@ function showData(data) {
 
   // Création du canevas SVG
 
-  const width = 500;
-  const height = 200;
-  const marginH = 80;
-  const marginV = 20;
-  const leg = 40;
+  const width = graphCfg?.size?.svg?.width || commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
+  const height = graphCfg?.size?.svg?.height || commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
+  const marginH = graphCfg?.size?.margin?.horizontal || commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
+  const marginV = graphCfg?.size?.margin?.vertical || commonGraph.size[graphCfg.type][graphCfg.device].margin.vertical;
+  const leg = graphCfg?.size?.legend?.height || commonGraph.size[graphCfg.type][graphCfg.device].legend.height;
 
   const viewBox = {
     width: width + marginH * 2,
@@ -74,7 +74,10 @@ function showData(data) {
 
   // Définition du padding à appliquer aux titres, sous-titres, source
   // pour une titraille toujours alignée avec le graphique
-  const paddingTxt = `0 ${ marginH / viewBox.width * 100 }%`
+  const padding = marginH / viewBox.width * 100
+  const paddingTxt = `0 ${ padding }%`
+
+  document.documentElement.style.setProperty('--gutter-size', `${ padding }%`)
 
   // Écriture du titre
   d3.select(graphCfg.target)
@@ -136,7 +139,7 @@ function showData(data) {
       .call(
         d3
           .axisLeft(scaleY)
-          .ticks(8) // Nombre de ticks
+          .ticks(graphCfg.ticksY && graphCfg.device in graphCfg.ticksY ? graphCfg.ticksY[graphCfg.device] : commonGraph.ticksY[graphCfg.device])
           .tickFormat((d) => d.toLocaleString("fr-FR"))
       ) // formatage grands nombre avec espace entre milliers
       .call((g) => g.select(".domain").remove()) // supprime la ligne de l'axe
@@ -275,5 +278,5 @@ function showData(data) {
     .attr("x", 24)
     .attr("y", 10)
     .text((d) => d.label.toLocaleString("fr-FR"))
-    .attr("font-size", "14px");
-}
+    .attr("font-size", `${ graphCfg?.size?.legend?.font || commonGraph.size[graphCfg.type][graphCfg.device].legend.font }px`);
+});

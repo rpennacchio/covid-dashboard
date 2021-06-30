@@ -132,13 +132,13 @@ d3.csv('data/spf_fra_data.csv').then(data => {
       .call(
         d3
           .axisLeft(scaleY)
-          .ticks(graphCfg?.ticksY && graphCfg?.ticksY[graphCfg.device] || commonGraph.ticksY[graphCfg.device])
+          .ticks(graphCfg.ticksY && graphCfg.device in graphCfg.ticksY ? graphCfg.ticksY[graphCfg.device] : commonGraph.ticksY[graphCfg.device])
           .tickFormat((d) => d.toLocaleString("fr-FR"))
       ) // formatage grands nombre avec espace entre milliers
       .call((g) => g.select(".domain").remove()) // supprime la ligne de l'axe
       .selectAll("text")
       .style("fill", "grey") // couleur du texte
-      .style("font-size", "14px")
+      // .style("font-size", "14px")
 
   //---------------------------------------------------------------------------------------
 
@@ -283,9 +283,7 @@ d3.csv('data/spf_fra_data.csv').then(data => {
 
   // condition pour que l'animation ne fonctionne que sur desktop
   // voir script device_detector pour la fonction deviceType()
-  // rect.on('mouseover', doMouseOver);
-
-  function doMouseOver (d) {
+  rect.on('mouseover', function (d) {
     // lors du survol avec la souris l'opacité des barres passe à 1
     d3.select(this).attr("opacity", 1);
 
@@ -337,7 +335,7 @@ d3.csv('data/spf_fra_data.csv').then(data => {
       .attr("y", 44)
       .text(`Nombre par jour: ${d.new_cases.toLocaleString("fr-FR")}`)
       .attr("font-size", `${ graphCfg?.size?.tooltip?.font || commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font }px`);
-  };
+  });
 
   // efface le contenu du groupe g lorsque la souris ne survole plus la barre
   rect.on("mouseout", function () {

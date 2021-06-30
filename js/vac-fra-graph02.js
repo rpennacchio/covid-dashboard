@@ -1,6 +1,4 @@
-d3.csv("data/spf_fra_vacc.csv").then(showData);
-
-function showData(data) {
+d3.csv("data/spf_fra_vacc.csv").then(data => {
   const graphCfg = {
     target: `#vac-fra-graph02`,
     title: `Proportion de la population vaccinée contre le Covid-19`,
@@ -11,19 +9,20 @@ function showData(data) {
       month: 9,
       year: 2020,
     },
+    type: 'landscape',
+    device: window.screenDevice,
   }
+  graphCfg?.size?.legend?.height
 
   // Traitement des données
 
   // Sélection des variables nécessaires pour le graphique
   const tempData = data.map((d) => {
-    let newData = {
+    return {
       date: new Date(d.jour), // ATTENTION À TRANSPOSER EN FORMAT DATE
       couv_dose1: +d.couv_dose1, // ATTENTION STRING A TRANSPOSER EN FLOAT
       couv_dose2: +d.couv_complet, // ATTENTION STRING A TRANSPOSER EN FLOAT
     };
-
-    return newData;
   });
 
   // Date la plus récente du dataset
@@ -60,11 +59,11 @@ function showData(data) {
 
   // Création du canevas SVG
 
-  const width = 500;
-  const height = 200;
-  const marginH = 80;
-  const marginV = 20;
-  const leg = 40;
+  const width = graphCfg?.size?.svg?.width || commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
+  const height = graphCfg?.size?.svg?.height || commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
+  const marginH = graphCfg?.size?.margin?.horizontal || commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
+  const marginV = graphCfg?.size?.margin?.vertical || commonGraph.size[graphCfg.type][graphCfg.device].margin.vertical;
+  const leg = graphCfg?.size?.legend?.height || commonGraph.size[graphCfg.type][graphCfg.device].legend.height;
 
   const viewBox = {
     width: width + marginH * 2,
@@ -95,7 +94,10 @@ function showData(data) {
 
   // Définition du padding à appliquer aux titres, sous-titres, source
   // pour une titraille toujours alignée avec le graphique
-  const paddingTxt = `0 ${ marginH / viewBox.width * 100 }%`
+  const padding = marginH / viewBox.width * 100
+  const paddingTxt = `0 ${ padding }%`
+
+  document.documentElement.style.setProperty('--gutter-size', `${ padding }%`)
 
   // Écriture du titre
   d3.select(graphCfg.target)
@@ -123,7 +125,7 @@ function showData(data) {
   const color = d3
     .scaleOrdinal()
     .domain(["Au moins une dose", "Vaccination complète", "Non vacciné"])
-    .range(["#0072B2", "#D55E00", "#e0e0e0"]);
+    .range(["#0072B2", "#D55E00", "#E0E0E0"]);
 
   // Rayon des donuts
   const radius = Math.min(width / 2, height) / 2;
@@ -146,10 +148,7 @@ function showData(data) {
     .selectAll("g")
     .data(pieData)
     .join("g")
-    .attr(
-      "transform",
-      (d, i) => `translate(${marginH * 1.5 + i * (width / 2)}, ${height / 2})`
-    );
+    .attr("transform", (d, i) => `translate(${marginH * 1.5 + i * (width / 2)}, ${height / 2})`);
 
   // Projection des donuts
   donuts
@@ -213,5 +212,5 @@ function showData(data) {
     .attr("x", 24)
     .attr("y", 10)
     .text((d) => d.label)
-    .attr("font-size", "14px");
-}
+    .attr("font-size", `${ graphCfg?.size?.legend?.font || commonGraph.size[graphCfg.type][graphCfg.device].legend.font }px`);
+});

@@ -1,24 +1,27 @@
-d3.csv("data/hosp_reg.csv").then(showData);
-
-function showData(data) {
+d3.csv("data/hosp_reg.csv").then(data => {
   const graphCfg = {
     target: `#fra-reg-graph03`,
     title: `Taux d'occupation des réanimations par des patients Covid par région`,
     subtitle: `au [[autoDate]]`,
     caption: `Source. <a href='https://www.data.gouv.fr/fr/organizations/sante-publique-france/' target='_blank'>Santé publique France</a>, <a href='https://data.drees.solidarites-sante.gouv.fr/explore/dataset/707_bases-administratives-sae/information/' target='_blank'>Drees</a>`,
+    // size: {
+    //   tooltip: {
+    //     font: 20,
+    //   },
+    // },
+    type: 'square',
+    device: window.screenDevice,
   }
 
   // Traitement des données
 
   // Sélection des variables nécessaires pour le graphique
   const tempData = data.map((d) => {
-    let newData = {
+    return {
       date: new Date(d.date), // ATTENTION À TRANSPOSER EN FORMAT DATE
       tx_rea: +d.tx_rea, // ATTENTION STRING A TRANSPOSER EN FLOAT
       reg_nom: d.reg_nom,
     };
-
-    return newData;
   });
 
   // Tri des variables dans l'ordre décroissant
@@ -28,10 +31,10 @@ function showData(data) {
 
   // Création du canevas SVG
 
-  const width = 500;
-  const height = 500;
-  const marginH = 80;
-  const marginV = 20;
+  const width = graphCfg?.size?.svg?.width || commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
+  const height = graphCfg?.size?.svg?.height || commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
+  const marginH = graphCfg?.size?.margin?.horizontal || commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
+  const marginV = graphCfg?.size?.margin?.vertical || commonGraph.size[graphCfg.type][graphCfg.device].margin.vertical;
 
   const viewBox = {
     width: width + marginH * 2,
@@ -61,7 +64,10 @@ function showData(data) {
 
   // Définition du padding à appliquer aux titres, sous-titres, source
   // pour une titraille toujours alignée avec le graphique
-  const paddingTxt = `0 ${ marginH / viewBox.width * 100 }%`
+  const padding = marginH / viewBox.width * 100
+  const paddingTxt = `0 ${ padding }%`
+
+  document.documentElement.style.setProperty('--gutter-size', `${ padding }%`)
 
   // Écriture du titre
   d3.select(graphCfg.target)
@@ -153,13 +159,9 @@ function showData(data) {
     .selectAll("text")
     .data(tidyData)
     .join("text")
-    .attr("y", (d, i) => {
-      return scaleY(i) + scaleY.bandwidth() / 1.5;
-    })
+    .attr("y", (d, i) => scaleY(i) + scaleY.bandwidth() / 1.5)
     // écriture à l'intérieur ou à l'extérieur des barres
-    .attr("x", (d) =>
-      scaleX(d.tx_rea) >= 40 ? scaleX(d.tx_rea) - 40 : scaleX(d.tx_rea) + 4
-    )
+    .attr("x", (d) => scaleX(d.tx_rea) >= 40 ? scaleX(d.tx_rea) - 40 : scaleX(d.tx_rea) + 4)
     .text((d) => Math.round(d.tx_rea) + "%")
     // en blanc si à l'intérieur des barres, en gris si à l'extérieur
     .attr("fill", (d) => (scaleX(d.tx_rea) >= 40 ? "#ffffff" : "grey"))
@@ -174,4 +176,4 @@ function showData(data) {
 
   // Placement Y
   svgPlot.append("g").call(yAxis).attr("color", "transparent"); // les ticks de l'axe X sont transparents
-}
+});

@@ -1,39 +1,35 @@
-d3.csv("data/hosp_reg.csv").then(showData);
-
-function showData(data) {
+d3.csv("data/hosp_reg.csv").then(data => {
   const graphCfg = {
     target: `#fra-reg-graph04`,
     title: `Nouvelles hospitalisatons de patients Covid par région depuis une semaine`,
     subtitle: `au [[autoDate]]`,
     caption: `Source. <a href='https://www.data.gouv.fr/fr/organizations/sante-publique-france/' target='_blank'>Santé publique France</a>`,
+    type: 'square',
+    device: window.screenDevice,
   }
 
   // Traitement des données
 
   // Sélection des variables nécessaires pour le graphique
   const tempData = data.map((d) => {
-    let newData = {
+    return {
       date: new Date(d.date), // ATTENTION À TRANSPOSER EN FORMAT DATE
       tot_hosp_7j: +d.tot_hosp_7j, // ATTENTION STRING A TRANSPOSER EN FLOAT
       reg_nom: d.reg_nom,
     };
-
-    return newData;
   });
 
   // Tri des variables dans l'ordre décroissant
-  const tidyData = tempData.sort((a, b) =>
-    d3.ascending(a.tot_hosp_7j, b.tot_hosp_7j)
-  );
+  const tidyData = tempData.sort((a, b) => d3.ascending(a.tot_hosp_7j, b.tot_hosp_7j));
 
   //---------------------------------------------------------------------------------------
 
   // Création du canevas SVG
 
-  const width = 500;
-  const height = 500;
-  const marginH = 80;
-  const marginV = 20;
+  const width = graphCfg?.size?.svg?.width || commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
+  const height = graphCfg?.size?.svg?.height || commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
+  const marginH = graphCfg?.size?.margin?.horizontal || commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
+  const marginV = graphCfg?.size?.margin?.vertical || commonGraph.size[graphCfg.type][graphCfg.device].margin.vertical;
 
   const viewBox = {
     width: width + marginH * 2,
@@ -63,7 +59,10 @@ function showData(data) {
 
   // Définition du padding à appliquer aux titres, sous-titres, source
   // pour une titraille toujours alignée avec le graphique
-  const paddingTxt = `0 ${ marginH / viewBox.width * 100 }%`
+  const padding = marginH / viewBox.width * 100
+  const paddingTxt = `0 ${ padding }%`
+
+  document.documentElement.style.setProperty('--gutter-size', `${ padding }%`)
 
   // Écriture du titre
   d3.select(graphCfg.target)
@@ -178,4 +177,4 @@ function showData(data) {
 
   // Placement Y
   svgPlot.append("g").call(yAxis).attr("color", "transparent");
-}
+});

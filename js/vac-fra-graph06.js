@@ -1,14 +1,14 @@
 Promise.all([
   d3.json("data/ftv_reg.geojson"),
   d3.csv("data/incid_dep.csv"),
-]).then(showData);
-
-function showData(data) {
+]).then(data => {
   const graphCfg = {
     target: `#vac-fra-graph06`,
     title: `Taux de vaccination par région`,
     subtitle: ``,
     caption: `Source. <a href='https://www.data.gouv.fr/fr/organizations/sante-publique-france/' target='_blank'>Santé publique France</a>`,
+    type: 'square',
+    device: window.screenDevice,
   }
 
   // Tri des données
@@ -23,11 +23,11 @@ function showData(data) {
 
   // Création du canevas SVG
 
-  const width = 500;
-  const height = 500;
-  const marginH = 80;
-  const marginV = 20;
-  const leg = 20;
+  const width = graphCfg?.size?.svg?.width || commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
+  const height = graphCfg?.size?.svg?.height || commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
+  const marginH = graphCfg?.size?.margin?.horizontal || commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
+  const marginV = graphCfg?.size?.margin?.vertical || commonGraph.size[graphCfg.type][graphCfg.device].margin.vertical;
+  const leg = graphCfg?.size?.legend?.height || commonGraph.size[graphCfg.type][graphCfg.device].legend.height;
 
   const viewBox = {
     width: width + marginH * 2,
@@ -58,7 +58,10 @@ function showData(data) {
 
   // Définition du padding à appliquer aux titres, sous-titres, source
   // pour une titraille toujours alignée avec le graphique
-  const paddingTxt = `0 ${ marginH / viewBox.width * 100 }%`
+  const padding = marginH / viewBox.width * 100
+  const paddingTxt = `0 ${ padding }%`
+
+  document.documentElement.style.setProperty('--gutter-size', `${ padding }%`)
 
   // Écriture du titre
   d3.select(graphCfg.target)
@@ -115,4 +118,4 @@ function showData(data) {
   //---------------------------------------------------------------------------------------
 
   // Animation carte
-}
+});
