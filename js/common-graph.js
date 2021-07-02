@@ -14,7 +14,7 @@ const commonGraph = {
       mobile: {
         svg: {
           width: 500,
-          height: 400,
+          height: 200,
         },
         margin: {
           horizontal: 80,
@@ -31,7 +31,7 @@ const commonGraph = {
       tablet: {
         svg: {
           width: 500,
-          height: 300,
+          height: 200,
         },
         margin: {
           horizontal: 80,
