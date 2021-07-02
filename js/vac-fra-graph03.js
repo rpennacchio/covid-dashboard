@@ -192,7 +192,7 @@ d3.csv("data/spf_fra_vacc_dose1_2.csv").then(data => {
     .selectAll("rect")
     .data((d) => d)
     .join("rect")
-    .attr("x", (d, i) => scaleT(d.data.date))
+    .attr("x", d => scaleT(d.data.date))
     .attr("y", (d) => scaleY(d[1]))
     .attr("height", (d) => scaleY(d[0]) - scaleY(d[1]))
     .attr("width", scaleX.bandwidth());
@@ -205,7 +205,8 @@ d3.csv("data/spf_fra_vacc_dose1_2.csv").then(data => {
   let lineGenerator = d3
     .line()
     .x((d) => scaleT(d.date))
-    .y((d) => scaleY(d.roll_dose));
+    .y((d) => scaleY(d.roll_dose))
+    .curve(d3.curveCardinal)
 
   // projection de la ligne
   svgPlot

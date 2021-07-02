@@ -163,7 +163,8 @@ d3.csv("data/spf_fra_data.csv").then(data => {
     .curve(d3.curveLinear)
     .x((d) => scaleT(d.date))
     .y0((d) => scaleY(d.part_rea))
-    .y1((d) => scaleY(d.part_hosp));
+    .y1((d) => scaleY(d.part_hosp))
+    .curve(d3.curveBasis)
 
   // générateur de l'aire des réanimations
   const areaRea = d3
@@ -171,7 +172,8 @@ d3.csv("data/spf_fra_data.csv").then(data => {
     .curve(d3.curveLinear)
     .x((d) => scaleT(d.date))
     .y0(scaleY(0))
-    .y1((d) => scaleY(d.part_rea));
+    .y1((d) => scaleY(d.part_rea))
+    .curve(d3.curveBasis)
 
   // projection de l'aire des hospitalisations
   svgPlot

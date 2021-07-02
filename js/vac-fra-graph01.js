@@ -174,7 +174,8 @@ d3.csv("data/spf_fra_vacc.csv").then(data => {
     .curve(d3.curveLinear)
     .x((d) => scaleT(d.date))
     .y0((d) => scaleY(d.cum_dose2))
-    .y1((d) => scaleY(d.cum_dose1));
+    .y1((d) => scaleY(d.cum_dose1))
+    .curve(d3.curveCardinal)
 
   // générateur de l'aire des vaccinations complètes
   const areaDose2 = d3
@@ -182,7 +183,8 @@ d3.csv("data/spf_fra_vacc.csv").then(data => {
     .curve(d3.curveLinear)
     .x((d) => scaleT(d.date))
     .y0(scaleY(0))
-    .y1((d) => scaleY(d.cum_dose2));
+    .y1((d) => scaleY(d.cum_dose2))
+    .curve(d3.curveCardinal)
 
   // projection de l'aire des premières injections
   svgPlot

@@ -196,7 +196,8 @@ d3.csv("data/spf_fra_test.csv").then(data => {
   let lineGenerator = d3
     .line()
     .x((d) => scaleT(d.date))
-    .y((d) => scaleY2(d.taux));
+    .y((d) => scaleY2(d.taux))
+    .curve(d3.curveCardinal)
 
   // projection de la ligne
   svgPlot
@@ -283,7 +284,7 @@ d3.csv("data/spf_fra_test.csv").then(data => {
       .attr("x", 5)
       .attr("y", 20)
       .text(`${instantT}`)
-      .attr("font-size", "10px");
+      .attr("font-size", `${ graphCfg?.size?.tooltip?.font || commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font }px`)
 
     // écriture texte dans le tooltip : ici la MOYENNE LISSÉE
     tooltip
@@ -291,7 +292,7 @@ d3.csv("data/spf_fra_test.csv").then(data => {
       .attr("x", 5)
       .attr("y", 32)
       .text(`Moyenne lissée: ${Math.round(d.test).toLocaleString("fr-FR")}`)
-      .attr("font-size", "10px")
+      .attr("font-size", `${ graphCfg?.size?.tooltip?.font || commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font }px`)
       .attr("font-weight", "bold");
 
     // écriture texte dans le tooltip : ici le NOMBRE PAR JOUR
@@ -300,7 +301,7 @@ d3.csv("data/spf_fra_test.csv").then(data => {
       .attr("x", 5)
       .attr("y", 44)
       .text(`Nombre par jour: ${d.test.toLocaleString("fr-FR")}`)
-      .attr("font-size", "10px");
+      .attr("font-size", `${ graphCfg?.size?.tooltip?.font || commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font }px`)
   });
 
   // efface le contenu du groupe g lorsque la souris ne survole plus la barre

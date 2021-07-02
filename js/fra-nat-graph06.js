@@ -185,7 +185,8 @@ d3.csv("data/spf_fra_incid_age.csv").then(data => {
   const lineGenerator = d3
     .line()
     .x((d) => scaleT(d.date))
-    .y((d) => scaleY(d.incid));
+    .y((d) => scaleY(d.incid))
+    .curve(d3.curveCardinal)
 
   // projection des lignes
   svgPlot

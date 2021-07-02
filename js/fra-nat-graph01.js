@@ -104,7 +104,7 @@ d3.csv('data/spf_fra_data.csv').then(data => {
   // échelle linéaire pour l'axe des Y
   const scaleY = d3
     .scaleLinear()
-    .domain([0, d3.max(tidyData, (d) => d.new_cases)])
+    .domain([0, d3.max(tidyData, d => d[graphCfg.device === 'mobile' ? 'roll_cases' : 'new_cases'])])
     .range([height, 0]);
 
   // échelee temporelle pour l'axe des X
@@ -162,10 +162,38 @@ d3.csv('data/spf_fra_data.csv').then(data => {
 
   //---------------------------------------------------------------------------------------
 
-  // Création du Bar Chart
+  // Tableau contenant les informations à afficher dans la légende : text, couleur, opacité
+  let legendeValues = [];
+  let rect;
 
-  // if (graphCfg.device !== 'mobile') {
-    const rect = svgPlot
+  if (graphCfg.device === 'mobile') {
+    legendeValues = [
+      { label: "Moyenne glissante", col: "#D55E00", op: 1 },
+    ];
+
+    // Création du Area Chart
+    const area = d3
+      .area()
+      .curve(d3.curveLinear)
+      .x(d => scaleT(d.date))
+      .y0(scaleY(0))
+      .y1((d) => scaleY(d.roll_cases))
+      .curve(d3.curveCardinal) // Adoucit la ligne
+
+    svgPlot
+      .append("path")
+      .datum(tidyData)
+      .attr("d", area)
+      .attr("fill", "#D55E00")
+      .attr("opacity", 0.6);
+  } else {
+    legendeValues = [
+      { label: "Nombre par jour", col: "#0072B2", op: 0.6 },
+      { label: "Moyenne glissante", col: "#D55E00", op: 1 },
+    ];
+
+    // Création du Bar Chart
+    rect = svgPlot
       .selectAll("rect")
       .data(tidyData)
       .join("rect")
@@ -175,21 +203,7 @@ d3.csv('data/spf_fra_data.csv').then(data => {
       .attr("width", scaleX.bandwidth()) // width des barres avec l'échelle d'épaiseur
       .attr("fill", "#0072B2")
       .attr("opacity", 0.6);
-  // } else {
-  //   const areaHosp = d3
-  //     .area()
-  //     .curve(d3.curveLinear)
-  //     .x(d => scaleT(d.date))
-  //     // .y0((d) => scaleY(d.part_rea))
-  //     .y(d => scaleY(d.roll_cases));
-
-  //   svgPlot
-  //     .append("path")
-  //     .datum(tidyData)
-  //     .attr("fill", "#0072B2")
-  //     .attr("d", areaHosp)
-  //     .attr("opacity", 0.6);
-  //   }
+  }
 
   //---------------------------------------------------------------------------------------
 
@@ -199,7 +213,8 @@ d3.csv('data/spf_fra_data.csv').then(data => {
   let lineGenerator = d3
     .line()
     .x((d) => scaleT(d.date))
-    .y((d) => scaleY(d.roll_cases));
+    .y((d) => scaleY(d.roll_cases))
+    .curve(d3.curveCardinal)
 
   // projection de la ligne
   svgPlot
@@ -242,12 +257,6 @@ d3.csv('data/spf_fra_data.csv').then(data => {
 
   // Légende
 
-  // Objet contenant les informations à afficher dans la légende : text, couleur, opacité
-  const legendeValues = [
-    { label: "Nombre par jour", col: "#0072B2", op: 0.6 },
-    { label: "Moyenne glissante", col: "#D55E00", op: 1 },
-  ];
-
   // Création d'un groupe g par élément de la légende (ici deux infos)
   const legend = svgLegend
     .selectAll(".legend")
@@ -278,70 +287,72 @@ d3.csv('data/spf_fra_data.csv').then(data => {
 
   // Animation Bar Chart
 
-  // création d'un groupe g qui contiendra le tooltip de la légende
-  const tooltip = svgPlot.append("g");
+  if (graphCfg.device !== 'mobile') {
+    // création d'un groupe g qui contiendra le tooltip de la légende
+    const tooltip = svgPlot.append("g")
 
-  // condition pour que l'animation ne fonctionne que sur desktop
-  // voir script device_detector pour la fonction deviceType()
-  rect.on('mouseover', function (d) {
-    // lors du survol avec la souris l'opacité des barres passe à 1
-    d3.select(this).attr("opacity", 1);
+    // condition pour que l'animation ne fonctionne que sur desktop
+    // voir script device_detector pour la fonction deviceType()
+    rect.on('mouseover', function (d) {
+      // lors du survol avec la souris l'opacité des barres passe à 1
+      d3.select(this).attr("opacity", 1);
 
-    // stockage dans deux deux variables des positions x et y de la barre survolée
-    let xPosition = +scaleT(d.date);
-    let yPosition = +scaleY(d.new_cases);
-    const largeurBande = scaleX.bandwidth();
+      // stockage dans deux deux variables des positions x et y de la barre survolée
+      let xPosition = +scaleT(d.date);
+      let yPosition = +scaleY(d.new_cases);
+      const largeurBande = scaleX.bandwidth();
 
-    // format de la date affichée dans le tooltip
-    // stockage de la date de la barre survolée au format XX mois XXXX dans une variable
-    const formatTime = d3.timeFormat("%d %b %Y");
-    const instantT = formatTime(d.date);
+      // format de la date affichée dans le tooltip
+      // stockage de la date de la barre survolée au format XX mois XXXX dans une variable
+      const formatTime = d3.timeFormat("%d %b %Y");
+      const instantT = formatTime(d.date);
 
-    // création d'un rectangle blanc pour le tooltip
-    tooltip
-      .attr(
-        "transform",
-        `translate(${xPosition - 70 + largeurBande / 2},
-          ${yPosition - 50})`
-      )
-      .append("rect")
-      .attr("width", 140)
-      .attr("height", 50)
-      .attr("fill", "#ffffff");
+      // création d'un rectangle blanc pour le tooltip
+      tooltip
+        .attr(
+          "transform",
+          `translate(${xPosition - 70 + largeurBande / 2},
+            ${yPosition - 50})`
+        )
+        .append("rect")
+        .attr("width", 140)
+        .attr("height", 50)
+        .attr("fill", "#ffffff");
 
-    // écriture texte dans le tooltip : ici la DATE
-    tooltip
-      .append("text")
-      .attr("x", 5)
-      .attr("y", 20)
-      .text(`${instantT}`)
-      .attr("font-size", `${ graphCfg?.size?.tooltip?.font || commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font }px`);
+      // écriture texte dans le tooltip : ici la DATE
+      tooltip
+        .append("text")
+        .attr("x", 5)
+        .attr("y", 20)
+        .text(`${instantT}`)
+        .attr("font-size", `${ graphCfg?.size?.tooltip?.font || commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font }px`)
 
-    // écriture texte dans le tooltip : ici la MOYENNE LISSÉE
-    tooltip
-      .append("text")
-      .attr("x", 5)
-      .attr("y", 32)
-      .text(
-        `Moyenne lissée: ${Math.round(d.roll_cases).toLocaleString("fr-FR")}`
-      )
-      .attr("font-size", `${ graphCfg?.size?.tooltip?.font || commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font }px`)
-      .attr("font-weight", "bold");
+      // écriture texte dans le tooltip : ici la MOYENNE LISSÉE
+      tooltip
+        .append("text")
+        .attr("x", 5)
+        .attr("y", 32)
+        .text(
+          `Moyenne lissée: ${Math.round(d.roll_cases).toLocaleString("fr-FR")}`
+        )
+        .attr("font-size", `${ graphCfg?.size?.tooltip?.font || commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font }px`)
+        .attr("font-weight", "bold")
 
-    // écriture texte dans le tooltip : ici le NOMBRE PAR JOUR
-    tooltip
-      .append("text")
-      .attr("x", 5)
-      .attr("y", 44)
-      .text(`Nombre par jour: ${d.new_cases.toLocaleString("fr-FR")}`)
-      .attr("font-size", `${ graphCfg?.size?.tooltip?.font || commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font }px`);
-  });
+      // écriture texte dans le tooltip : ici le NOMBRE PAR JOUR
+      tooltip
+        .append("text")
+        .attr("x", 5)
+        .attr("y", 44)
+        .text(`Nombre par jour: ${d.new_cases.toLocaleString("fr-FR")}`)
+        .attr("font-size", `${ graphCfg?.size?.tooltip?.font || commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font }px`);
+    });
 
-  // efface le contenu du groupe g lorsque la souris ne survole plus la barre
-  rect.on("mouseout", function () {
-    d3.select(this).attr("opacity", 0.6); // rétablit l'opacité à 0.6
+    // efface le contenu du groupe g lorsque la souris ne survole plus la barre
+    rect.on("mouseout", function () {
+      d3.select(this).attr("opacity", 0.6); // rétablit l'opacité à 0.6
 
-    tooltip.select("rect").remove();
-    tooltip.selectAll("text").remove();
-  });
+      tooltip.select("rect").remove();
+      tooltip.selectAll("text").remove();
+    });
+  }
 });
