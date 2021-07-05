@@ -255,7 +255,7 @@ d3.csv("data/spf_fra_incid_age.csv").then(data => {
     .forceSimulation()
     .nodes(labels)
     .force("collide", d3.forceCollide(8))
-    .force("y", d3.forceY((d) => d.targetY).strength(0.03))
+    .force("y", d3.forceY((d) => d.targetY).strength(0.02))
     .stop();
 
   // Execute la simulation
