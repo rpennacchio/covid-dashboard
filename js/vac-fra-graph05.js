@@ -12,12 +12,14 @@ d3.csv("data/vacc_age.csv").then(data => {
 
   // Sélection des variables nécessaires pour le graphique
   const tempData = data.map((d) => {
-    return {
+    let newData = {
       date: new Date(d.jour), // ATTENTION À TRANSPOSER EN FORMAT DATE
-      tx_rea: +d.couv_dose1, // ATTENTION STRING A TRANSPOSER EN FLOAT
+      tx_rea: +d.couv_tot_dose1, // ATTENTION STRING A TRANSPOSER EN FLOAT
       age: +d.age, // ATTENTION STRING A TRANSPOSER EN FLOAT
       reg_nom: d.label_age,
     };
+
+    return newData;
   });
 
   // Tri des variables dans l'ordre décroissant
@@ -104,7 +106,7 @@ d3.csv("data/vacc_age.csv").then(data => {
     .scaleBand()
     .domain(d3.range(tidyData.length))
     .range([height, 0])
-    .padding(0.1);
+    .padding(0.2);
 
   //---------------------------------------------------------------------------------------
 
@@ -136,7 +138,8 @@ d3.csv("data/vacc_age.csv").then(data => {
 
   // Création du Bar Chart
 
-  const rect = svgPlot
+  const rectFill = svgPlot
+    .append("g")
     .selectAll("rect")
     .data(tidyData)
     .join("rect")
@@ -147,6 +150,20 @@ d3.csv("data/vacc_age.csv").then(data => {
     .attr("fill", "#0072B2")
     .attr("opacity", 0.6);
 
+  const rectFrame = svgPlot
+    .append("g")
+    .selectAll("rect")
+    .data(tidyData)
+    .join("rect")
+    .attr("y", (d, i) => scaleY(i))
+    .attr("x", (d) => scaleX(0))
+    .attr("width", (d) => scaleX(100))
+    .attr("height", scaleY.bandwidth()) // width des barres avec l'échelle d'épaiseur
+    .attr("fill", "transparent")
+    .attr("stroke-width", "2px")
+    .attr("stroke", "grey")
+    .attr("opacity", 1);
+
   //---------------------------------------------------------------------------------------
 
   // Création des labels
@@ -155,9 +172,13 @@ d3.csv("data/vacc_age.csv").then(data => {
     .selectAll("text")
     .data(tidyData)
     .join("text")
-    .attr("y", (d, i) => scaleY(i) + scaleY.bandwidth() / 1.5)
+    .attr("y", (d, i) => {
+      return scaleY(i) + scaleY.bandwidth() / 1.5;
+    })
     // écriture à l'intérieur ou à l'extérieur des barres
-    .attr("x", (d) => scaleX(d.tx_rea) >= 50 ? scaleX(d.tx_rea) - 50 : scaleX(d.tx_rea) + 4)
+    .attr("x", (d) =>
+      scaleX(d.tx_rea) >= 50 ? scaleX(d.tx_rea) - 50 : scaleX(d.tx_rea) + 4
+    )
     .text((d) => Math.round(d.tx_rea) + "%")
     // en blanc si à l'intérieur des barres, en gris si à l'extérieur
     .attr("fill", (d) => (scaleX(d.tx_rea) >= 50 ? "#ffffff" : "grey"))

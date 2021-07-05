@@ -109,7 +109,7 @@ d3.csv("data/hosp_reg.csv").then(data => {
     .scaleBand()
     .domain(d3.range(tidyData.length))
     .range([height, 0])
-    .padding(0.1);
+    .padding(0.2);
 
   //---------------------------------------------------------------------------------------
 
@@ -140,8 +140,8 @@ d3.csv("data/hosp_reg.csv").then(data => {
   //---------------------------------------------------------------------------------------
 
   // Création du Bar Chart
-
-  const rect = svgPlot
+  const rectFill = svgPlot
+    .append("g")
     .selectAll("rect")
     .data(tidyData)
     .join("rect")
@@ -152,6 +152,20 @@ d3.csv("data/hosp_reg.csv").then(data => {
     .attr("fill", "#0072B2")
     .attr("opacity", 0.6);
 
+  const rectFrame = svgPlot
+    .append("g")
+    .selectAll("rect")
+    .data(tidyData)
+    .join("rect")
+    .attr("y", (d, i) => scaleY(i))
+    .attr("x", (d) => scaleX(0))
+    .attr("width", (d) => scaleX(100))
+    .attr("height", scaleY.bandwidth()) // width des barres avec l'échelle d'épaiseur
+    .attr("fill", "transparent")
+    .attr("stroke-width", "2px")
+    .attr("stroke", "grey")
+    .attr("opacity", 1);
+
   //---------------------------------------------------------------------------------------
 
   // Création des labels
@@ -160,12 +174,16 @@ d3.csv("data/hosp_reg.csv").then(data => {
     .selectAll("text")
     .data(tidyData)
     .join("text")
-    .attr("y", (d, i) => scaleY(i) + scaleY.bandwidth() / 1.5)
+    .attr("y", (d, i) => {
+      return scaleY(i) + scaleY.bandwidth() / 1.5;
+    })
     // écriture à l'intérieur ou à l'extérieur des barres
-    .attr("x", (d) => scaleX(d.tx_rea) >= 40 ? scaleX(d.tx_rea) - 40 : scaleX(d.tx_rea) + 4)
+    .attr("x", (d) =>
+      scaleX(d.tx_rea) >= 40 ? scaleX(d.tx_rea) - 40 : scaleX(d.tx_rea) + 4
+    )
     .text((d) => Math.round(d.tx_rea) + "%")
     // en blanc si à l'intérieur des barres, en gris si à l'extérieur
-    .attr("fill", (d) => (scaleX(d.tx_rea) >= 40 ? "#ffffff" : "grey"))
+    .attr("fill", (d) => scaleX(d.tx_rea) >= 40 ? "#ffffff" : "grey")
     .attr("font-size", scaleY.bandwidth() * 0.5 + "px");
 
   //---------------------------------------------------------------------------------------
@@ -177,4 +195,5 @@ d3.csv("data/hosp_reg.csv").then(data => {
 
   // Placement Y
   svgPlot.append("g").call(yAxis).attr("color", "transparent"); // les ticks de l'axe X sont transparents
+  
 });
