@@ -1,150 +1,121 @@
 Promise.all([
-    d3.json("data/ftv_reg.geojson"),
-    d3.csv("data/incid_dep.csv")
-]).then(showData);
+  d3.json("data/ftv_reg.geojson"),
+  d3.csv("data/incid_dep.csv"),
+]).then(data => {
+  const graphCfg = {
+    target: `#vac-fra-graph06`,
+    title: `Taux de vaccination par région`,
+    subtitle: ``,
+    caption: `Source. <a href='https://www.data.gouv.fr/fr/organizations/sante-publique-france/' target='_blank'>Santé publique France</a>`,
+    type: 'square',
+    device: window.screenDevice,
+  }
 
-function showData(data) {
+  // Tri des données
 
-    // Mise en français des objets dates
-    const locale = {
-        "dateTime": "%A %e %B %Y à %X",
-        "date": "%d/%m/%Y",
-        "time": "%H:%M:%S",
-        "periods": ["AM", "PM"],
-        "days": ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"],
-        "shortDays": ["dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam."],
-        "months": ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"],
-        "shortMonths": ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."]
-    }
+  // données carto
+  let dataMap = data[0];
 
-    d3.timeFormatDefaultLocale(locale);
+  // données incidence
+  let dataIncid = data[1];
 
-    //---------------------------------------------------------------------------------------
+  //---------------------------------------------------------------------------------------
 
-    // Tri des données
+  // Création du canevas SVG
 
-    // données carto
-    let dataMap = data[0];
+  const width = graphCfg?.size?.svg?.width || commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
+  const height = graphCfg?.size?.svg?.height || commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
+  const marginH = graphCfg?.size?.margin?.horizontal || commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
+  const marginV = graphCfg?.size?.margin?.vertical || commonGraph.size[graphCfg.type][graphCfg.device].margin.vertical;
+  const leg = graphCfg?.size?.legend?.height || commonGraph.size[graphCfg.type][graphCfg.device].legend.height;
 
-    // données incidence
-    let dataIncid = data[1];
+  const viewBox = {
+    width: width + marginH * 2,
+    height: height + leg + marginV * 2
+  }
 
-    //---------------------------------------------------------------------------------------
+  // création du canevas pour le Graphique
+  const svg = d3
+    .select(graphCfg.target)
+    .select('.grph-content')
+    .insert('svg', ':first-child')
+    .attr("viewBox", [0, 0, viewBox.width, viewBox.height])
+    .attr("preserveAspectRatio", "xMinYMid");
 
-    // Création du canevas SVG
+  // création d'un groupe g pour la Légende
+  const svgLegend = svg
+    .append("g")
+    .attr("transform", `translate(${marginH}, ${marginV})`);
 
-    const width = 500;
-    const height = 500;
-    const marginH = 80;
-    const marginV = 20;
-    const leg = 20;
+  // création d'un groupe g pour le Graphique
+  const svgPlot = svg
+    .append("g")
+    .attr("transform", `translate(${marginH}, ${marginV + leg})`);
 
-    // création du canevas pour le Graphique
-    const svg = d3.select('#vac-fra-graph06 .graph')
-        .append("svg")
-        .attr("viewBox", [0, 0, width + marginH * 2, height + leg + marginV * 2])
-        .attr("preserveAspectRatio", "xMinYMid");
+  //---------------------------------------------------------------------------------------
 
-    // création d'un groupe g pour la Légende
-    const svgLegend = svg.append("g")
-        .attr("transform", `translate(${marginH}, ${marginV})`);
+  // Écriture titraille graphique
 
-    // création d'un groupe g pour le Graphique
-    const svgPlot = svg.append("g")
-        .attr("transform", `translate(${marginH}, ${marginV + leg})`);
+  // Définition du padding à appliquer aux titres, sous-titres, source
+  // pour une titraille toujours alignée avec le graphique
+  const padding = marginH / viewBox.width * 100
+  const paddingTxt = `0 ${ padding }%`
 
-    //---------------------------------------------------------------------------------------
+  document.documentElement.style.setProperty('--gutter-size', `${ padding }%`)
 
-    // Écriture titraille graphique
+  // Écriture du titre
+  d3.select(graphCfg.target)
+    .select('.grph-title')
+    .html(graphCfg.title)
+    .style("padding", paddingTxt)
 
-    // Stockage de la taille du graphique dans le navigateur à l'ouverture de la page
-    let svgSizeInNav = svg.node().getBoundingClientRect().right - svg.node().getBoundingClientRect().left;
+  // Écriture du sous-titre
+  d3.select(graphCfg.target)
+    .select('.grph-subtitle')
+    .html(graphCfg.subtitle.replace(/\[\[\s*startDate\s*\]\]/, `${ graphCfg?.startDate?.day === 1 ? graphCfg?.startDate?.day + 'er' : graphCfg?.startDate?.day } ${ commonGraph.locale.months[graphCfg?.startDate?.month - 1] } ${ graphCfg?.startDate?.year }`))
+    .style("padding", paddingTxt)
 
-    // Stockage du total des dimensions du graphique
-    let totalDims = width + marginH * 2;
+  // Écriture de la source
+  d3.select(graphCfg.target)
+    .select('.grph-caption')
+    .html(graphCfg.caption)
+    .style("padding", paddingTxt)
 
-    // Définition du padding à appliquer aux titres, sous-titres, source
-    // pour une titraille toujours alignée avec le graphique
-    let paddingTitles = svgSizeInNav / totalDims * marginH;
+  //---------------------------------------------------------------------------------------
 
-    // Écriture du titre
-    const title = d3.select('#vac-fra-graph06 .graph-title')
-        .html("Taux de vaccination par région")
-        .style('padding-right', paddingTitles + "px")
-        .style('padding-left', paddingTitles + "px");
+  // Création de l'échelle de couleur
 
-    // Écriture du sous-titre
-    const subtitle = d3.select('#vac-fra-graph06 .graph-subtitle')
-        .html('')
-        .style('padding-right', paddingTitles + "px")
-        .style('padding-left', paddingTitles + "px");
+  // échelle de couleur
 
-    // Écriture du caption
-    const caption = d3.select('#vac-fra-graph06 .graph-caption')
-        .html("Source. <a href='https://www.data.gouv.fr/fr/organizations/sante-publique-france/' target='_blank'>Santé publique France</a>")
-        .style('padding-right', paddingTitles + "px")
-        .style('padding-left', paddingTitles + "px");
+  //---------------------------------------------------------------------------------------
 
-    // Adaptation du padding à chaque resize de la fenêtre du navigateur
-    d3.select(window).on("resize", () => {
+  // Projection carte
 
-        let svgSizeInNavTemp = svg.node().getBoundingClientRect().right - svg.node().getBoundingClientRect().left;
+  // définition de la projection de la carte (en geoMercator)
+  const projection = d3
+    .geoMercator()
+    .center([2.2, 47.366021])
+    .scale(1800)
+    .translate([width / 2, height / 2]);
 
-        let paddingTitlesTemp = svgSizeInNavTemp / totalDims * marginH;
+  // création d'un générateur géographique de formes
+  const path = d3.geoPath().projection(projection);
 
-        title
-            .style('padding-right', paddingTitlesTemp + "px")
-            .style('padding-left', paddingTitlesTemp + "px");
+  // projection des polygones géographiques
+  const polygons = svgPlot
+    .selectAll("path")
+    .data(dataMap.features)
+    .join("path")
+    .attr("d", (d) => path(d))
+    .attr("stroke", "#ffffff")
+    .attr("fill", "grey");
 
-        subtitle
-            .style('padding-right', paddingTitlesTemp + "px")
-            .style('padding-left', paddingTitlesTemp + "px");
+  //---------------------------------------------------------------------------------------
 
-        caption
-            .style('padding-right', paddingTitlesTemp + "px")
-            .style('padding-left', paddingTitlesTemp + "px");
+  // Legende ---- fonctionne avec l'API d3-legend
+  // https://d3-legend.susielu.com/
 
-    });
+  //---------------------------------------------------------------------------------------
 
-    //---------------------------------------------------------------------------------------
-
-    // Création de l'échelle de couleur
-
-    // échelle de couleur
-
-    //---------------------------------------------------------------------------------------
-
-    // Projection carte
-
-    // définition de la projection de la carte (en geoMercator)
-    const projection = d3.geoMercator()
-        .center([2.2, 47.366021])
-        .scale(1800)
-        .translate([width / 2, height / 2]);
-
-    // création d'un générateur géographique de formes
-    const path = d3.geoPath()
-        .projection(projection);
-
-    // projection des polygones géographiques
-    const polygons = svgPlot.selectAll("path")
-        .data(dataMap.features)
-        .join('path')
-        .attr("d", d => path(d))
-        .attr("stroke", "#ffffff")
-        .attr("fill", "grey");
-
-
-    //---------------------------------------------------------------------------------------
-
-    // Legende ---- fonctionne avec l'API d3-legend
-    // https://d3-legend.susielu.com/
-
-    //---------------------------------------------------------------------------------------
-
-    // Animation carte
-
-
-
-
-}
+  // Animation carte
+});
