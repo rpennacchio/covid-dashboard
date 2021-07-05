@@ -112,9 +112,10 @@ Promise.all([
 
   // Écriture du sous-titre
   d3.select(graphCfg.target)
-    .select('.grph-subtitle')
+    .select('.grph-title')
+    .append('span')
+    .attr('class', 'grph-date')
     .html("entre le " + formerDateToTitle + " et le " + actualDateToTitle)
-    .style("padding", paddingTxt)
 
   // Écriture de la source
   d3.select(graphCfg.target)

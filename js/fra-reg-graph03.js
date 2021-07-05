@@ -83,9 +83,10 @@ d3.csv("data/hosp_reg.csv").then(data => {
 
   // Écriture du sous-titre
   d3.select(graphCfg.target)
-    .select('.grph-subtitle')
+    .select('.grph-title')
+    .append('span')
+    .attr('class', 'grph-date')
     .html(graphCfg.subtitle.replace(/\[\[\s*autoDate\s*\]\]/, `${ dateToTitle }`))
-    .style("padding", paddingTxt)
 
   // Écriture de la source
   d3.select(graphCfg.target)

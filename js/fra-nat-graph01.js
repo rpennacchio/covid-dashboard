@@ -80,9 +80,10 @@ d3.csv('data/spf_fra_data.csv').then(data => {
 
   // Écriture du sous-titre
   d3.select(graphCfg.target)
-    .select('.grph-subtitle')
+    .select('.grph-title')
+    .append('span')
+    .attr('class', 'grph-date')
     .html(graphCfg.subtitle.replace(/\[\[\s*startDate\s*\]\]/, `${ graphCfg?.startDate?.day === 1 ? graphCfg?.startDate?.day + 'er' : graphCfg?.startDate?.day } ${ commonGraph.locale.months[graphCfg?.startDate?.month - 1] } ${ graphCfg?.startDate?.year }`))
-    .style("padding", paddingTxt)
 
   // Écriture de la source
   d3.select(graphCfg.target)
@@ -288,12 +289,14 @@ d3.csv('data/spf_fra_data.csv').then(data => {
   // Animation Bar Chart
 
   if (graphCfg.device !== 'mobile') {
+    const custTooltip = commonGraph.tooltip(graphCfg.target, d3)
+
     // création d'un groupe g qui contiendra le tooltip de la légende
     const tooltip = svgPlot.append("g")
 
     // condition pour que l'animation ne fonctionne que sur desktop
     // voir script device_detector pour la fonction deviceType()
-    rect.on('mouseover', function (d) {
+    rect.on('mouseover', function (d, e, f, g) {
       // lors du survol avec la souris l'opacité des barres passe à 1
       d3.select(this).attr("opacity", 1);
 
@@ -306,6 +309,22 @@ d3.csv('data/spf_fra_data.csv').then(data => {
       // stockage de la date de la barre survolée au format XX mois XXXX dans une variable
       const formatTime = d3.timeFormat("%d %b %Y");
       const instantT = formatTime(d.date);
+
+      custTooltip
+        .select('div')
+        .remove()
+
+      custTooltip
+        .style('opacity', '1')
+        .style('left', `${ d3.event.pageX }px`)
+        .style('top', `${ d3.event.pageY }px`)
+        .style("font-size", `${ graphCfg?.size?.tooltip?.font || commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font }px`)
+        .append('div')
+        .html(`${instantT}`)
+        .append('div')
+        .html(`Moyenne lissée: ${Math.round(d.roll_cases).toLocaleString("fr-FR")}`)
+        .append('div')
+        .html(`Nombre par jour: ${d.new_cases.toLocaleString("fr-FR")}`)
 
       // création d'un rectangle blanc pour le tooltip
       tooltip
@@ -350,6 +369,9 @@ d3.csv('data/spf_fra_data.csv').then(data => {
     // efface le contenu du groupe g lorsque la souris ne survole plus la barre
     rect.on("mouseout", function () {
       d3.select(this).attr("opacity", 0.6); // rétablit l'opacité à 0.6
+
+      custTooltip
+        .style('opacity', '0')
 
       tooltip.select("rect").remove();
       tooltip.selectAll("text").remove();

@@ -175,6 +175,13 @@ const commonGraph = {
     tablet: 6,
     desktop: 8,
   },
+  tooltip: (graphId, d3) => {
+    return d3
+      .select(graphId)
+      .select('.grph-content')
+      .append('div')
+      .attr('class', 'grph-tooltip')
+  },
 }
 
 // Mise en français des dates.
@@ -198,5 +205,3 @@ d3.timeFormatDefaultLocale(commonGraph.locale)
             : 'mobile'
   }
 }
-
-// test

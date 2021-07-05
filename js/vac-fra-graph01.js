@@ -92,9 +92,10 @@ d3.csv("data/spf_fra_vacc.csv").then(data => {
 
   // Écriture du sous-titre
   d3.select(graphCfg.target)
-    .select('.grph-subtitle')
+    .select('.grph-title')
+    .append('span')
+    .attr('class', 'grph-date')
     .html(graphCfg.subtitle.replace(/\[\[\s*startDate\s*\]\]/, `${ graphCfg?.startDate?.day === 1 ? graphCfg?.startDate?.day + 'er' : graphCfg?.startDate?.day } ${ commonGraph.locale.months[graphCfg?.startDate?.month - 1] } ${ graphCfg?.startDate?.year }`))
-    .style("padding", paddingTxt)
 
   // Écriture de la source
   d3.select(graphCfg.target)
