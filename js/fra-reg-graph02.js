@@ -243,7 +243,7 @@ Promise.all([
     let variation = +d.properties.incid_evol > 0 ? "hausse" : "baisse";
 
     // valeur arrondie à 2 décimales de incid_evol
-    let valeur = Math.abs(+d.properties.incid_evol * 100).toFixed(2);
+    let valeur = Math.abs(+d.properties.incid_evol * 100).toFixed(2).replace('.00', '').replace('.', ','); // Remplace le point en virgule et supprime les décimales nulles.
 
     // 1e ligne sous le nom du département
     tooltip
