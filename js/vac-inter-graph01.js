@@ -226,9 +226,11 @@ function showData(data) {
       // ont un pourcentage de vaccinés
       if (d.properties.people_vaccinated_per_hundred) {
 
+        tooltip.html('')
+
         // écriture nom Pays
         tooltip
-          .append('g')
+          // .append('g')
           .append("text")
           .attr("x", 12)
           .attr("y", height - (height / 1.4))
@@ -269,21 +271,12 @@ function showData(data) {
           .attr("font-weight", "bold")
           .attr("font-size", "12px")
           .attr("fill", "#000000");
-
       }
-
     });
 
     // efface le contenu du groupe g lorsque la souris ne survole plus le polygone
     polygons.on("mouseout", function () {
-
       d3.select(this).attr("opacity", 1); // rétablit l'opacité à 1
-
-      tooltip.selectAll("text").remove();
-      tooltip.selectAll("rect").remove();
-      tooltip.selectAll("path").remove();
-
     });
   }
-
 }
