@@ -7,7 +7,7 @@ function showData(data) {
     const graphCfg = {
         target: `#eu-graph01`,
         title: `Nombre de cas Covid-19 par pays en Europe`,
-        subtitle: `en pourcentage de la population ayant reçu au moins une injection, au [[autoDate]]`,
+        subtitle: `en nombre de cas, lissés sur une semaine, pour un million d'habitants [[autoDate]]`,
         caption: `Source. <a href='https://ourworldindata.org/coronavirus' target='_blank'>Our world in data</a>`,
         type: 'landscape', // définition du format du graphe
         device: window.screenDevice, // récupération de la largeur de l'écran

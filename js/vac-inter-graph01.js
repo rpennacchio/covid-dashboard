@@ -8,7 +8,7 @@ function showData(data) {
     target: `#vac-inter-graph01`,
     title: `Avancée de la vaccination dans le monde`,
     subtitle: `en pourcentage de la population ayant reçu au moins une injection, au [[autoDate]]`,
-    caption: `Source. <a href='https://www.data.gouv.fr/fr/organizations/sante-publique-france/' target='_blank'>Santé publique France</a>`,
+    caption: `Source. <a href='https://ourworldindata.org/coronavirus' target='_blank'>Our world in data</a>`,
   }
 
   // Tri des données
