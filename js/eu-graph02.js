@@ -1,283 +1,231 @@
-d3.csv("data/owid_top5_newcases_eu.csv").then(data => {
+Promise.all([
+    d3.json("data/ftv_eu.geojson"),
+    d3.csv("data/owid_incid.csv")
+]).then(showData);
+
+function showData(data) {
     const graphCfg = {
-      target: `#eu-graph02`,
-      title: `Evolution du nombre de contaminations en Europe`,
-      subtitle: `en nombre de cas pour un million d'habitants*`,
-      caption: `* dans les cinq pays européens qui comptent actuellement le plus grand nombre de nouveaux cas<br>Source. <a href='https://ourworldindata.org/coronavirus' target='_blank'>Our world in data</a>`,
-      startDate: {
-        day: 1,
-        month: 1,
-        year: 2021,
-      },
-      type: 'landscape',
-      device: window.screenDevice,
+        target: `#eu-graph02`,
+        title: `Nombre de cas Covid-19 par pays en Europe`,
+        subtitle: `en nombre de cas, lissés sur une semaine, pour un million d'habitants [[autoDate]]`,
+        caption: `Source. <a href='https://ourworldindata.org/coronavirus' target='_blank'>Our world in data</a>`,
+        type: 'landscape', // définition du format du graphe
+        device: window.screenDevice, // récupération de la largeur de l'écran
     }
-  
-    // Traitement des données
-  
-    // Sélection des variables nécessaires pour le graphique
-    const tidyData = data.map((d) => {
-      return {
-        date: new Date(d.date), // ATTENTION À TRANSPOSER EN FORMAT DATE
-        pays: d.name_fr,
-        new_cases_smoothed_per_million: +d.new_cases_smoothed_per_million, // ATTENTION STRING A TRANSPOSER EN FLOAT
-      };
+
+
+// Tri des données
+
+// données carto
+let dataMap = data[0];
+
+// données taux de vaccination
+let dataVacc = data[1];
+
+// création d'un container pour le tri des données de vaccination
+let dataContainer = {
+    new_cases_smoothed_per_million: {},
+    date: {}
+};
+
+// répartition des données d'incidence dans le container
+for (let d of dataVacc) {
+
+    let code_pays = d.iso_code;
+
+    dataContainer.new_cases_smoothed_per_million[code_pays] = d.new_cases_smoothed_per_million;
+    dataContainer.date[code_pays] = d.date;
+
+}
+
+// répartition des données d'incidence dans les properties des polygones de la carte
+dataMap.features = dataMap.features.map((d) => {
+
+    let code_pays = d.properties.iso_a3;
+
+    d.properties.new_cases_smoothed_per_million = +dataContainer.new_cases_smoothed_per_million[code_pays]; // ATTENTION STRING A TRANSPOSER EN FLOAT
+    d.properties.date = new Date(dataContainer.date[code_pays]); // ATTENTION À TRANSPOSER EN FORMAT DATE
+
+    return d;
+
+});
+
+//---------------------------------------------------------------------------------------
+
+// Création du canevas SVG
+
+const width = 500;
+const height = 300;
+const marginH = 80;
+const marginV = 20;
+const leg = 20;
+
+const viewBox = {
+    width: width + marginH * 2,
+    height: height + leg + marginV * 2
+};
+
+// création du canevas pour le Graphique
+const svg = d3
+    .select(graphCfg.target)
+    .select('.grph-content')
+    .insert('svg', ':first-child')
+    .attr("viewBox", [0, 0, viewBox.width, viewBox.height])
+    .attr("preserveAspectRatio", "xMinYMid");
+
+// création d'un groupe g pour la Légende
+const svgLegend = svg
+    .append("g")
+    .attr("transform", `translate(${marginH}, ${marginV})`);
+
+// création d'un groupe g pour le Graphique
+const svgPlot = svg
+    .append("g")
+    .attr("transform", `translate(${marginH}, ${marginV + leg})`);
+
+//---------------------------------------------------------------------------------------
+
+// Date à afficher dans le titre
+// ATTENTION CETTE DATE DOIT FORCÉMENT ÊTRE PRISE DANS LE DATASET DU TAUX D'INCIDENCE
+const formatTimeToTitle = d3.timeFormat("%d %b %Y");
+const actualDate = new Date(dataVacc[0].date);
+const dateToTitle = formatTimeToTitle(actualDate);
+
+// Écriture titraille graphique
+
+// Définition du padding à appliquer aux titres, sous-titres, source
+// pour une titraille toujours alignée avec le graphique
+const paddingTxt = `0 ${marginH / viewBox.width * 100}%`
+
+// Écriture du titre
+d3.select(graphCfg.target)
+    .select('.grph-title')
+    .html(graphCfg.title)
+    .style("padding", paddingTxt);
+
+// Écriture du sous-titre
+d3.select(graphCfg.target)
+    .select('.grph-subtitle')
+    .html(graphCfg.subtitle.replace(/\[\[\s*autoDate\s*\]\]/, `${dateToTitle}`))
+    .style("padding", paddingTxt);
+
+// Écriture de la source
+d3.select(graphCfg.target)
+    .select('.grph-caption')
+    .html(graphCfg.caption)
+    .style("padding", paddingTxt);
+
+//---------------------------------------------------------------------------------------
+
+// Création de l'échelle de couleur
+
+// échelle de couleur
+const seqScale = d3.scaleLinear()
+    .domain([0, 0.5, 2.5, 5, 10, 50, 100, 500, 1000, 4000])
+    .range(['#fff5f0', '#fee0d2', '#fcbba1', '#fc9272', '#fb6a4a', '#ef3b2c', '#cb181d', '#a50f15', '#67000d', '#011615']);
+
+
+//---------------------------------------------------------------------------------------
+
+// Projection carte
+
+// définition de la projection de la carte (en geoNaturalEarth1)
+const projection = d3.geoNaturalEarth1()
+    .center([15, 54])
+    //.scale([width / (1.3 * Math.PI)])
+    .translate([width / 2, height / 2])
+    .scale([width / 1.1]);
+
+// création d'un générateur géographique de formes
+const path = d3.geoPath().projection(projection);
+
+// création d'un groupe g par polygone
+const polygons = svgPlot
+    .selectAll("g")
+    .data(dataMap.features)
+    .join("g")
+// projection des polygones géographiques
+polygons
+    .append("path")
+    .attr("d", (d) => path(d))
+    .attr("stroke", "#ffffff")
+    .attr("fill", (d) => d.properties.new_cases_smoothed_per_million ? seqScale(d.properties.new_cases_smoothed_per_million) : "#eee")
+    .style("stroke-width", "0.5px");
+
+
+
+//---------------------------------------------------------------------------------------
+
+// Legende ---- fonctionne avec l'API d3-legend
+// https://d3-legend.susielu.com/
+
+// paramètres de la legende à l'aide de la variable legCells définie avec l'échelled de couleur
+const legend = d3
+    .legendColor()
+    .shapeWidth(width / 10)
+    .shapeHeight(10)
+    .cells([0, 0.5, 2.5, 5, 10, 50, 100, 500, 1000, 4000])
+    .orient("horizontal")
+    .labelAlign("middle")
+    .scale(seqScale);
+
+// projection de la légende
+svgLegend.call(legend)
+    .selectAll("text")
+    .attr("fill", "grey")
+    .attr("font-size", "12px");
+
+//---------------------------------------------------------------------------------------
+
+// Animation carte
+
+// Animation carte
+
+// création d'un groupe g qui contiendra le tooltip de la légende
+const tooltip = svgPlot.append("g")
+    .attr("transform", `translate(${0}, ${height / 1.4})`);
+
+// condition pour que l'animation ne fonctionne que sur desktop
+// voir script device_detector pour la fonction deviceType()
+if (graphCfg.device !== 'mobile') {
+    // création du tooltip de la légende personnalisé
+    const custTooltip = commonGraph.tooltip(graphCfg.target, d3)
+
+    polygons.on("mouseover", function (d, idx, arr) {
+        // lors du survol avec la souris l'opacité des barres passe à 1
+        d3.select(this).attr("opacity", 0.6);
+
+        // format de la date affichée dans le tooltip
+        // stockage de la date de la barre survolée au format XX mois XXXX dans une variable
+        const formatTime = d3.timeFormat("%d %b %Y");
+        const instantT = formatTime(d.date);
+
+        // efface les données du tooltip
+        custTooltip.html('')
+
+        // affiche et positionne le tooltip avec les données
+        custTooltip
+            .style('opacity', '1')
+            .style('left', `${d3.event.pageX}px`)
+            .style('top', `${d3.event.pageY}px`)
+            .style('font-size', `${graphCfg?.size?.tooltip?.font || commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font}px`)
+            .append('div')
+            .html(`<strong>${d.properties.name_fr}</strong>`);
+
+        custTooltip
+            .append('div')
+            .html(`${Math.round(d.properties.new_cases_smoothed_per_million).toLocaleString("fr-FR")} cas pour un million d'habitants`);
+
     });
-  
-    // Stockage dans un array des labels de chaque courbe
-    const arrayLabels = [...new Set(tidyData.map((d) => d.pays))];
-  
-    // Création d'un array d'arrays d'objets adapté à la projection des lignes
-    // avec les données groupées par label (courbe) chacune dans un array d'objets différent
-    const dataLine = arrayLabels.map((d) => {
-      let label = d;
-      return tidyData.filter((d) => d.pays === label);
+
+    // efface le contenu du groupe g lorsque la souris ne survole plus le polygone
+    polygons.on("mouseout", function () {
+
+        d3.select(this).attr("opacity", 1); // rétablit l'opacité à 1
+
+        custTooltip.style('opacity', '0')
+
     });
+}
   
-    //---------------------------------------------------------------------------------------
-  
-    // Création du canevas SVG
-  
-    const width = graphCfg?.size?.svg?.width || commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
-    const height = graphCfg?.size?.svg?.height || commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
-    const marginH = graphCfg?.size?.margin?.horizontal || commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
-    const marginV = graphCfg?.size?.margin?.vertical || commonGraph.size[graphCfg.type][graphCfg.device].margin.vertical;
-    const leg = graphCfg?.size?.legend?.height || commonGraph.size[graphCfg.type][graphCfg.device].legend.height;
-  
-    const viewBox = {
-      width: width + marginH * 2,
-      height: height + leg + marginV * 2
-    }
-  
-    // création du canevas pour le Graphique
-    const svg = d3
-      .select(graphCfg.target)
-      .select('.grph-content')
-      .insert('svg', ':first-child')
-      .attr("viewBox", [0, 0, viewBox.width, viewBox.height])
-      .attr("preserveAspectRatio", "xMinYMid");
-  
-    // création d'un groupe g pour la Légende
-    const svgLegend = svg
-      .append("g")
-      .attr("transform", `translate(${marginH}, ${marginV})`);
-  
-    // création d'un groupe g pour le Graphique
-    const svgPlot = svg
-      .append("g")
-      .attr("transform", `translate(${marginH}, ${marginV + leg})`);
-  
-    //---------------------------------------------------------------------------------------
-  
-    // Écriture titraille graphique
-  
-    // Définition du padding à appliquer aux titres, sous-titres, source
-    // pour une titraille toujours alignée avec le graphique
-    const padding = marginH / viewBox.width * 100
-    const paddingTxt = `0 ${ padding }%`
-  
-    document.documentElement.style.setProperty('--gutter-size', `${ padding }%`)
-  
-    // Écriture du titre
-    d3.select(graphCfg.target)
-      .select('.grph-title')
-      .html(graphCfg.title)
-      .style("padding", paddingTxt)
-  
-    // Écriture du sous-titre
-    d3.select(graphCfg.target)
-      .select('.grph-title')
-      .append('span')
-      .attr('class', 'grph-date')
-      .html(graphCfg.subtitle.replace(/\[\[\s*startDate\s*\]\]/, `${ graphCfg?.startDate?.day === 1 ? graphCfg?.startDate?.day + 'er' : graphCfg?.startDate?.day } ${ commonGraph.locale.months[graphCfg?.startDate?.month - 1] } ${ graphCfg?.startDate?.year }`))
-  
-    // Écriture de la source
-    d3.select(graphCfg.target)
-      .select('.grph-caption')
-      .html(graphCfg.caption)
-      .style("padding", paddingTxt)
-  
-    //---------------------------------------------------------------------------------------
-  
-    // Création des échelles X et Y
-  
-    // échelle linéaire pour l'axe des Y
-    const scaleY = d3
-      .scaleLinear()
-      .domain([0, d3.max(tidyData, (d) => d.new_cases_smoothed_per_million)])
-      .range([height, 0]);
-  
-    // échelee temporelle pour l'axe des X
-    const scaleT = d3
-      .scaleTime()
-      .domain([d3.min(tidyData, (d) => d.date), d3.max(tidyData, (d) => d.date)])
-      .range([0, width]);
-  
-    //---------------------------------------------------------------------------------------
-  
-    // Création de l'échelle de couleurs
-  
-    // array pour les labels dans le bon ordre d'afficahge
-    const labelsLegend = arrayLabels;
-  
-    // liste des couleurs à utiliser (couleurs adaptées au daltonisme)
-    // source. https://jfly.uni-koeln.de/color/
-    const okabeIto = [
-      "#E69F00",
-      "#56B4E9",
-      "#009E73",
-      "#F0E442",
-      "#0072B2",
-      "#D55E00",
-      "#CC79A7",
-    ];
-  
-    // échelle de couleurs pour les labels
-    const scaleC = d3.scaleOrdinal().domain(labelsLegend).range(okabeIto);
-  
-    //---------------------------------------------------------------------------------------
-  
-    // Création des axes
-  
-    // Axe des X
-    const xAxis = (g) =>
-      g
-        .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(scaleT).ticks(4).tickFormat(d3.timeFormat("%b %Y")))
-        .selectAll("text")
-        .style("fill", "grey"); // couleur du texte
-  
-    // Axe des Y
-    const yAxis = (g) =>
-      g
-        .attr("transform", `translate(0, 0)`)
-        .call(
-          d3
-            .axisLeft(scaleY)
-            .ticks(graphCfg.ticksY && graphCfg.device in graphCfg.ticksY ? graphCfg.ticksY[graphCfg.device] : commonGraph.ticksY[graphCfg.device])
-            .tickFormat(d3.format(",.2r"))
-        ) // formatage grands nombre avec virgule entre milliers
-        .call((g) => g.select(".domain").remove()) // supprime la ligne de l'axe
-        .selectAll("text")
-        .style("fill", "grey"); // couleur du texte
-  
-    //---------------------------------------------------------------------------------------
-  
-    // Line Chart
-  
-    // générateur de la ligne avec les échelles
-    const lineGenerator = d3
-      .line()
-      .x((d) => scaleT(d.date))
-      .y((d) => scaleY(d.new_cases_smoothed_per_million))
-      .curve(d3.curveCardinal)
-  
-    // projection des lignes
-    svgPlot
-      .selectAll("g")
-      .data(dataLine)
-      .join("g")
-      .append("path")
-      .attr("d", (d) => lineGenerator(d))
-      .attr("fill", "none") // ATTENTION A BIEN METTRE FILL NONE
-      .attr("stroke", (d) => scaleC(d[0].pays))
-      .attr("stroke-width", 3);
-  
-    //---------------------------------------------------------------------------------------
-  
-    // Légende
-  
-    // Création d'un groupe g par élément de la légende (ici 7 éléments répartis sur 2 lignes)
-    const legend = svgLegend
-      .selectAll(".legend")
-      .data(labelsLegend)
-      .join("g")
-      .attr("transform", (d, i) => {
-        if (i < 4) {
-        return `translate(${(i * width) / 4}, ${0})`; // coordonnées des 4 éléments de la première ligne
-        } else if (i >= 4) {
-          return `translate(${((i - 4) * width) / 4}, ${20})`; // coordonnées des 3 élements de la deuxième ligne
-        }
-      })
-      .attr("class", "legend");
-  
-    // Création d'un rectangle couleur par groupe g
-    legend
-      .append("rect")
-      .attr("width", 20)
-      .attr("height", 5)
-      .attr("fill", (d) => scaleC(d));
-  
-    // écriture label par groupe g
-    legend
-      .append("text")
-      .attr("x", 26)
-      .attr("y", 5)
-      .text((d) => d)
-      .attr("font-size", `${ graphCfg?.size?.legend?.font || commonGraph.size[graphCfg.type][graphCfg.device].legend.font }px`);
-  
-    //---------------------------------------------------------------------------------------
-  
-    // Annotations - affichage des dernières valeurs
-  
-    // stocakge valeur date la plus récente du dataset
-    const maxDate = d3.max(tidyData, (d) => d.date);
-  
-    const lastValues = tidyData.filter((d) => d.date + "" === maxDate + "");
-  
-    // Création de noeuds
-    const labels = lastValues.map((d) => {
-      return {
-        fx: 0,
-        targetY: scaleY(d.new_cases_smoothed_per_million),
-      };
-    });
-  
-    // Simulation de force sur les noeuds
-    const force = d3
-      .forceSimulation()
-      .nodes(labels)
-      .force("collide", d3.forceCollide(7))
-      .force("y", d3.forceY((d) => d.targetY).strength(1))
-      .stop();
-  
-    // Execute la simulation
-    for (let i = 0; i < 300; i++) force.tick();
-  
-    // Ajout d'une valeur y dans chaque objet de l'array lastValues
-    labels.sort((a, b) => a.y - b.y);
-    lastValues.sort((a, b) => b.new_cases_smoothed_per_million - a.new_cases_smoothed_per_million);
-    lastValues.forEach((d, i) => (d.y = labels[i].y));
-  
-    // Ajout des valeurs sur le graphique
-    svgPlot
-      .selectAll("g")
-      .data(lastValues)
-      .join("g")
-      .append("text")
-      .attr("x", width + 8)
-      .attr("y", (d) => d.y)
-      .text((d) => Math.round(d.new_cases_smoothed_per_million).toLocaleString("fr-FR"))
-      .style("fill", (d) => scaleC(d.pays));
-  
-    //---------------------------------------------------------------------------------------
-  
-    // Placement des axes
-  
-    // Placement X
-    svgPlot.append("g").call(xAxis).attr("color", "grey"); // mise en gris des ticks de l'axe des X
-  
-    // Placement Y
-    svgPlot
-      .append("g")
-      .call(yAxis)
-      .attr("color", "grey")
-      .call((g) =>
-        g
-          .selectAll(".tick line")
-          .clone()
-          .attr("x2", width)
-          .attr("stroke-opacity", 0.1)
-      ); // lignes horizontales projetées sur le graphique
-  });
-  
+}  
