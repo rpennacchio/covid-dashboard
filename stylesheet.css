@@ -3,6 +3,7 @@
     --font-size: 16px;
     --color-yellow: #ffc300;
     --color-black: #232323;
+    --color-gray-dark: #5f7081;
     --color-gray: #d7dfe8;
     --gutter-size: 1.5rem;
 }
@@ -36,7 +37,7 @@ figure {
 
 .dshbrd-subtitle {
     border-top: 1px solid transparent;
-    margin-top: 2.5rem;
+    margin-top: 0;
     padding-top: 2.5rem;
     position: relative;
 }
@@ -45,7 +46,7 @@ figure {
     background: var(--color-gray);
     content: "";
     position: absolute;
-    top: 0;
+    top: -1px;
     left: 50%;
     transform: translate(-50%, 0);
     width: 100vw;
@@ -64,7 +65,87 @@ figure {
     content: ":";
 }
 
-.dshbrd-chapo,
+.dshbrd-chapo {
+    border-bottom: var(--color-gray) 1px solid;
+    font-size: 1rem;
+    line-height: 1.375;
+    padding-right: var(--gutter-size);
+    padding-bottom: 2em;
+    padding-left: var(--gutter-size);
+}
+
+/* Système d'onglets des sections */
+.sctn-group,
+[name="tabSection"] {
+    display: none;
+}
+
+.lbl-group-wrapper {
+    margin-top: 0;
+    position: relative;
+}
+
+.lbl-group-wrapper::before,
+.lbl-group-wrapper::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width:  var(--gutter-size);
+    height: 100%;
+    z-index: 1;
+}
+
+.lbl-group-wrapper::before {
+    background: linear-gradient(-90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 95%);;
+    left: 0;
+}
+
+.lbl-group-wrapper::after {
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 95%);;
+    right: 0;
+}
+
+.lbl-group {
+    display: flex;
+    overflow: scroll;
+    padding-right: var(--gutter-size);
+    padding-left: var(--gutter-size);
+    white-space: nowrap;
+}
+
+.lbl-group label {
+    border-bottom: transparent 4px solid;
+    color: var(--color-gray-dark);
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1rem;
+    line-height: 1.375;
+    padding: 1em 1em .8em;
+    white-space: nowrap;
+}
+
+.lbl-group label:hover {
+    color: var(--color-black);
+}
+
+[id="tab-1"]:checked ~ .lbl-group-wrapper [for="tab-1"],
+[id="tab-2"]:checked ~ .lbl-group-wrapper [for="tab-2"],
+[id="tab-3"]:checked ~ .lbl-group-wrapper [for="tab-3"] {
+    border-bottom-color: currentColor;
+    color: var(--color-black);
+    font-weight: 700;
+}
+
+[name="tabSection"][value="section-1"]:checked ~ #section-1,
+[name="tabSection"][value="section-2"]:checked ~ #section-2,
+[name="tabSection"][value="section-3"]:checked ~ #section-3 {
+    display: block;
+}
+
+.sctn-group {
+    margin-top: 0;
+}
+
 .sctn-chapo {
     font-size: 1rem;
     line-height: 1.375;
