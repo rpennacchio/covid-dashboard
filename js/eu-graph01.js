@@ -118,8 +118,8 @@ Promise.all([
   
     // échelle de couleur
     const seqScale = d3.scaleLinear()
-      .domain([0, 0.5, 2.5, 5, 10, 50, 100, 500, 1000])
-      .range(['#fff5f0','#fee0d2','#fcbba1','#fc9272','#fb6a4a','#ef3b2c','#cb181d','#a50f15','#67000d']);
+      .domain([0, 0.5, 2.5, 5, 10, 50, 100, 500, 1000, 4000])
+      .range(['#fff5f0','#fee0d2','#fcbba1','#fc9272','#fb6a4a','#ef3b2c','#cb181d','#a50f15','#67000d', '#011615']);
   
   
     //---------------------------------------------------------------------------------------
@@ -159,9 +159,9 @@ Promise.all([
     // paramètres de la legende à l'aide de la variable legCells définie avec l'échelled de couleur
     const legend = d3
       .legendColor()
-      .shapeWidth(width / 9)
+      .shapeWidth(width / 10)
       .shapeHeight(10)
-      .cells([0, 0.5, 2.5, 5, 10, 50, 100, 500, 1000])
+      .cells([0, 0.5, 2.5, 5, 10, 50, 100, 500, 1000, 4000])
       .orient("horizontal")
       .labelAlign("middle")
       .scale(seqScale);
@@ -190,6 +190,10 @@ Promise.all([
         d3.select(this)
           .attr("opacity", 0.8)
           .style('cursor', 'default');
+
+        tooltip
+            .append('text')
+            .text(d.properties.name_fr)
   
      
   
