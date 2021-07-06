@@ -1,9 +1,9 @@
-d3.csv("data/owid_top5_newcases_eu.csv").then(data => {
+d3.csv("data/owid_top5_newdc_eu.csv").then(data => {
     const graphCfg = {
-      target: `#eu-graph03`,
-      title: `Evolution du nombre de contaminations en Europe`,
-      subtitle: `en moyenne lissée du nombre de cas pour un million d'habitants*`,
-      caption: `* dans les cinq pays européens qui comptent actuellement le plus grand nombre de nouveaux cas<br>Source. <a href='https://ourworldindata.org/coronavirus' target='_blank'>Our world in data</a>`,
+      target: `#eu-graph04`,
+      title: `Evolution du nombre de nouveaux décès en Europe`,
+      subtitle: `en moyenne lissée du nombre de morts*`,
+      caption: `* dans les cinq pays européens qui comptent actuellement le plus grand nombre de nouveaux décès<br>Source. <a href='https://ourworldindata.org/coronavirus' target='_blank'>Our world in data</a>`,
       startDate: {
         day: 1,
         month: 1,
@@ -20,7 +20,7 @@ d3.csv("data/owid_top5_newcases_eu.csv").then(data => {
       return {
         date: new Date(d.date), // ATTENTION À TRANSPOSER EN FORMAT DATE
         pays: d.name_fr,
-        new_cases_smoothed_per_million: +d.new_cases_smoothed_per_million, // ATTENTION STRING A TRANSPOSER EN FLOAT
+        new_deaths_smoothed: +d.new_deaths_smoothed, // ATTENTION STRING A TRANSPOSER EN FLOAT
       };
     });
   
@@ -104,7 +104,7 @@ d3.csv("data/owid_top5_newcases_eu.csv").then(data => {
     // échelle linéaire pour l'axe des Y
     const scaleY = d3
       .scaleLinear()
-      .domain([0, d3.max(tidyData, (d) => d.new_cases_smoothed_per_million)])
+      .domain([0, d3.max(tidyData, (d) => d.new_deaths_smoothed)])
       .range([height, 0]);
   
     // échelee temporelle pour l'axe des X
@@ -169,7 +169,7 @@ d3.csv("data/owid_top5_newcases_eu.csv").then(data => {
     const lineGenerator = d3
       .line()
       .x((d) => scaleT(d.date))
-      .y((d) => scaleY(d.new_cases_smoothed_per_million))
+      .y((d) => scaleY(d.new_deaths_smoothed))
       .curve(d3.curveCardinal)
   
     // projection des lignes
@@ -229,7 +229,7 @@ d3.csv("data/owid_top5_newcases_eu.csv").then(data => {
     const labels = lastValues.map((d) => {
       return {
         fx: 0,
-        targetY: scaleY(d.new_cases_smoothed_per_million),
+        targetY: scaleY(d.new_deaths_smoothed),
       };
     });
   
@@ -238,7 +238,7 @@ d3.csv("data/owid_top5_newcases_eu.csv").then(data => {
       .forceSimulation()
       .nodes(labels)
       .force("collide", d3.forceCollide(7))
-      .force("y", d3.forceY((d) => d.targetY).strength(0.5))
+      .force("y", d3.forceY((d) => d.targetY).strength(0.03))
       .stop();
   
     // Execute la simulation
@@ -246,7 +246,7 @@ d3.csv("data/owid_top5_newcases_eu.csv").then(data => {
   
     // Ajout d'une valeur y dans chaque objet de l'array lastValues
     labels.sort((a, b) => a.y - b.y);
-    lastValues.sort((a, b) => b.new_cases_smoothed_per_million - a.new_cases_smoothed_per_million);
+    lastValues.sort((a, b) => b.new_deaths_smoothed - a.new_deaths_smoothed);
     lastValues.forEach((d, i) => (d.y = labels[i].y));
   
     // Ajout des valeurs sur le graphique
@@ -257,7 +257,7 @@ d3.csv("data/owid_top5_newcases_eu.csv").then(data => {
       .append("text")
       .attr("x", width + 8)
       .attr("y", (d) => d.y)
-      .text((d) => Math.round(d.new_cases_smoothed_per_million).toLocaleString("fr-FR"))
+      .text((d) => Math.round(d.new_deaths_smoothed).toLocaleString("fr-FR"))
       .style("fill", (d) => scaleC(d.pays));
   
     //---------------------------------------------------------------------------------------
