@@ -25,11 +25,8 @@ d3.csv('data/spf_fra_data.csv').then(data => {
   });
 
   // Filtre les données uniquement à partir du 1er septembre
-  const startDate = `${ graphCfg.startDate.year}-${ graphCfg.startDate.month}-${ graphCfg.startDate.day}`
-  console.log(startDate)
+  const startDate = `${ graphCfg.startDate.year }-${ graphCfg.startDate.month }-${ graphCfg.startDate.day }`
   const tidyData = tempData.filter((d) => d.date >= new Date(startDate));
-
-  console.log(tempData)
 
   //---------------------------------------------------------------------------------------
 
