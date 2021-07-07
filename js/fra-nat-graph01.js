@@ -107,7 +107,7 @@ d3.csv('data/spf_fra_data.csv').then(data => {
   // échelle linéaire pour l'axe des Y
   const scaleY = d3
     .scaleLinear()
-    .domain([0, d3.max(tidyData, d => d[graphCfg.device === 'mobile' ? 'roll_cases' : 'new_cases'])])
+    .domain([0, d3.max(tidyData, d => graphCfg.device === 'mobile' ? d.roll_cases : d.new_cases)])
     .range([height, 0]);
 
   // échelee temporelle pour l'axe des X
