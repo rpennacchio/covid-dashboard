@@ -329,4 +329,21 @@ d3.timeFormatDefaultLocale(commonGraph.locale)
       })
     })
   })
+
+  window.addEventListener('scroll', e => {
+    console.log(e)
+  })
+
+  function getArrRef () {
+    return Array.from(document.querySelectorAll('.tab-group a')).map(link => {
+      return {
+        id: link.getAttribute('href'),
+        pos: window.scrollY + document.querySelector(link.getAttribute('href')).getBoundingClientRect().top,
+      }
+    })
+  }
+  const arrRef = getArrRef()
+
+  console.log(arrRef)
+
 }
