@@ -1,9 +1,7 @@
 Promise.all([
   d3.json("data/ftv_world.geojson"),
   d3.csv("data/owid_total_vacc.csv")
-]).then(showData);
-
-function showData(data) {
+]).then(data => {
   const graphCfg = {
     target: `#vac-inter-graph01`,
     title: `Avancée de la vaccination dans le monde`,
@@ -279,4 +277,4 @@ function showData(data) {
       d3.select(this).attr("opacity", 1); // rétablit l'opacité à 1
     });
   }
-}
+});

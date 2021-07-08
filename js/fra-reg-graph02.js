@@ -5,7 +5,6 @@ Promise.all([
   const graphCfg = {
     target: `#fra-reg-graph02`,
     title: `Variation du taux d'incidence par département`,
-    // subtitle: `entre le [[autoDate1]] et le [[autoDate2]]`,
     caption: `Source. <a href='https://www.data.gouv.fr/fr/organizations/sante-publique-france/' target='_blank'>Santé publique France</a>`,
     size: {
       tooltip: {
