@@ -2,11 +2,11 @@ d3.csv("data/spf_fra_data.csv").then(data => {
   const graphCfg = {
     target: `#fra-nat-graph05`,
     title: `Evolution du nombre de nouveaux décès Covid à l'hôpital`,
-    subtitle: `depuis [[startDate]]`,
+    subtitle: `depuis le [[startDate]]`,
     caption: `Source. <a href='https://www.data.gouv.fr/fr/organizations/sante-publique-france/' target='_blank'>Santé publique France</a>`,
     startDate: {
-      day: '01',
-      month: '09',
+      day: '25',
+      month: '03',
       year: '2020',
     },
     type: 'landscape',
@@ -84,7 +84,7 @@ d3.csv("data/spf_fra_data.csv").then(data => {
     .select('.grph-title')
     .append('span')
     .attr('class', 'grph-date')
-    .html(graphCfg.subtitle.replace(/\[\[\s*startDate\s*\]\]/, `${ graphCfg?.startDate?.day === 1 ? graphCfg?.startDate?.day + 'er' : graphCfg?.startDate?.day } ${ commonGraph.locale.months[graphCfg?.startDate?.month - 1] } ${ graphCfg?.startDate?.year }`))
+    .html(graphCfg.subtitle.replace(/\[\[\s*startDate\s*\]\]/, `${ +graphCfg?.startDate?.day === 1 ? +graphCfg?.startDate?.day + 'er' : graphCfg?.startDate?.day } ${ commonGraph.locale.months[+graphCfg?.startDate?.month - 1] } ${ graphCfg?.startDate?.year }`))
 
   // Écriture de la source
   d3.select(graphCfg.target)
