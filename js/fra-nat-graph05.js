@@ -293,8 +293,6 @@ d3.csv("data/spf_fra_data.csv").then(data => {
     // création du tooltip de la légende personnalisé
     const custTooltip = commonGraph.tooltip(graphCfg.target, d3)
 
-    // condition pour que l'animation ne fonctionne que sur desktop
-    // voir script device_detector pour la fonction deviceType()
     rect.on("mouseover", function (d) {
       // lors du survol avec la souris l'opacité des barres passe à 1
       d3.select(this).attr("opacity", 1);

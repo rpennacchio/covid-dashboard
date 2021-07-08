@@ -235,46 +235,41 @@ Promise.all([
     const tooltip = svgPlot.append("g")
         .attr("transform", `translate(${0}, ${height / 1.4})`);
 
-    // condition pour que l'animation ne fonctionne que sur desktop
-    // voir script device_detector pour la fonction deviceType()
-    if (graphCfg.device !== 'mobile') {
-        // création du tooltip de la légende personnalisé
-        const custTooltip = commonGraph.tooltip(graphCfg.target, d3)
+    // création du tooltip de la légende personnalisé
+    const custTooltip = commonGraph.tooltip(graphCfg.target, d3)
 
-        polygons.on("mouseover", function (d, idx, arr) {
-            // lors du survol avec la souris l'opacité des polygones passe à 0.6
-            d3.select(this).attr("opacity", 0.6);
+    polygons.on("mouseover", function (d, idx, arr) {
+        // lors du survol avec la souris l'opacité des polygones passe à 0.6
+        d3.select(this).attr("opacity", 0.6);
 
-            // format de la date affichée dans le tooltip
-            // stockage de la date de la barre survolée au format XX mois XXXX dans une variable
-            const formatTime = d3.timeFormat("%d %b %Y");
-            const instantT = formatTime(d.date);
+        // format de la date affichée dans le tooltip
+        // stockage de la date de la barre survolée au format XX mois XXXX dans une variable
+        const formatTime = d3.timeFormat("%d %b %Y");
+        const instantT = formatTime(d.date);
 
-            // efface les données du tooltip
-            custTooltip.html('')
+        // efface les données du tooltip
+        custTooltip.html('')
 
-            // affiche et positionne le tooltip avec les données
-            custTooltip
-                .style('opacity', '1')
-                .style('left', `${d3.event.pageX}px`)
-                .style('top', `${d3.event.pageY}px`)
-                .style('font-size', `${graphCfg?.size?.tooltip?.font || commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font}px`)
-                .append('div')
-                .html(`<strong>${d.properties.name_fr}</strong>`);
+        // affiche et positionne le tooltip avec les données
+        custTooltip
+            .style('opacity', '1')
+            .style('left', `${d3.event.pageX}px`)
+            .style('top', `${d3.event.pageY}px`)
+            .style('font-size', `${graphCfg?.size?.tooltip?.font || commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font}px`)
+            .append('div')
+            .html(`<strong>${d.properties.name_fr}</strong>`);
 
-            custTooltip
-                .append('div')
-                .html(`${Math.round(d.properties.dc).toLocaleString("fr-FR")} décès`);
+        custTooltip
+            .append('div')
+            .html(`${Math.round(d.properties.dc).toLocaleString("fr-FR")} décès`);
 
-        });
+    });
 
-        // efface le contenu du groupe g lorsque la souris ne survole plus le polygone
-        polygons.on("mouseout", function () {
+    // efface le contenu du groupe g lorsque la souris ne survole plus le polygone
+    polygons.on("mouseout", function () {
 
-            d3.select(this).attr("opacity", 1); // rétablit l'opacité à 1
+        d3.select(this).attr("opacity", 1); // rétablit l'opacité à 1
 
-            custTooltip.style('opacity', '0')
-        });
-    };
-
+        custTooltip.style('opacity', '0')
+    });
 });
