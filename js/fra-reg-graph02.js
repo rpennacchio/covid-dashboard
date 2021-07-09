@@ -13,7 +13,7 @@ Promise.all([
     },
     type: 'square',
     device: window.screenDevice,
-  }
+  };
 
   // Tri des données
 
@@ -367,4 +367,5 @@ Promise.all([
       .attr("stroke", "grey");
 
   });
+  
 });
