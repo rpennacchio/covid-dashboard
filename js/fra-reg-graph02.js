@@ -207,7 +207,8 @@ Promise.all([
   // projection de la légende
   svgLegend.call(legend)
     .selectAll("text")
-    .attr("fill", "grey");
+    .attr("fill", "grey")
+    .attr("font-size", `${ graphCfg?.size?.legend?.font || commonGraph.size[graphCfg.type][graphCfg.device].legend.font }px`);
 
   //---------------------------------------------------------------------------------------
 
@@ -367,5 +368,5 @@ Promise.all([
       .attr("stroke", "grey");
 
   });
-  
+
 });
