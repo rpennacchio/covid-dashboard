@@ -260,7 +260,8 @@ Promise.all([
     .attr("markerHeight", 4)
     .attr("orient", "auto")
     .append("svg:path")
-    .attr("d", "M0,-5L10,0L0,5");
+    .attr("d", "M0,-5L10,0L0,5")
+    .attr("fill", "grey");
 
   tooltip
     .append("path")
