@@ -188,7 +188,7 @@ figure {
     margin-top: 2.5rem;
 }
 
-@media screen and (min-width: 1080px) {
+@media screen and (min-width: 880px) {
     .cntnr-graph:not(.dbl-width) {
         flex-basis: 50%;
     }
