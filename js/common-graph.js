@@ -396,11 +396,11 @@ d3.timeFormatDefaultLocale(commonGraph.locale)
 
   // gestion du scroll pour le menu sticky.
   window.addEventListener('scroll', () => {
-    Array.from(linkGroup).filter((el, idx, arr) => el[el !== arr[window.pageYOffset < getArrRef(linkGroup)[1] - 1 ? 0 : window.pageYOffset < getArrRef(linkGroup)[2] - 1 ? 1 : 2] ? 'removeAttribute' : 'setAttribute']('active', ''))
+    Array.from(linkGroup).filter((el, idx, arr) => el[el !== arr[window.pageYOffset < getArrRef(linkGroup, linkGroupWrapper)[1] - 1 ? 0 : window.pageYOffset < getArrRef(linkGroup, linkGroupWrapper)[2] - 1 ? 1 : 2] ? 'removeAttribute' : 'setAttribute']('active', ''))
   })
 
   // tableau des positions pour le menu sticky.
-  function getArrRef (linkGroup) {
+  function getArrRef (linkGroup, linkGroupWrapper) {
     return Array.from(linkGroup).map(link => Math.round(window.scrollY + document.querySelector(link.getAttribute('href')).getBoundingClientRect().top - linkGroupWrapper.clientHeight))
   }
 }
