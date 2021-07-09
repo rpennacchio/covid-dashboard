@@ -278,7 +278,7 @@ Promise.all([
     // ATTENTION À BIEN RAJOUTER LES 7 JOURS à dateT
     dateT.setDate(dateT.getDate() + 7);
 
-    // Affichage du nom du département en gras
+    // Efface le nudge
     tooltip
       .selectAll('text')
       .remove()
@@ -286,7 +286,8 @@ Promise.all([
     tooltip
       .selectAll('path')
       .remove()
-
+    
+    // Affichage du nom du département en gras
     tooltip
       .append("text")
       .attr("y", 0)
