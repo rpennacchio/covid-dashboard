@@ -170,6 +170,10 @@ figure {
     max-width: 800px;
 }
 
+.sctn-chapo a {
+    color: inherit;
+}
+
 .sctn-title {
     font-size: 1.25rem;
     padding-right: var(--gutter-size);
