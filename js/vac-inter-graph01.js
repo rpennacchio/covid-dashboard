@@ -205,11 +205,18 @@ Promise.all([
 
   // Animation carte
 
-  // Animation carte
-
   // création d'un groupe g qui contiendra le tooltip de la légende
-  const tooltip = svgPlot.append("g")
+  const tooltip = svgPlot
+    .append("g")
     .attr("transform", `translate(${0}, ${height / 1.4})`);
+
+  tooltip
+    .append("rect")
+    .attr('width', '100')
+    .attr('height', '100')
+    .style('fill', 'transparent')
+
+  const tooltip2 = tooltip.append("g")
 
   polygons.on("mouseover", function (d) {
     // lors du survol avec la souris l'opacité des barres passe à 1
@@ -221,17 +228,18 @@ Promise.all([
     // ont un pourcentage de vaccinés
     if (d.properties.people_vaccinated_per_hundred) {
 
-      tooltip.html('')
+      tooltip2.html('')
 
       // écriture nom Pays
-      tooltip
+      tooltip2
         // .append('g')
         .append("text")
-        .attr("x", 12)
+        .attr("x", 50)
         .attr("y", height - (height / 1.4))
+        .attr("text-anchor", "middle")
         .text(d.properties.name_fr)
         .style("font-size", "13px")
-        .style("font-weight", "bold");
+        .style("font-weight", "bold")
 
 
       // Agencement des données pour la génération du pie chart
@@ -247,9 +255,9 @@ Promise.all([
       ];
 
       // Projection des donuts
-      const donuts = tooltip
+      const donuts = tooltip2
         .append('g')
-        .attr('transform', 'translate(45, 30)')
+        .attr('transform', 'translate(50, 30)')
         .selectAll("path")
         .data(pie(pieData))
         .join("path")
@@ -258,13 +266,16 @@ Promise.all([
         .attr("d", arc);
 
       // Ajout des valeurs en pourcentage à l'intérieur de chaque ar
-      tooltip
-        .append('g')
-        .attr('transform', d.properties.people_vaccinated_per_hundred < 0.1 ? `translate(${radius - 4}, ${radius - 4})` : `translate(${radius - 6}, ${radius - 4})`)
+      tooltip2
+        // .append('g')
+        // .attr('transform', d.properties.people_vaccinated_per_hundred < 0.1 ? `translate(${radius - 4}, ${radius - 4})` : `translate(${radius - 6}, ${radius - 4})`)
         .append("text")
         .text(Math.round(d.properties.people_vaccinated_per_hundred * 100) + "%")
+        .attr("x", 50)
+        .attr("y", 33)
         .attr("font-weight", "bold")
         .attr("font-size", "12px")
+        .attr("text-anchor", "middle")
         .attr("fill", "#000000");
     }
   });
