@@ -24,6 +24,10 @@ const commonGraph = {
           height: 40,
           font: 14,
         },
+        axis: {
+          color: 'grey',
+          font: 12,
+        },
         tooltip: {
           font: 10,
         },
@@ -40,6 +44,10 @@ const commonGraph = {
         legend: {
           height: 40,
           font: 14,
+        },
+        axis: {
+          color: 'grey',
+          font: 12,
         },
         tooltip: {
           font: 10,
@@ -58,6 +66,10 @@ const commonGraph = {
           height: 40,
           font: 14,
         },
+        axis: {
+          color: 'grey',
+          font: 12,
+        },
         tooltip: {
           font: 10,
         },
@@ -75,6 +87,10 @@ const commonGraph = {
           height: 40,
           font: 14,
         },
+        axis: {
+          color: 'grey',
+          font: 12,
+        },
         tooltip: {
           font: 10,
         },
@@ -91,6 +107,10 @@ const commonGraph = {
         legend: {
           height: 40,
           font: 14,
+        },
+        axis: {
+          color: 'grey',
+          font: 12,
         },
         tooltip: {
           font: 10,
@@ -111,6 +131,10 @@ const commonGraph = {
           height: 20,
           font: 14,
         },
+        axis: {
+          color: 'grey',
+          font: 12,
+        },
         tooltip: {
           font: 10,
         },
@@ -127,6 +151,10 @@ const commonGraph = {
         legend: {
           height: 20,
           font: 14,
+        },
+        axis: {
+          color: 'grey',
+          font: 12,
         },
         tooltip: {
           font: 10,
@@ -145,6 +173,10 @@ const commonGraph = {
           height: 20,
           font: 14,
         },
+        axis: {
+          color: 'grey',
+          font: 12,
+        },
         tooltip: {
           font: 10,
         },
@@ -162,6 +194,10 @@ const commonGraph = {
           height: 20,
           font: 14,
         },
+        axis: {
+          color: 'grey',
+          font: 12,
+        },
         tooltip: {
           font: 10,
         },
@@ -178,6 +214,10 @@ const commonGraph = {
         legend: {
           height: 20,
           font: 14,
+        },
+        axis: {
+          color: 'grey',
+          font: 12,
         },
         tooltip: {
           font: 10,
@@ -198,6 +238,10 @@ const commonGraph = {
           height: 40,
           font: 14,
         },
+        axis: {
+          color: 'grey',
+          font: 12,
+        },
         tooltip: {
           font: 10,
         },
@@ -214,6 +258,10 @@ const commonGraph = {
         legend: {
           height: 40,
           font: 14,
+        },
+        axis: {
+          color: 'grey',
+          font: 12,
         },
         tooltip: {
           font: 10,
@@ -232,6 +280,10 @@ const commonGraph = {
           height: 40,
           font: 14,
         },
+        axis: {
+          color: 'grey',
+          font: 12,
+        },
         tooltip: {
           font: 10,
         },
@@ -249,6 +301,10 @@ const commonGraph = {
           height: 40,
           font: 14,
         },
+        axis: {
+          color: 'grey',
+          font: 12,
+        },
         tooltip: {
           font: 10,
         },
@@ -265,6 +321,10 @@ const commonGraph = {
         legend: {
           height: 40,
           font: 14,
+        },
+        axis: {
+          color: 'grey',
+          font: 12,
         },
         tooltip: {
           font: 10,

@@ -7,6 +7,19 @@ Promise.all([
     title: `Avancée de la vaccination dans le monde`,
     subtitle: `en pourcentage de la population ayant reçu au moins une injection, au [[autoDate]]`,
     caption: `Source. <a href='https://ourworldindata.org/coronavirus' target='_blank'>Our world in data</a>`,
+    type: 'landscape', // définition du format du graphe
+    device: window.screenDevice, // récupération de la largeur de l'écran
+    size: {
+      svg: {
+          height: 300,
+      },
+      legend: {
+          height: 20,
+      },
+      tooltip: {
+          font: 13,
+      },
+    },
   }
 
   // Tri des données
@@ -60,11 +73,11 @@ Promise.all([
 
   // Création du canevas SVG
 
-  const width = 500;
-  const height = 300;
-  const marginH = 80;
-  const marginV = 20;
-  const leg = 20;
+  const width = graphCfg?.size?.svg?.width || commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
+  const height = graphCfg?.size?.svg?.height || commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
+  const marginH = graphCfg?.size?.margin?.horizontal || commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
+  const marginV = graphCfg?.size?.margin?.vertical || commonGraph.size[graphCfg.type][graphCfg.device].margin.vertical;
+  const leg = graphCfg?.size?.legend?.height || commonGraph.size[graphCfg.type][graphCfg.device].legend.height;
 
   const viewBox = {
     width: width + marginH * 2,
@@ -180,7 +193,7 @@ Promise.all([
   svgLegend.call(legend)
     .selectAll("text")
     .attr("fill", "grey")
-    .attr("font-size", "12px");
+    .attr("font-size", `${ graphCfg?.size?.legend?.font || commonGraph.size[graphCfg.type][graphCfg.device].legend.font }px`);
 
 
   //---------------------------------------------------------------------------------------
@@ -232,14 +245,13 @@ Promise.all([
 
       // écriture nom Pays
       tooltip2
-        // .append('g')
         .append("text")
         .attr("x", 50)
         .attr("y", height - (height / 1.4))
         .attr("text-anchor", "middle")
         .text(d.properties.name_fr)
-        .style("font-size", "13px")
         .style("font-weight", "bold")
+        .style("font-size", `${ graphCfg?.size?.tooltip?.font || commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font }px`)
 
 
       // Agencement des données pour la génération du pie chart
@@ -267,16 +279,14 @@ Promise.all([
 
       // Ajout des valeurs en pourcentage à l'intérieur de chaque ar
       tooltip2
-        // .append('g')
-        // .attr('transform', d.properties.people_vaccinated_per_hundred < 0.1 ? `translate(${radius - 4}, ${radius - 4})` : `translate(${radius - 6}, ${radius - 4})`)
         .append("text")
         .text(Math.round(d.properties.people_vaccinated_per_hundred * 100) + "%")
         .attr("x", 50)
         .attr("y", 33)
         .attr("font-weight", "bold")
-        .attr("font-size", "12px")
         .attr("text-anchor", "middle")
-        .attr("fill", "#000000");
+        .attr("fill", "black")
+        .style("font-size", `${ graphCfg?.size?.tooltip?.font || commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font }px`)
     }
   });
 
