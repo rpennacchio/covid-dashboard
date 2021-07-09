@@ -175,7 +175,7 @@ Promise.all([
     .attr("x", d => +d.properties.INSEE_REG<10 || +d.properties.INSEE_REG==94 ? path.centroid(d)[0]-55 : path.centroid(d)[0]-15)
     .attr("y", d => path.centroid(d)[1]+10)
     .text(d => Math.round(d.properties.p_dose1*100) + "%")
-    .style("font-size", 11)
+    .style("font-size", "16px")
     .style("fill", d => +d.properties.INSEE_REG<10 || +d.properties.INSEE_REG==94 ? "#000000" : "#ffffff");
 
 
