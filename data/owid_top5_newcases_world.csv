@@ -1,191 +1,4 @@
 iso_code,name_fr,continent,date,new_cases_smoothed_per_million
-ARG,Argentine,South America,2021-01-01,173.973
-ARG,Argentine,South America,2021-01-02,178.8
-ARG,Argentine,South America,2021-01-03,181.499
-ARG,Argentine,South America,2021-01-04,184.679
-ARG,Argentine,South America,2021-01-05,191.443
-ARG,Argentine,South America,2021-01-06,196.741
-ARG,Argentine,South America,2021-01-07,203.85
-ARG,Argentine,South America,2021-01-08,233.138
-ARG,Argentine,South America,2021-01-09,251.525
-ARG,Argentine,South America,2021-01-10,257.606
-ARG,Argentine,South America,2021-01-11,259.13
-ARG,Argentine,South America,2021-01-12,259.108
-ARG,Argentine,South America,2021-01-13,256.844
-ARG,Argentine,South America,2021-01-14,255.109
-ARG,Argentine,South America,2021-01-15,251.904
-ARG,Argentine,South America,2021-01-16,245.187
-ARG,Argentine,South America,2021-01-17,243.468
-ARG,Argentine,South America,2021-01-18,241.827
-ARG,Argentine,South America,2021-01-19,236.637
-ARG,Argentine,South America,2021-01-20,234.7
-ARG,Argentine,South America,2021-01-21,228.726
-ARG,Argentine,South America,2021-01-22,223.735
-ARG,Argentine,South America,2021-01-23,221.933
-ARG,Argentine,South America,2021-01-24,214.875
-ARG,Argentine,South America,2021-01-25,212.956
-ARG,Argentine,South America,2021-01-26,207.481
-ARG,Argentine,South America,2021-01-27,203.47
-ARG,Argentine,South America,2021-01-28,197.386
-ARG,Argentine,South America,2021-01-29,194.494
-ARG,Argentine,South America,2021-01-30,189.879
-ARG,Argentine,South America,2021-01-31,189.702
-ARG,Argentine,South America,2021-02-01,186.655
-ARG,Argentine,South America,2021-02-02,184.398
-ARG,Argentine,South America,2021-02-03,179.192
-ARG,Argentine,South America,2021-02-04,177.359
-ARG,Argentine,South America,2021-02-05,172.731
-ARG,Argentine,South America,2021-02-06,172.029
-ARG,Argentine,South America,2021-02-07,167.867
-ARG,Argentine,South America,2021-02-08,163.252
-ARG,Argentine,South America,2021-02-09,157.243
-ARG,Argentine,South America,2021-02-10,152.638
-ARG,Argentine,South America,2021-02-11,147.643
-ARG,Argentine,South America,2021-02-12,143.778
-ARG,Argentine,South America,2021-02-13,141.808
-ARG,Argentine,South America,2021-02-14,143.664
-ARG,Argentine,South America,2021-02-15,137.674
-ARG,Argentine,South America,2021-02-16,125.691
-ARG,Argentine,South America,2021-02-17,120.397
-ARG,Argentine,South America,2021-02-18,121.535
-ARG,Argentine,South America,2021-02-19,123.858
-ARG,Argentine,South America,2021-02-20,123.501
-ARG,Argentine,South America,2021-02-21,121.807
-ARG,Argentine,South America,2021-02-22,128.628
-ARG,Argentine,South America,2021-02-23,139.608
-ARG,Argentine,South America,2021-02-24,146.306
-ARG,Argentine,South America,2021-02-25,148.086
-ARG,Argentine,South America,2021-02-26,139.226
-ARG,Argentine,South America,2021-02-27,137.725
-ARG,Argentine,South America,2021-02-28,136.015
-ARG,Argentine,South America,2021-03-01,133.616
-ARG,Argentine,South America,2021-03-02,131.011
-ARG,Argentine,South America,2021-03-03,129.974
-ARG,Argentine,South America,2021-03-04,127.439
-ARG,Argentine,South America,2021-03-05,136.315
-ARG,Argentine,South America,2021-03-06,134.39
-ARG,Argentine,South America,2021-03-07,133.612
-ARG,Argentine,South America,2021-03-08,134.877
-ARG,Argentine,South America,2021-03-09,136.944
-ARG,Argentine,South America,2021-03-10,136.432
-ARG,Argentine,South America,2021-03-11,138.872
-ARG,Argentine,South America,2021-03-12,138.739
-ARG,Argentine,South America,2021-03-13,143.221
-ARG,Argentine,South America,2021-03-14,145.671
-ARG,Argentine,South America,2021-03-15,149.167
-ARG,Argentine,South America,2021-03-16,152.1
-ARG,Argentine,South America,2021-03-17,154.031
-ARG,Argentine,South America,2021-03-18,154.423
-ARG,Argentine,South America,2021-03-19,155.406
-ARG,Argentine,South America,2021-03-20,157.139
-ARG,Argentine,South America,2021-03-21,158.197
-ARG,Argentine,South America,2021-03-22,158.947
-ARG,Argentine,South America,2021-03-23,162.645
-ARG,Argentine,South America,2021-03-24,162.632
-ARG,Argentine,South America,2021-03-25,162.348
-ARG,Argentine,South America,2021-03-26,177.444
-ARG,Argentine,South America,2021-03-27,188.545
-ARG,Argentine,South America,2021-03-28,198.584
-ARG,Argentine,South America,2021-03-29,222.647
-ARG,Argentine,South America,2021-03-30,225.015
-ARG,Argentine,South America,2021-03-31,249.53
-ARG,Argentine,South America,2021-04-01,269.102
-ARG,Argentine,South America,2021-04-02,259.512
-ARG,Argentine,South America,2021-04-03,259.658
-ARG,Argentine,South America,2021-04-04,268.34
-ARG,Argentine,South America,2021-04-05,267.244
-ARG,Argentine,South America,2021-04-06,301.115
-ARG,Argentine,South America,2021-04-07,320.027
-ARG,Argentine,South America,2021-04-08,349.274
-ARG,Argentine,South America,2021-04-09,394.247
-ARG,Argentine,South America,2021-04-10,422.805
-ARG,Argentine,South America,2021-04-11,439.58
-ARG,Argentine,South America,2021-04-12,457.818
-ARG,Argentine,South America,2021-04-13,477.197
-ARG,Argentine,South America,2021-04-14,487.052
-ARG,Argentine,South America,2021-04-15,491.212
-ARG,Argentine,South America,2021-04-16,508.097
-ARG,Argentine,South America,2021-04-17,507.149
-ARG,Argentine,South America,2021-04-18,510.326
-ARG,Argentine,South America,2021-04-19,513.563
-ARG,Argentine,South America,2021-04-20,520.339
-ARG,Argentine,South America,2021-04-21,522.789
-ARG,Argentine,South America,2021-04-22,529.797
-ARG,Argentine,South America,2021-04-23,524.777
-ARG,Argentine,South America,2021-04-24,531.418
-ARG,Argentine,South America,2021-04-25,527.451
-ARG,Argentine,South America,2021-04-26,522.179
-ARG,Argentine,South America,2021-04-27,510.642
-ARG,Argentine,South America,2021-04-28,503.644
-ARG,Argentine,South America,2021-04-29,499.968
-ARG,Argentine,South America,2021-04-30,482.697
-ARG,Argentine,South America,2021-05-01,467.784
-ARG,Argentine,South America,2021-05-02,456.348
-ARG,Argentine,South America,2021-05-03,447.267
-ARG,Argentine,South America,2021-05-04,449.615
-ARG,Argentine,South America,2021-05-05,450.756
-ARG,Argentine,South America,2021-05-06,444.539
-ARG,Argentine,South America,2021-05-07,444.956
-ARG,Argentine,South America,2021-05-08,449.767
-ARG,Argentine,South America,2021-05-09,450.361
-ARG,Argentine,South America,2021-05-10,454.979
-ARG,Argentine,South America,2021-05-11,454.151
-ARG,Argentine,South America,2021-05-12,455.403
-ARG,Argentine,South America,2021-05-13,463.131
-ARG,Argentine,South America,2021-05-14,478.338
-ARG,Argentine,South America,2021-05-15,489.227
-ARG,Argentine,South America,2021-05-16,504.298
-ARG,Argentine,South America,2021-05-17,540.013
-ARG,Argentine,South America,2021-05-18,570.252
-ARG,Argentine,South America,2021-05-19,618.225
-ARG,Argentine,South America,2021-05-20,647.788
-ARG,Argentine,South America,2021-05-21,673.407
-ARG,Argentine,South America,2021-05-22,707.234
-ARG,Argentine,South America,2021-05-23,733.947
-ARG,Argentine,South America,2021-05-24,714.89
-ARG,Argentine,South America,2021-05-25,680.304
-ARG,Argentine,South America,2021-05-26,666.861
-ARG,Argentine,South America,2021-05-27,683.284
-ARG,Argentine,South America,2021-05-28,695.103
-ARG,Argentine,South America,2021-05-29,687.738
-ARG,Argentine,South America,2021-05-30,676.817
-ARG,Argentine,South America,2021-05-31,694.278
-ARG,Argentine,South America,2021-06-01,728.27
-ARG,Argentine,South America,2021-06-02,727.062
-ARG,Argentine,South America,2021-06-03,699.282
-ARG,Argentine,South America,2021-06-04,673.182
-ARG,Argentine,South America,2021-06-05,653.541
-ARG,Argentine,South America,2021-06-06,637.955
-ARG,Argentine,South America,2021-06-07,619.053
-ARG,Argentine,South America,2021-06-08,605.72
-ARG,Argentine,South America,2021-06-09,589.094
-ARG,Argentine,South America,2021-06-10,574.355
-ARG,Argentine,South America,2021-06-11,561.661
-ARG,Argentine,South America,2021-06-12,544.055
-ARG,Argentine,South America,2021-06-13,533.397
-ARG,Argentine,South America,2021-06-14,530.543
-ARG,Argentine,South America,2021-06-15,518.288
-ARG,Argentine,South America,2021-06-16,506.027
-ARG,Argentine,South America,2021-06-17,493.864
-ARG,Argentine,South America,2021-06-18,473.094
-ARG,Argentine,South America,2021-06-19,465.426
-ARG,Argentine,South America,2021-06-20,457.056
-ARG,Argentine,South America,2021-06-21,416.957
-ARG,Argentine,South America,2021-06-22,398.394
-ARG,Argentine,South America,2021-06-23,402.949
-ARG,Argentine,South America,2021-06-24,405.107
-ARG,Argentine,South America,2021-06-25,416.676
-ARG,Argentine,South America,2021-06-26,425.918
-ARG,Argentine,South America,2021-06-27,431.323
-ARG,Argentine,South America,2021-06-28,462.246
-ARG,Argentine,South America,2021-06-29,470.711
-ARG,Argentine,South America,2021-06-30,456.026
-ARG,Argentine,South America,2021-07-01,445.639
-ARG,Argentine,South America,2021-07-02,435.73
-ARG,Argentine,South America,2021-07-03,421.44
-ARG,Argentine,South America,2021-07-04,411.625
-ARG,Argentine,South America,2021-07-05,408.11
-ARG,Argentine,South America,2021-07-06,400.287
 BRA,Brésil,South America,2021-01-01,169.377
 BRA,Brésil,South America,2021-01-02,168.423
 BRA,Brésil,South America,2021-01-03,167.658
@@ -373,6 +186,11 @@ BRA,Brésil,South America,2021-07-03,238.677
 BRA,Brésil,South America,2021-07-04,234.697
 BRA,Brésil,South America,2021-07-05,231.269
 BRA,Brésil,South America,2021-07-06,229.657
+BRA,Brésil,South America,2021-07-07,236.503
+BRA,Brésil,South America,2021-07-08,228.815
+BRA,Brésil,South America,2021-07-09,223.823
+BRA,Brésil,South America,2021-07-10,219.756
+BRA,Brésil,South America,2021-07-11,215.155
 COL,Colombie,South America,2021-01-01,225.091
 COL,Colombie,South America,2021-01-02,228.831
 COL,Colombie,South America,2021-01-03,228.32
@@ -560,6 +378,11 @@ COL,Colombie,South America,2021-07-03,555.59
 COL,Colombie,South America,2021-07-04,538.433
 COL,Colombie,South America,2021-07-05,529.695
 COL,Colombie,South America,2021-07-06,532.057
+COL,Colombie,South America,2021-07-07,521.728
+COL,Colombie,South America,2021-07-08,507.577
+COL,Colombie,South America,2021-07-09,489.415
+COL,Colombie,South America,2021-07-10,413.813
+COL,Colombie,South America,2021-07-11,340.072
 IDN,Indonésie,Asia,2021-01-01,26.727
 IDN,Indonésie,Asia,2021-01-02,26.969
 IDN,Indonésie,Asia,2021-01-03,27.151
@@ -747,6 +570,203 @@ IDN,Indonésie,Asia,2021-07-03,85.074
 IDN,Indonésie,Asia,2021-07-04,88.151
 IDN,Indonésie,Asia,2021-07-05,92.878
 IDN,Indonésie,Asia,2021-07-06,98.478
+IDN,Indonésie,Asia,2021-07-07,105.044
+IDN,Indonésie,Asia,2021-07-08,112.124
+IDN,Indonésie,Asia,2021-07-09,118.545
+IDN,Indonésie,Asia,2021-07-10,122.296
+IDN,Indonésie,Asia,2021-07-11,126.977
+ZAF,Afrique du Sud,Africa,2021-01-01,218.055
+ZAF,Afrique du Sud,Africa,2021-01-02,226.365
+ZAF,Afrique du Sud,Africa,2021-01-03,232.043
+ZAF,Afrique du Sud,Africa,2021-01-04,244.431
+ZAF,Afrique du Sud,Africa,2021-01-05,256.065
+ZAF,Afrique du Sud,Africa,2021-01-06,265.993
+ZAF,Afrique du Sud,Africa,2021-01-07,273.217
+ZAF,Afrique du Sud,Africa,2021-01-08,285.872
+ZAF,Afrique du Sud,Africa,2021-01-09,301.779
+ZAF,Afrique du Sud,Africa,2021-01-10,315.177
+ZAF,Afrique du Sud,Africa,2021-01-11,321.066
+ZAF,Afrique du Sud,Africa,2021-01-12,317.923
+ZAF,Afrique du Sud,Africa,2021-01-13,310.029
+ZAF,Afrique du Sud,Africa,2021-01-14,304.017
+ZAF,Afrique du Sud,Africa,2021-01-15,286.915
+ZAF,Afrique du Sud,Africa,2021-01-16,268.53
+ZAF,Afrique du Sud,Africa,2021-01-17,256.115
+ZAF,Afrique du Sud,Africa,2021-01-18,241.576
+ZAF,Afrique du Sud,Africa,2021-01-19,233.567
+ZAF,Afrique du Sud,Africa,2021-01-20,219.488
+ZAF,Afrique du Sud,Africa,2021-01-21,202.334
+ZAF,Afrique du Sud,Africa,2021-01-22,194.821
+ZAF,Afrique du Sud,Africa,2021-01-23,190.721
+ZAF,Afrique du Sud,Africa,2021-01-24,180.797
+ZAF,Afrique du Sud,Africa,2021-01-25,170.057
+ZAF,Afrique du Sud,Africa,2021-01-26,161.051
+ZAF,Afrique du Sud,Africa,2021-01-27,147.466
+ZAF,Afrique du Sud,Africa,2021-01-28,137.275
+ZAF,Afrique du Sud,Africa,2021-01-29,123.738
+ZAF,Afrique du Sud,Africa,2021-01-30,106.939
+ZAF,Afrique du Sud,Africa,2021-01-31,98.215
+ZAF,Afrique du Sud,Africa,2021-02-01,93.39
+ZAF,Afrique du Sud,Africa,2021-02-02,85.22
+ZAF,Afrique du Sud,Africa,2021-02-03,77.965
+ZAF,Afrique du Sud,Africa,2021-02-04,69.778
+ZAF,Afrique du Sud,Africa,2021-02-05,64.016
+ZAF,Afrique du Sud,Africa,2021-02-06,58.927
+ZAF,Afrique du Sud,Africa,2021-02-07,53.892
+ZAF,Afrique du Sud,Africa,2021-02-08,51.069
+ZAF,Afrique du Sud,Africa,2021-02-09,48.885
+ZAF,Afrique du Sud,Africa,2021-02-10,46.719
+ZAF,Afrique du Sud,Africa,2021-02-11,43.677
+ZAF,Afrique du Sud,Africa,2021-02-12,41.345
+ZAF,Afrique du Sud,Africa,2021-02-13,39.414
+ZAF,Afrique du Sud,Africa,2021-02-14,37.749
+ZAF,Afrique du Sud,Africa,2021-02-15,37.089
+ZAF,Afrique du Sud,Africa,2021-02-16,35.808
+ZAF,Afrique du Sud,Africa,2021-02-17,33.787
+ZAF,Afrique du Sud,Africa,2021-02-18,33.399
+ZAF,Afrique du Sud,Africa,2021-02-19,31.304
+ZAF,Afrique du Sud,Africa,2021-02-20,29.637
+ZAF,Afrique du Sud,Africa,2021-02-21,28.878
+ZAF,Afrique du Sud,Africa,2021-02-22,28.131
+ZAF,Afrique du Sud,Africa,2021-02-23,27.621
+ZAF,Afrique du Sud,Africa,2021-02-24,26.517
+ZAF,Afrique du Sud,Africa,2021-02-25,24.949
+ZAF,Afrique du Sud,Africa,2021-02-26,24.33
+ZAF,Afrique du Sud,Africa,2021-02-27,23.745
+ZAF,Afrique du Sud,Africa,2021-02-28,23.116
+ZAF,Afrique du Sud,Africa,2021-03-01,22.572
+ZAF,Afrique du Sud,Africa,2021-03-02,22.23
+ZAF,Afrique du Sud,Africa,2021-03-03,21.23
+ZAF,Afrique du Sud,Africa,2021-03-04,20.575
+ZAF,Afrique du Sud,Africa,2021-03-05,19.754
+ZAF,Afrique du Sud,Africa,2021-03-06,19.224
+ZAF,Afrique du Sud,Africa,2021-03-07,18.487
+ZAF,Afrique du Sud,Africa,2021-03-08,18.66
+ZAF,Afrique du Sud,Africa,2021-03-09,18.985
+ZAF,Afrique du Sud,Africa,2021-03-10,19.058
+ZAF,Afrique du Sud,Africa,2021-03-11,19.226
+ZAF,Afrique du Sud,Africa,2021-03-12,19.014
+ZAF,Afrique du Sud,Africa,2021-03-13,19.771
+ZAF,Afrique du Sud,Africa,2021-03-14,20.118
+ZAF,Afrique du Sud,Africa,2021-03-15,20.057
+ZAF,Afrique du Sud,Africa,2021-03-16,19.918
+ZAF,Afrique du Sud,Africa,2021-03-17,20.048
+ZAF,Afrique du Sud,Africa,2021-03-18,20.024
+ZAF,Afrique du Sud,Africa,2021-03-19,20.594
+ZAF,Afrique du Sud,Africa,2021-03-20,20.202
+ZAF,Afrique du Sud,Africa,2021-03-21,20.31
+ZAF,Afrique du Sud,Africa,2021-03-22,20.276
+ZAF,Afrique du Sud,Africa,2021-03-23,19.258
+ZAF,Afrique du Sud,Africa,2021-03-24,18.094
+ZAF,Afrique du Sud,Africa,2021-03-25,18.311
+ZAF,Afrique du Sud,Africa,2021-03-26,18.441
+ZAF,Afrique du Sud,Africa,2021-03-27,18.463
+ZAF,Afrique du Sud,Africa,2021-03-28,18.256
+ZAF,Afrique du Sud,Africa,2021-03-29,18.133
+ZAF,Afrique du Sud,Africa,2021-03-30,18.725
+ZAF,Afrique du Sud,Africa,2021-03-31,19.626
+ZAF,Afrique du Sud,Africa,2021-04-01,19
+ZAF,Afrique du Sud,Africa,2021-04-02,18.415
+ZAF,Afrique du Sud,Africa,2021-04-03,16.945
+ZAF,Afrique du Sud,Africa,2021-04-04,15.736
+ZAF,Afrique du Sud,Africa,2021-04-05,15.505
+ZAF,Afrique du Sud,Africa,2021-04-06,14.736
+ZAF,Afrique du Sud,Africa,2021-04-07,13.132
+ZAF,Afrique du Sud,Africa,2021-04-08,13.306
+ZAF,Afrique du Sud,Africa,2021-04-09,13.291
+ZAF,Afrique du Sud,Africa,2021-04-10,14.515
+ZAF,Afrique du Sud,Africa,2021-04-11,15.642
+ZAF,Afrique du Sud,Africa,2021-04-12,16.131
+ZAF,Afrique du Sud,Africa,2021-04-13,17.119
+ZAF,Afrique du Sud,Africa,2021-04-14,19.149
+ZAF,Afrique du Sud,Africa,2021-04-15,19.164
+ZAF,Afrique du Sud,Africa,2021-04-16,19.542
+ZAF,Afrique du Sud,Africa,2021-04-17,19.638
+ZAF,Afrique du Sud,Africa,2021-04-18,20.019
+ZAF,Afrique du Sud,Africa,2021-04-19,20.233
+ZAF,Afrique du Sud,Africa,2021-04-20,20.248
+ZAF,Afrique du Sud,Africa,2021-04-21,20.175
+ZAF,Afrique du Sud,Africa,2021-04-22,20.274
+ZAF,Afrique du Sud,Africa,2021-04-23,20.787
+ZAF,Afrique du Sud,Africa,2021-04-24,20.932
+ZAF,Afrique du Sud,Africa,2021-04-25,20.961
+ZAF,Afrique du Sud,Africa,2021-04-26,21.213
+ZAF,Afrique du Sud,Africa,2021-04-27,21.279
+ZAF,Afrique du Sud,Africa,2021-04-28,20.51
+ZAF,Afrique du Sud,Africa,2021-04-29,19.722
+ZAF,Afrique du Sud,Africa,2021-04-30,19.812
+ZAF,Afrique du Sud,Africa,2021-05-01,20.407
+ZAF,Afrique du Sud,Africa,2021-05-02,20.698
+ZAF,Afrique du Sud,Africa,2021-05-03,20.814
+ZAF,Afrique du Sud,Africa,2021-05-04,21.553
+ZAF,Afrique du Sud,Africa,2021-05-05,23.535
+ZAF,Afrique du Sud,Africa,2021-05-06,26.096
+ZAF,Afrique du Sud,Africa,2021-05-07,27.498
+ZAF,Afrique du Sud,Africa,2021-05-08,23.567
+ZAF,Afrique du Sud,Africa,2021-05-09,30.183
+ZAF,Afrique du Sud,Africa,2021-05-10,30.742
+ZAF,Afrique du Sud,Africa,2021-05-11,31.612
+ZAF,Afrique du Sud,Africa,2021-05-12,33.264
+ZAF,Afrique du Sud,Africa,2021-05-13,35.846
+ZAF,Afrique du Sud,Africa,2021-05-14,37.978
+ZAF,Afrique du Sud,Africa,2021-05-15,44.602
+ZAF,Afrique du Sud,Africa,2021-05-16,41.268
+ZAF,Afrique du Sud,Africa,2021-05-17,42.781
+ZAF,Afrique du Sud,Africa,2021-05-18,44.725
+ZAF,Afrique du Sud,Africa,2021-05-19,46.563
+ZAF,Afrique du Sud,Africa,2021-05-20,47.574
+ZAF,Afrique du Sud,Africa,2021-05-21,48.034
+ZAF,Afrique du Sud,Africa,2021-05-22,51.614
+ZAF,Afrique du Sud,Africa,2021-05-23,52.358
+ZAF,Afrique du Sud,Africa,2021-05-24,53.866
+ZAF,Afrique du Sud,Africa,2021-05-25,48.193
+ZAF,Afrique du Sud,Africa,2021-05-26,58.274
+ZAF,Afrique du Sud,Africa,2021-05-27,60.155
+ZAF,Afrique du Sud,Africa,2021-05-28,63.147
+ZAF,Afrique du Sud,Africa,2021-05-29,63.828
+ZAF,Afrique du Sud,Africa,2021-05-30,56.857
+ZAF,Afrique du Sud,Africa,2021-05-31,66.887
+ZAF,Afrique du Sud,Africa,2021-06-01,75.592
+ZAF,Afrique du Sud,Africa,2021-06-02,70.956
+ZAF,Afrique du Sud,Africa,2021-06-03,73.215
+ZAF,Afrique du Sud,Africa,2021-06-04,75.85
+ZAF,Afrique du Sud,Africa,2021-06-05,78.093
+ZAF,Afrique du Sud,Africa,2021-06-06,90.312
+ZAF,Afrique du Sud,Africa,2021-06-07,82.455
+ZAF,Afrique du Sud,Africa,2021-06-08,83.888
+ZAF,Afrique du Sud,Africa,2021-06-09,91.353
+ZAF,Afrique du Sud,Africa,2021-06-10,100.474
+ZAF,Afrique du Sud,Africa,2021-06-11,106.14
+ZAF,Afrique du Sud,Africa,2021-06-12,115.459
+ZAF,Afrique du Sud,Africa,2021-06-13,121.683
+ZAF,Afrique du Sud,Africa,2021-06-14,127.134
+ZAF,Afrique du Sud,Africa,2021-06-15,137.315
+ZAF,Afrique du Sud,Africa,2021-06-16,147.829
+ZAF,Afrique du Sud,Africa,2021-06-17,154.14
+ZAF,Afrique du Sud,Africa,2021-06-18,160.138
+ZAF,Afrique du Sud,Africa,2021-06-19,170.389
+ZAF,Afrique du Sud,Africa,2021-06-20,183.632
+ZAF,Afrique du Sud,Africa,2021-06-21,192.333
+ZAF,Afrique du Sud,Africa,2021-06-22,198.733
+ZAF,Afrique du Sud,Africa,2021-06-23,208.962
+ZAF,Afrique du Sud,Africa,2021-06-24,219.346
+ZAF,Afrique du Sud,Africa,2021-06-25,239.223
+ZAF,Afrique du Sud,Africa,2021-06-26,249.775
+ZAF,Afrique du Sud,Africa,2021-06-27,254.306
+ZAF,Afrique du Sud,Africa,2021-06-28,261.682
+ZAF,Afrique du Sud,Africa,2021-06-29,267.111
+ZAF,Afrique du Sud,Africa,2021-06-30,271.96
+ZAF,Afrique du Sud,Africa,2021-07-01,285.222
+ZAF,Afrique du Sud,Africa,2021-07-02,298.489
+ZAF,Afrique du Sud,Africa,2021-07-03,319.033
+ZAF,Afrique du Sud,Africa,2021-07-04,322.764
+ZAF,Afrique du Sud,Africa,2021-07-05,323.465
+ZAF,Afrique du Sud,Africa,2021-07-06,328.651
+ZAF,Afrique du Sud,Africa,2021-07-07,333.278
+ZAF,Afrique du Sud,Africa,2021-07-08,336.472
+ZAF,Afrique du Sud,Africa,2021-07-09,332.066
+ZAF,Afrique du Sud,Africa,2021-07-10,320.324
+ZAF,Afrique du Sud,Africa,2021-07-11,319.642
 GBR,Royaume-Uni,Europe,2021-01-01,677.064
 GBR,Royaume-Uni,Europe,2021-01-02,725.601
 GBR,Royaume-Uni,Europe,2021-01-03,773.294
@@ -934,3 +954,8 @@ GBR,Royaume-Uni,Europe,2021-07-03,341.457
 GBR,Royaume-Uni,Europe,2021-07-04,360.95
 GBR,Royaume-Uni,Europe,2021-07-05,370.173
 GBR,Royaume-Uni,Europe,2021-07-06,387.782
+GBR,Royaume-Uni,Europe,2021-07-07,401.231
+GBR,Royaume-Uni,Europe,2021-07-08,410.596
+GBR,Royaume-Uni,Europe,2021-07-09,429.582
+GBR,Royaume-Uni,Europe,2021-07-10,445.091
+GBR,Royaume-Uni,Europe,2021-07-11,460.844
