@@ -19,4 +19,7 @@ d3.csv('data/data_to_cartes.csv').then(data => {
       }
     });
 
+
+    
+
 });

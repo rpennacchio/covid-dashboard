@@ -336,6 +336,8 @@ const commonGraph = {
     mobile: 4,
     tablet: 6,
     desktop: 8,
+    wide: 6,
+    very_wide: 6
   },
   tooltip: (graphId, d3) => {
     return d3

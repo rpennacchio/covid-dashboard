@@ -2,8 +2,13 @@ d3.csv("data/owid_top5_newdc_eu.csv").then(data => {
     const graphCfg = {
       target: `#eu-graph04`,
       title: `Evolution du nombre de nouveaux décès en Europe`,
-      subtitle: `en moyenne lissée du nombre de morts*`,
+      subtitle: `en moyenne lissée du nombre de morts, depuis le [[startDate]]*`,
       caption: `* dans les cinq pays européens qui comptent actuellement le plus grand nombre de nouveaux décès<br>Source. <a href='https://ourworldindata.org/coronavirus' target='_blank'>Our world in data</a>`,
+      startDate: { // définition de la date (si nécessaire)
+        day: '01',
+        month: '01',
+        year: '2021',
+      },
       type: 'landscape',
       device: window.screenDevice,
     }
@@ -84,7 +89,7 @@ d3.csv("data/owid_top5_newdc_eu.csv").then(data => {
       .select('.grph-title')
       .append('span')
       .attr('class', 'grph-date')
-      .html(graphCfg.subtitle.replace(/\[\[\s*startDate\s*\]\]/, `${ graphCfg?.startDate?.day } ${ commonGraph.locale.months[graphCfg?.startDate?.month - 1] } ${ graphCfg?.startDate?.year }`))
+      .html(graphCfg.subtitle.replace(/\[\[\s*startDate\s*\]\]/, `${ +graphCfg?.startDate?.day === 1 ? +graphCfg?.startDate?.day + 'er' : graphCfg?.startDate?.day } ${ commonGraph.locale.months[+graphCfg?.startDate?.month - 1] } ${ graphCfg?.startDate?.year }`))
 
     // Écriture de la source
     d3.select(graphCfg.target)
@@ -134,29 +139,29 @@ d3.csv("data/owid_top5_newdc_eu.csv").then(data => {
 
     // Création des axes
 
-    // Axe des X
-    const xAxis = (g) =>
-      g
-        .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(scaleT).ticks(4).tickFormat(d3.timeFormat("%b %Y")))
-        .selectAll("text")
-        .style("fill", graphCfg?.size?.axis?.color || commonGraph.size[graphCfg.type][graphCfg.device].axis.color) // couleur du texte
-        .style("font-size", `${ graphCfg?.size?.axis?.font || commonGraph.size[graphCfg.type][graphCfg.device].axis.font }px`)
+      // Axe des X
+  const xAxis = (g) =>
+  g
+    .attr("transform", `translate(0, ${height})`)
+    .call(d3.axisBottom(scaleT).ticks(4).tickFormat(d3.timeFormat("%b %Y")))
+    .selectAll("text")
+    .style("fill", `${ graphCfg?.size?.axis?.color || commonGraph.size[graphCfg.type][graphCfg.device].axis.color }px`)
+    .style("font-size", `${ graphCfg?.size?.axis?.font || commonGraph.size[graphCfg.type][graphCfg.device].axis.font }px`)
 
-    // Axe des Y
-    const yAxis = (g) =>
-      g
-        .attr("transform", `translate(0, 0)`)
-        .call(
-          d3
-            .axisLeft(scaleY)
-            .ticks(graphCfg.ticksY && graphCfg.device in graphCfg.ticksY ? graphCfg.ticksY[graphCfg.device] : commonGraph.ticksY[graphCfg.device])
-            .tickFormat(d3.format(",.2r"))
-        ) // formatage grands nombre avec virgule entre milliers
-        .call((g) => g.select(".domain").remove()) // supprime la ligne de l'axe
-        .selectAll("text")
-        .style("fill", graphCfg?.size?.axis?.color || commonGraph.size[graphCfg.type][graphCfg.device].axis.color) // couleur du texte
-        .style("font-size", `${ graphCfg?.size?.axis?.font || commonGraph.size[graphCfg.type][graphCfg.device].axis.font }px`)
+// Axe des Y
+const yAxis = (g) =>
+  g
+    .attr("transform", `translate(0, 0)`)
+    .call(
+      d3
+        .axisLeft(scaleY)
+        .ticks(graphCfg.ticksY && graphCfg.device in graphCfg.ticksY ? graphCfg.ticksY[graphCfg.device] : commonGraph.ticksY[graphCfg.device])
+        .tickFormat((d) => d.toLocaleString("fr-FR"))
+    ) // formatage grands nombre avec espace entre milliers
+    .call((g) => g.select(".domain").remove()) // supprime la ligne de l'axe
+    .selectAll("text")
+    .style("fill", `${ graphCfg?.size?.axis?.color || commonGraph.size[graphCfg.type][graphCfg.device].axis.color }px`)
+    .style("font-size", `${ graphCfg?.size?.axis?.font || commonGraph.size[graphCfg.type][graphCfg.device].axis.font }px`)
 
     //---------------------------------------------------------------------------------------
 

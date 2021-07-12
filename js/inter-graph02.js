@@ -135,28 +135,29 @@ d3.csv("data/owid_top5_newdc_world.csv").then(data => {
     // Création des axes
 
     // Axe des X
-    const xAxis = (g) =>
-      g
-        .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(scaleT).ticks(4).tickFormat(d3.timeFormat("%b %Y")))
-        .selectAll("text")
-        .style("fill", graphCfg?.size?.axis?.color || commonGraph.size[graphCfg.type][graphCfg.device].axis.color) // couleur du texte
-        .style("font-size", `${ graphCfg?.size?.axis?.font || commonGraph.size[graphCfg.type][graphCfg.device].axis.font }px`)
+  const xAxis = (g) =>
+  g
+    .attr("transform", `translate(0, ${height})`)
+    .call(d3.axisBottom(scaleT).ticks(4).tickFormat(d3.timeFormat("%b %Y")))
+    .selectAll("text")
+    .style("fill", `${ graphCfg?.size?.axis?.color || commonGraph.size[graphCfg.type][graphCfg.device].axis.color }px`)
+    .style("font-size", `${ graphCfg?.size?.axis?.font || commonGraph.size[graphCfg.type][graphCfg.device].axis.font }px`)
 
-    // Axe des Y
-    const yAxis = (g) =>
-      g
-        .attr("transform", `translate(0, 0)`)
-        .call(
-          d3
-            .axisLeft(scaleY)
-            .ticks(graphCfg.ticksY && graphCfg.device in graphCfg.ticksY ? graphCfg.ticksY[graphCfg.device] : commonGraph.ticksY[graphCfg.device])
-            .tickFormat(d3.format(",.2r"))
-        ) // formatage grands nombre avec virgule entre milliers
-        .call((g) => g.select(".domain").remove()) // supprime la ligne de l'axe
-        .selectAll("text")
-        .style("fill", graphCfg?.size?.axis?.color || commonGraph.size[graphCfg.type][graphCfg.device].axis.color) // couleur du texte
-        .style("font-size", `${ graphCfg?.size?.axis?.font || commonGraph.size[graphCfg.type][graphCfg.device].axis.font }px`)
+// Axe des Y
+const yAxis = (g) =>
+  g
+    .attr("transform", `translate(0, 0)`)
+    .call(
+      d3
+        .axisLeft(scaleY)
+        //.ticks(8)
+        .ticks(graphCfg.ticksY && graphCfg.device in graphCfg.ticksY ? graphCfg.ticksY[graphCfg.device] : commonGraph.ticksY[graphCfg.device])
+        .tickFormat((d) => d.toLocaleString("fr-FR"))
+    ) // formatage grands nombre avec espace entre milliers
+    .call((g) => g.select(".domain").remove()) // supprime la ligne de l'axe
+    .selectAll("text")
+    .style("fill", `${ graphCfg?.size?.axis?.color || commonGraph.size[graphCfg.type][graphCfg.device].axis.color }px`)
+    .style("font-size", `${ graphCfg?.size?.axis?.font || commonGraph.size[graphCfg.type][graphCfg.device].axis.font }px`)
 
     //---------------------------------------------------------------------------------------
 
