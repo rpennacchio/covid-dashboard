@@ -1,7 +1,7 @@
 d3.csv('data/data_to_cartes.csv').then(data => {
-  
+
     // Traitement des données
-  
+
     // Sélection des variables nécessaires pour le graphique
     const tidyData = data.map(d => {
       return {
@@ -19,4 +19,38 @@ d3.csv('data/data_to_cartes.csv').then(data => {
       }
     });
 
+    if (tidyData.length > 0) {
+      const fancyData = tidyData[0]
+
+      // Définition de la date du dashboard.
+      {
+        const fancyDate = {
+          day: tidyData[0].date.getDate(),
+          month: commonGraph.locale.months[+tidyData[0].date.getMonth()],
+          year: tidyData[0].date.getFullYear(),
+        }
+
+        d3.select('#state-date-info')
+          .html(`${ fancyDate.day } ${ fancyDate.month } ${ fancyDate.year }`)
+      }
+
+      // Définition des données des cards.
+      {
+        const cardGroup = document.querySelectorAll('.dshbrd-card')
+
+        Array.from(cardGroup).map(card => {
+          const cardData = card.querySelector('.crd-data')
+
+          cardData.innerHTML = (fancyData[`${ card.id }`] + '').replace(/(?=(\d{3})+(?!\d))/g, ' ')
+
+          if (card.id === 'new_cases' || card.id === 'hosp_tot') {
+            cardData.dataset.trend = fancyData[`${ card.id }_evol`]
+
+            card.querySelector('.ntc-trend').innerHTML = fancyData[`${ card.id }_evol`]
+          } else if (card.id === 'vacc_nb') {
+            card.querySelector('.ntc-trend').innerHTML = fancyData[`vacc_percent`]
+          }
+        })
+      }
+    }
 });
