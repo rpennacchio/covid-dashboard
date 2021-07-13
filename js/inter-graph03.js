@@ -10,12 +10,15 @@ Promise.all([
         type: 'landscape', // définition du format du graphe
         device: window.screenDevice, // récupération de la largeur de l'écran
         size: {
+            svg: {
+                height: 300,
+            },
             legend: {
                 font: 9,
+                height: 20,
             },
         },
     }
-
     // Tri des données
 
     let dataMap = data[0];
@@ -55,11 +58,6 @@ Promise.all([
 
     // Création du canevas SVG
 
-    // const width = 500;
-    // const height = 300;
-    // const marginH = 80;
-    // const marginV = 20;
-    // const leg = 20;
     const width = graphCfg.size && graphCfg.size.svg && graphCfg.size.svg.width ? graphCfg.size.svg.width : commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
     const height = graphCfg.size && graphCfg.size.svg && graphCfg.size.svg.height ? graphCfg.size.svg.height : commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
     const marginH = graphCfg.size && graphCfg.size.margin && graphCfg.size.margin.horizontal ? graphCfg.size.margin.horizontal : commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
