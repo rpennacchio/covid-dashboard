@@ -1,4 +1,4 @@
-d3.csv("data/hosp_reg.csv").then(data => {
+d3.csv("https://www.francetvinfo.fr/docs/covid19/data/hosp_reg.csv").then(data => {
   const graphCfg = {
     target: `#fra-reg-graph03`,
     title: `Taux d'occupation des services de réanimation par des patients Covid-19 par région`,

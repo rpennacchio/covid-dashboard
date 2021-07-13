@@ -1,4 +1,4 @@
-d3.csv("data/spf_fra_vacc_name.csv").then(data => {
+d3.csv("https://www.francetvinfo.fr/docs/covid19/data/spf_fra_vacc_name.csv").then(data => {
   const graphCfg = {
     target: `#vac-fra-graph04`,
     title: `Evolution des premières injections par jour selon le type de vaccin`,

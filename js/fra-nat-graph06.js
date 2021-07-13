@@ -1,4 +1,4 @@
-d3.csv("data/spf_fra_incid_age.csv").then(data => {
+d3.csv("https://www.francetvinfo.fr/docs/covid19/data/spf_fra_incid_age.csv").then(data => {
   const graphCfg = {
     target: `#fra-nat-graph06`,
     title: `Evolution du taux d'incidence par classe d'âge`,

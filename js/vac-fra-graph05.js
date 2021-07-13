@@ -1,4 +1,4 @@
-d3.csv("data/vacc_age.csv").then(data => {
+d3.csv("https://www.francetvinfo.fr/docs/covid19/data/vacc_age.csv").then(data => {
   const graphCfg = {
     target: `#vac-fra-graph05`,
     title: `Pourcentage de personnes ayant reçu au moins une première dose par classe d'âge`,

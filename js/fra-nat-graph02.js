@@ -1,4 +1,4 @@
-d3.csv("data/spf_fra_test.csv").then(data => {
+d3.csv("https://www.francetvinfo.fr/docs/covid19/data/spf_fra_test.csv").then(data => {
   const graphCfg = {
     target: `#fra-nat-graph02`,
     title: `Taux de positivité et nombre de tests réalisés`,

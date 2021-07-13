@@ -1,4 +1,4 @@
-d3.csv("data/spf_fra_data.csv").then(data => {
+d3.csv("https://www.francetvinfo.fr/docs/covid19/data/spf_fra_data.csv").then(data => {
   const graphCfg = {
     target: `#fra-nat-graph04`,
     title: `Evolution du nombre d'hospitalisations de patients Covid-19`,

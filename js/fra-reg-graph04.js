@@ -1,4 +1,4 @@
-d3.csv("data/hosp_reg.csv").then(data => {
+d3.csv("https://www.francetvinfo.fr/docs/covid19/data/hosp_reg.csv").then(data => {
   const graphCfg = {
     target: `#fra-reg-graph04`,
     title: `Nouvelles hospitalisatons de patients Covid-19 par région depuis une semaine`,

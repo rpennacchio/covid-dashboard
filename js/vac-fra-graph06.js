@@ -1,6 +1,6 @@
 Promise.all([
-  d3.json("data/tidy_ftv_reg.geojson"),
-  d3.csv("data/vacc_reg.csv"),
+  d3.json("https://www.francetvinfo.fr/docs/covid19/data/tidy_ftv_reg.geojson"),
+  d3.csv("https://www.francetvinfo.fr/docs/covid19/data/vacc_reg.csv"),
 ]).then(data => {
   const graphCfg = {
     target: `#vac-fra-graph06`,

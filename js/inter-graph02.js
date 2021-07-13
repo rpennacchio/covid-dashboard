@@ -1,4 +1,4 @@
-d3.csv("data/owid_top5_newdc_world.csv").then(data => {
+d3.csv("https://www.francetvinfo.fr/docs/covid19/data/owid_top5_newdc_world.csv").then(data => {
   const graphCfg = {
     target: `#inter-graph02`,
     title: `Evolution du nombre de nouveaux décès dans le monde`,

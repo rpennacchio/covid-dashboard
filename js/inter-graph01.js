@@ -1,4 +1,4 @@
-d3.csv("data/owid_top5_newcases_world.csv").then(data => {
+d3.csv("https://www.francetvinfo.fr/docs/covid19/data/owid_top5_newcases_world.csv").then(data => {
   const graphCfg = {
     target: `#inter-graph01`,
     title: `Evolution du nombre de contaminations dans le monde`,

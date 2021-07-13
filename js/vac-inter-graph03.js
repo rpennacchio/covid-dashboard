@@ -1,4 +1,4 @@
-d3.csv("data/owid_top10_vac_world.csv").then(data => {
+d3.csv("https://www.francetvinfo.fr/docs/covid19/data/owid_top10_vac_world.csv").then(data => {
   const graphCfg = {
     target: `#vac-inter-graph03`,
     title: `Les 10 pays du monde qui vaccinent le plus`,

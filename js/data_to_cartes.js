@@ -1,4 +1,4 @@
-d3.csv("data/data_to_cartes.csv").then(data => {
+d3.csv("https://www.francetvinfo.fr/docs/covid19/data/data_to_cartes.csv").then(data => {
 
     // Traitement des données
 

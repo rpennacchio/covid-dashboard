@@ -1,4 +1,4 @@
-d3.csv("data/owid_top10_vac_eu.csv").then(data => {
+d3.csv("https://www.francetvinfo.fr/docs/covid19/data/owid_top10_vac_eu.csv").then(data => {
   const graphCfg = {
     target: `#vac-inter-graph02`,
     title: `Les 10 pays européens qui vaccinent le plus`,

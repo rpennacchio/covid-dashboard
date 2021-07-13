@@ -1,4 +1,4 @@
-d3.csv("data/spf_fra_vacc.csv").then(data => {
+d3.csv("https://www.francetvinfo.fr/docs/covid19/data/spf_fra_vacc.csv").then(data => {
   const graphCfg = {
     target: `#vac-fra-graph01`,
     title: `Evolution du nombre de vaccinations contre le Covid-19`,

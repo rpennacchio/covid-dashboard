@@ -1,4 +1,4 @@
-d3.csv("data/spf_fra_vacc_dose1_2.csv").then(data => {
+d3.csv("https://www.francetvinfo.fr/docs/covid19/data/spf_fra_vacc_dose1_2.csv").then(data => {
   const graphCfg = {
     target: `#vac-fra-graph03`,
     title: `Evolution du nombre d'injections par jour`,

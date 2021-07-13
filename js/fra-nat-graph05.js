@@ -1,4 +1,4 @@
-d3.csv("data/spf_fra_data.csv").then(data => {
+d3.csv("https://www.francetvinfo.fr/docs/covid19/data/spf_fra_data.csv").then(data => {
   const graphCfg = {
     target: `#fra-nat-graph05`,
     title: `Evolution du nombre de nouveaux décès liés au Covid-19 à l'hôpital`,
