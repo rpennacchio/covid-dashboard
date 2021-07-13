@@ -122,8 +122,6 @@ Promise.all([
 
   const listVals = dataVacc.map(d => +d.couv_tot_dose1/100);
 
-  console.log(listVals);
-
   // Calling the d3.quantile() function
   const Q0 = d3.quantile(listVals, 0);
   const Q1 = d3.quantile(listVals, 0.25);
@@ -131,8 +129,6 @@ Promise.all([
   const Q3 = d3.quantile(listVals, 0.75);
 
   const arrayQuantiles = [Q0, Q1, Q2, Q3];
-
-  console.log(arrayQuantiles);
 
   const seqScale = d3
     .scaleLinear()
