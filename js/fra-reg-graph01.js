@@ -1,5 +1,5 @@
 Promise.all([
-  d3.json("https://www.francetvinfo.fr/docs/covid19/data/carto_ftv_dep.geojson"),
+  d3.json("/assets/dist/covid-dashboard/data/carto_ftv_dep.geojson"),
   d3.csv("https://www.francetvinfo.fr/docs/covid19/data/incid_dep.csv"),
 ]).then(data => {
   const graphCfg = {

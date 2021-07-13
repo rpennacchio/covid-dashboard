@@ -1,5 +1,5 @@
 Promise.all([
-    d3.json("https://www.francetvinfo.fr/docs/covid19/data/ftv_world.geojson"),
+    d3.json("/assets/dist/covid-dashboard/data/ftv_world.geojson"),
     d3.csv("https://www.francetvinfo.fr/docs/covid19/data/owid_total_dc.csv")
 ]).then(data => {
     const graphCfg = {
@@ -248,7 +248,7 @@ Promise.all([
         const formatTime = d3.timeFormat("%d %b %Y");
         const instantT = formatTime(d.date);
 
-        
+
 
             // efface les données du tooltip
             custTooltip.html('')
