@@ -5,7 +5,7 @@ Promise.all([
   const graphCfg = {
     target: `#fra-reg-graph02`,
     title: `Variation du taux d'incidence par département`,
-    caption: `Source. <a href='https://www.data.gouv.fr/fr/organizations/sante-publique-france/' target='_blank'>Santé publique France</a>`,
+    caption: `Source : <a href='https://www.data.gouv.fr/fr/organizations/sante-publique-france/' target='_blank'>Santé publique France</a>`,
     size: {
       tooltip: {
         font: 20,
@@ -50,11 +50,11 @@ Promise.all([
 
   // Création du canevas SVG
 
-  const width = graphCfg?.size?.svg?.width || commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
-  const height = graphCfg?.size?.svg?.height || commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
-  const marginH = graphCfg?.size?.margin?.horizontal || commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
-  const marginV = graphCfg?.size?.margin?.vertical || commonGraph.size[graphCfg.type][graphCfg.device].margin.vertical;
-  const leg = graphCfg?.size?.legend?.height || commonGraph.size[graphCfg.type][graphCfg.device].legend.height;
+  const width = graphCfg.size && graphCfg.size.svg && graphCfg.size.svg.width ? graphCfg.size.svg.width : commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
+  const height = graphCfg.size && graphCfg.size.svg && graphCfg.size.svg.height ? graphCfg.size.svg.height : commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
+  const marginH = graphCfg.size && graphCfg.size.margin && graphCfg.size.margin.horizontal ? graphCfg.size.margin.horizontal : commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
+  const marginV = graphCfg.size && graphCfg.size.margin && graphCfg.size.margin.vertical ? graphCfg.size.margin.vertical : commonGraph.size[graphCfg.type][graphCfg.device].margin.vertical;
+  const leg = graphCfg.size && graphCfg.size.legend && graphCfg.size.legend.height ? graphCfg.size.legend.height : commonGraph.size[graphCfg.type][graphCfg.device].legend.height;
 
   const viewBox = {
     width: width + marginH * 2,
@@ -208,7 +208,7 @@ Promise.all([
   svgLegend.call(legend)
     .selectAll("text")
     .attr("fill", "grey")
-    .attr("font-size", `${ graphCfg?.size?.legend?.font || commonGraph.size[graphCfg.type][graphCfg.device].legend.font }px`);
+    .attr("font-size", `${ graphCfg.size && graphCfg.size.legend && graphCfg.size.legend.font ? graphCfg.size.legend.font : commonGraph.size[graphCfg.type][graphCfg.device].legend.font }px`);
 
   //---------------------------------------------------------------------------------------
 
@@ -302,7 +302,7 @@ Promise.all([
       .append("text")
       .attr("y", 0)
       .text(d.properties.name)
-      .attr("font-size", `${graphCfg?.size?.tooltip?.font || commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font}px`)
+      .attr('font-size', `${ graphCfg.size && graphCfg.size.tooltip && graphCfg.size.tooltip.font ? graphCfg.size.tooltip.font : commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font }px`)
       .style("font-weight", "bold");
 
     // variation ou baisse selon la valeur incid_evol

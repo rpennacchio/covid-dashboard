@@ -6,7 +6,7 @@ Promise.all([
     target: `#vac-fra-graph06`,
     title: `Part de la population ayant reçu au moins une injection par région`,
     subtitle: `au [[autoDate]]`,
-    caption: `Source. <a href='https://www.data.gouv.fr/fr/organizations/sante-publique-france/' target='_blank'>Santé publique France</a>`,
+    caption: `Source : <a href='https://www.data.gouv.fr/fr/organizations/sante-publique-france/' target='_blank'>Santé publique France</a>`,
     type: 'square',
     device: window.screenDevice,
   }
@@ -49,11 +49,11 @@ Promise.all([
 
   // Création du canevas SVG
 
-  const width = graphCfg?.size?.svg?.width || commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
-  const height = graphCfg?.size?.svg?.height || commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
-  const marginH = graphCfg?.size?.margin?.horizontal || commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
-  const marginV = graphCfg?.size?.margin?.vertical || commonGraph.size[graphCfg.type][graphCfg.device].margin.vertical;
-  const leg = graphCfg?.size?.legend?.height || commonGraph.size[graphCfg.type][graphCfg.device].legend.height;
+  const width = graphCfg.size && graphCfg.size.svg && graphCfg.size.svg.width ? graphCfg.size.svg.width : commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
+  const height = graphCfg.size && graphCfg.size.svg && graphCfg.size.svg.height ? graphCfg.size.svg.height : commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
+  const marginH = graphCfg.size && graphCfg.size.margin && graphCfg.size.margin.horizontal ? graphCfg.size.margin.horizontal : commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
+  const marginV = graphCfg.size && graphCfg.size.margin && graphCfg.size.margin.vertical ? graphCfg.size.margin.vertical : commonGraph.size[graphCfg.type][graphCfg.device].margin.vertical;
+  const leg = graphCfg.size && graphCfg.size.legend && graphCfg.size.legend.height ? graphCfg.size.legend.height : commonGraph.size[graphCfg.type][graphCfg.device].legend.height;
 
   const viewBox = {
     width: width + marginH * 2,

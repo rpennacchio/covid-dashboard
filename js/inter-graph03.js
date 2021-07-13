@@ -6,7 +6,7 @@ Promise.all([
         target: `#inter-graph03`,
         title: `Nombre de morts du Covid-19 répertoriés dans le monde`,
         subtitle: `au [[autoDate]]`,
-        caption: `Source. <a href='https://ourworldindata.org/coronavirus' target='_blank'>Our world in data</a>`,
+        caption: `Source : <a href='https://ourworldindata.org/coronavirus' target='_blank'>Our world in data</a>`,
         type: 'landscape', // définition du format du graphe
         device: window.screenDevice, // récupération de la largeur de l'écran
         size: {
@@ -55,11 +55,16 @@ Promise.all([
 
     // Création du canevas SVG
 
-    const width = 500;
-    const height = 300;
-    const marginH = 80;
-    const marginV = 20;
-    const leg = 20;
+    // const width = 500;
+    // const height = 300;
+    // const marginH = 80;
+    // const marginV = 20;
+    // const leg = 20;
+    const width = graphCfg.size && graphCfg.size.svg && graphCfg.size.svg.width ? graphCfg.size.svg.width : commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
+    const height = graphCfg.size && graphCfg.size.svg && graphCfg.size.svg.height ? graphCfg.size.svg.height : commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
+    const marginH = graphCfg.size && graphCfg.size.margin && graphCfg.size.margin.horizontal ? graphCfg.size.margin.horizontal : commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
+    const marginV = graphCfg.size && graphCfg.size.margin && graphCfg.size.margin.vertical ? graphCfg.size.margin.vertical : commonGraph.size[graphCfg.type][graphCfg.device].margin.vertical;
+    const leg = graphCfg.size && graphCfg.size.legend && graphCfg.size.legend.height ? graphCfg.size.legend.height : commonGraph.size[graphCfg.type][graphCfg.device].legend.height;
 
     const viewBox = {
         width: width + marginH * 2,
@@ -193,7 +198,6 @@ Promise.all([
         .data([600000, 200000, 50000, 10000])
         .join("g")
         .attr("transform", (d, i) => `translate(${10 + 40 * i},0)`)
-        .attr("font-size", `${ graphCfg?.size?.legend?.font || commonGraph.size[graphCfg.type][graphCfg.device].legend.font }px`);
 
     legend.append("path")
         .attr("fill", "#D55E00")
@@ -204,7 +208,7 @@ Promise.all([
     legend.append("text")
         .attr("dy", "1.2em")
         .attr("dx", "-1.5em")
-        .attr("font-size", "10px")
+        .attr("font-size", `${ graphCfg.size && graphCfg.size.legend && graphCfg.size.legend.font ? graphCfg.size.legend.font : commonGraph.size[graphCfg.type][graphCfg.device].legend.font }px`)
         .text(d => d.toLocaleString("fr-FR"));
 
 
@@ -254,7 +258,7 @@ Promise.all([
             .style('opacity', '1')
             .style('left', `${d3.event.pageX}px`)
             .style('top', `${d3.event.pageY}px`)
-            .style('font-size', `${graphCfg?.size?.tooltip?.font || commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font}px`)
+            .style('font-size', `${ graphCfg.size && graphCfg.size.tooltip && graphCfg.size.tooltip.font ? graphCfg.size.tooltip.font : commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font }px`)
             .append('div')
             .html(`<strong>${d.properties.name_fr}</strong>`);
 

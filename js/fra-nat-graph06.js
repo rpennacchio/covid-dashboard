@@ -3,7 +3,7 @@ d3.csv("data/spf_fra_incid_age.csv").then(data => {
     target: `#fra-nat-graph06`,
     title: `Evolution du taux d'incidence par classe d'âge`,
     subtitle: `depuis le [[startDate]]`,
-    caption: `Source. <a href='https://www.data.gouv.fr/fr/organizations/sante-publique-france/' target='_blank'>Santé publique France</a>`,
+    caption: `Source : <a href='https://www.data.gouv.fr/fr/organizations/sante-publique-france/' target='_blank'>Santé publique France</a>`,
     startDate: {
       day: '01',
       month: '01',
@@ -47,11 +47,11 @@ d3.csv("data/spf_fra_incid_age.csv").then(data => {
 
   // Création du canevas SVG
 
-  const width = graphCfg?.size?.svg?.width || commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
-  const height = graphCfg?.size?.svg?.height || commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
-  const marginH = graphCfg?.size?.margin?.horizontal || commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
-  const marginV = graphCfg?.size?.margin?.vertical || commonGraph.size[graphCfg.type][graphCfg.device].margin.vertical;
-  const leg = graphCfg?.size?.legend?.height || commonGraph.size[graphCfg.type][graphCfg.device].legend.height;
+  const width = graphCfg.size && graphCfg.size.svg && graphCfg.size.svg.width ? graphCfg.size.svg.width : commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
+  const height = graphCfg.size && graphCfg.size.svg && graphCfg.size.svg.height ? graphCfg.size.svg.height : commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
+  const marginH = graphCfg.size && graphCfg.size.margin && graphCfg.size.margin.horizontal ? graphCfg.size.margin.horizontal : commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
+  const marginV = graphCfg.size && graphCfg.size.margin && graphCfg.size.margin.vertical ? graphCfg.size.margin.vertical : commonGraph.size[graphCfg.type][graphCfg.device].margin.vertical;
+  const leg = graphCfg.size && graphCfg.size.legend && graphCfg.size.legend.height ? graphCfg.size.legend.height : commonGraph.size[graphCfg.type][graphCfg.device].legend.height;
 
   const viewBox = {
     width: width + marginH * 2,
@@ -98,7 +98,7 @@ d3.csv("data/spf_fra_incid_age.csv").then(data => {
     .select('.grph-title')
     .append('span')
     .attr('class', 'grph-date')
-    .html(graphCfg.subtitle.replace(/\[\[\s*startDate\s*\]\]/, `${ +graphCfg?.startDate?.day === 1 ? +graphCfg?.startDate?.day + 'er' : graphCfg?.startDate?.day } ${ commonGraph.locale.months[+graphCfg?.startDate?.month - 1] } ${ graphCfg?.startDate?.year }`))
+    .html(graphCfg.subtitle.replace(/\[\[\s*startDate\s*\]\]/, `${ +graphCfg.startDate.day === 1 ? +graphCfg.startDate.day + 'er' : graphCfg.startDate.day } ${ commonGraph.locale.months[+graphCfg.startDate.month - 1] } ${ graphCfg.startDate.year }`))
 
   // Écriture de la source
   d3.select(graphCfg.target)
@@ -162,8 +162,8 @@ d3.csv("data/spf_fra_incid_age.csv").then(data => {
       .attr("transform", `translate(0, ${height})`)
       .call(d3.axisBottom(scaleT).ticks(4).tickFormat(d3.timeFormat("%b %Y")))
       .selectAll("text")
-      .style("fill", `${ graphCfg?.size?.axis?.color || commonGraph.size[graphCfg.type][graphCfg.device].axis.color }px`)
-      .style("font-size", `${ graphCfg?.size?.axis?.font || commonGraph.size[graphCfg.type][graphCfg.device].axis.font }px`)
+      .style("fill", `${ graphCfg.size && graphCfg.size.axis && graphCfg.size.axis.color ? graphCfg.size.axis.color : commonGraph.size[graphCfg.type][graphCfg.device].axis.color }px`)
+      .style("font-size", `${ graphCfg.size && graphCfg.size.axis && graphCfg.size.axis.font ? graphCfg.size.axis.font : commonGraph.size[graphCfg.type][graphCfg.device].axis.font }px`)
 
   // Axe des Y
   const yAxis = (g) =>
@@ -177,8 +177,8 @@ d3.csv("data/spf_fra_incid_age.csv").then(data => {
       ) // formatage grands nombre avec virgule entre milliers
       .call((g) => g.select(".domain").remove()) // supprime la ligne de l'axe
       .selectAll("text")
-      .style("fill", `${ graphCfg?.size?.axis?.color || commonGraph.size[graphCfg.type][graphCfg.device].axis.color }px`)
-      .style("font-size", `${ graphCfg?.size?.axis?.font || commonGraph.size[graphCfg.type][graphCfg.device].axis.font }px`)
+      .style("fill", `${ graphCfg.size && graphCfg.size.axis && graphCfg.size.axis.color ? graphCfg.size.axis.color : commonGraph.size[graphCfg.type][graphCfg.device].axis.color }px`)
+      .style("font-size", `${ graphCfg.size && graphCfg.size.axis && graphCfg.size.axis.font ? graphCfg.size.axis.font : commonGraph.size[graphCfg.type][graphCfg.device].axis.font }px`)
 
   //---------------------------------------------------------------------------------------
 
@@ -233,7 +233,7 @@ d3.csv("data/spf_fra_incid_age.csv").then(data => {
     .attr("x", 22)
     .attr("y", 5)
     .text((d) => d)
-    .attr("font-size", `${ graphCfg?.size?.legend?.font || commonGraph.size[graphCfg.type][graphCfg.device].legend.font }px`);
+    .attr("font-size", `${ graphCfg.size && graphCfg.size.legend && graphCfg.size.legend.font ? graphCfg.size.legend.font : commonGraph.size[graphCfg.type][graphCfg.device].legend.font }px`);
 
   //---------------------------------------------------------------------------------------
 

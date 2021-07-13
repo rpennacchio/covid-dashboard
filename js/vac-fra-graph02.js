@@ -3,7 +3,7 @@ d3.csv("data/spf_fra_vacc.csv").then(data => {
     target: `#vac-fra-graph02`,
     title: `Proportion de la population vaccinée contre le Covid-19`,
     subtitle: ``,
-    caption: `Source. <a href='https://www.data.gouv.fr/fr/organizations/sante-publique-france/' target='_blank'>Santé publique France</a>`,
+    caption: `Source : <a href='https://www.data.gouv.fr/fr/organizations/sante-publique-france/' target='_blank'>Santé publique France</a>`,
     startDate: {
       day: '01',
       month: '09',
@@ -12,7 +12,6 @@ d3.csv("data/spf_fra_vacc.csv").then(data => {
     type: 'landscape',
     device: window.screenDevice,
   }
-  graphCfg?.size?.legend?.height
 
   // Traitement des données
 
@@ -59,11 +58,11 @@ d3.csv("data/spf_fra_vacc.csv").then(data => {
 
   // Création du canevas SVG
 
-  const width = graphCfg?.size?.svg?.width || commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
-  const height = graphCfg?.size?.svg?.height || commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
-  const marginH = graphCfg?.size?.margin?.horizontal || commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
-  const marginV = graphCfg?.size?.margin?.vertical || commonGraph.size[graphCfg.type][graphCfg.device].margin.vertical;
-  const leg = graphCfg?.size?.legend?.height || commonGraph.size[graphCfg.type][graphCfg.device].legend.height;
+  const width = graphCfg.size && graphCfg.size.svg && graphCfg.size.svg.width ? graphCfg.size.svg.width : commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
+  const height = graphCfg.size && graphCfg.size.svg && graphCfg.size.svg.height ? graphCfg.size.svg.height : commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
+  const marginH = graphCfg.size && graphCfg.size.margin && graphCfg.size.margin.horizontal ? graphCfg.size.margin.horizontal : commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
+  const marginV = graphCfg.size && graphCfg.size.margin && graphCfg.size.margin.vertical ? graphCfg.size.margin.vertical : commonGraph.size[graphCfg.type][graphCfg.device].margin.vertical;
+  const leg = graphCfg.size && graphCfg.size.legend && graphCfg.size.legend.height ? graphCfg.size.legend.height : commonGraph.size[graphCfg.type][graphCfg.device].legend.height;
 
   const viewBox = {
     width: width + marginH * 2,
@@ -104,7 +103,7 @@ d3.csv("data/spf_fra_vacc.csv").then(data => {
     .select('.grph-title')
     .html(graphCfg.title)
     .style("padding", paddingTxt)
-    
+
   // Écriture de la source
   d3.select(graphCfg.target)
     .select('.grph-caption')
@@ -206,5 +205,5 @@ d3.csv("data/spf_fra_vacc.csv").then(data => {
     .attr("x", 24)
     .attr("y", 10)
     .text((d) => d.label)
-    .attr("font-size", `${ graphCfg?.size?.legend?.font || commonGraph.size[graphCfg.type][graphCfg.device].legend.font }px`);
+    .attr("font-size", `${ graphCfg.size && graphCfg.size.legend && graphCfg.size.legend.font ? graphCfg.size.legend.font : commonGraph.size[graphCfg.type][graphCfg.device].legend.font }px`);
 });

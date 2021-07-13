@@ -3,7 +3,7 @@ d3.csv("data/owid_top10_vac_world.csv").then(data => {
     target: `#vac-inter-graph03`,
     title: `Les 10 pays du monde qui vaccinent le plus`,
     subtitle: `en pourcentage de la population ayant reçu au moins une injection, au [[autoDate]]`,
-    caption: `Source. <a href='https://ourworldindata.org/coronavirus' target='_blank'>Our world in data</a>`,
+    caption: `Source : <a href='https://ourworldindata.org/coronavirus' target='_blank'>Our world in data</a>`,
     type: 'square', // définition du format du graphe
     device: window.screenDevice, // récupération de la largeur de l'écran
   }
@@ -28,10 +28,10 @@ d3.csv("data/owid_top10_vac_world.csv").then(data => {
 
   // Création du canevas SVG
 
-  const width = graphCfg?.size?.svg?.width || commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
-  const height = graphCfg?.size?.svg?.height || commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
-  const marginH = graphCfg?.size?.margin?.horizontal || commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
-  const marginV = graphCfg?.size?.margin?.vertical || commonGraph.size[graphCfg.type][graphCfg.device].margin.vertical;
+  const width = graphCfg.size && graphCfg.size.svg && graphCfg.size.svg.width ? graphCfg.size.svg.width : commonGraph.size[graphCfg.type][graphCfg.device].svg.width;
+  const height = graphCfg.size && graphCfg.size.svg && graphCfg.size.svg.height ? graphCfg.size.svg.height : commonGraph.size[graphCfg.type][graphCfg.device].svg.height;
+  const marginH = graphCfg.size && graphCfg.size.margin && graphCfg.size.margin.horizontal ? graphCfg.size.margin.horizontal : commonGraph.size[graphCfg.type][graphCfg.device].margin.horizontal;
+  const marginV = graphCfg.size && graphCfg.size.margin && graphCfg.size.margin.vertical ? graphCfg.size.margin.vertical : commonGraph.size[graphCfg.type][graphCfg.device].margin.vertical;
 
   const viewBox = {
     width: width + marginH * 2,
@@ -129,7 +129,7 @@ d3.csv("data/owid_top10_vac_world.csv").then(data => {
       .call((g) => g.select(".domain").remove()) // supprime la ligne de l'axe
       .selectAll("text")
       .style("font-size", scaleY.bandwidth() * 0.4 + "px")
-      .style("fill", graphCfg?.size?.axis?.color || commonGraph.size[graphCfg.type][graphCfg.device].axis.color) // couleur du texte
+      .style("fill", `${ graphCfg.size && graphCfg.size.axis && graphCfg.size.axis.color ? graphCfg.size.axis.color : commonGraph.size[graphCfg.type][graphCfg.device].axis.color }px`)
 
   //---------------------------------------------------------------------------------------
 
