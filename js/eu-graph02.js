@@ -228,55 +228,53 @@ Promise.all([
     const tooltip = svgPlot.append("g")
         .attr("transform", `translate(${0}, ${height / 1.4})`);
 
-    if (graphCfg.device !== 'mobile') {
-        // création du tooltip de la légende personnalisé
-        const custTooltip = commonGraph.tooltip(graphCfg.target, d3)
+    // création du tooltip de la légende personnalisé
+    const custTooltip = commonGraph.tooltip(graphCfg.target, d3)
 
-        polygons.on("mouseover", function (d) {
-            // lors du survol avec la souris l'opacité des polygones passe à 0.8
-            d3.select(this).attr("opacity", 0.8);
+    polygons.on("mouseover", function (d) {
+        // lors du survol avec la souris l'opacité des polygones passe à 0.8
+        d3.select(this).attr("opacity", 0.8);
 
-            // format de la date affichée dans le tooltip
-            // stockage de la date de la barre survolée au format XX mois XXXX dans une variable
-            const formatTime = d3.timeFormat("%d %b");
-            let dateT = d.properties.date;
-            let instantT = formatTime(dateT);
+        // format de la date affichée dans le tooltip
+        // stockage de la date de la barre survolée au format XX mois XXXX dans une variable
+        const formatTime = d3.timeFormat("%d %b");
+        let dateT = d.properties.date;
+        let instantT = formatTime(dateT);
 
-            // ON ENLÈVE 7 JOURS À LA DATE - ATTENTION car .setDate() modifie l'objet en place
-            let instantT7 = formatTime(dateT.setDate(dateT.getDate() - 7));
+        // ON ENLÈVE 7 JOURS À LA DATE - ATTENTION car .setDate() modifie l'objet en place
+        let instantT7 = formatTime(dateT.setDate(dateT.getDate() - 7));
 
-            // ATTENTION À BIEN RAJOUTER LES 7 JOURS à dateT
-            dateT.setDate(dateT.getDate() + 7);
+        // ATTENTION À BIEN RAJOUTER LES 7 JOURS à dateT
+        dateT.setDate(dateT.getDate() + 7);
 
-            // variation ou baisse selon la valeur incid_evol
-            let variation = +d.properties.incid_evol > 0 ? "hausse" : "baisse";
+        // variation ou baisse selon la valeur incid_evol
+        let variation = +d.properties.incid_evol > 0 ? "hausse" : "baisse";
 
-            // valeur arrondie à 2 décimales de incid_evol
-            let valeur = Math.abs(+d.properties.incid_evol * 100).toFixed(2).replace('.00', '').replace('.', ','); // Remplace le point en virgule et supprime les décimales nulles.
+        // valeur arrondie à 2 décimales de incid_evol
+        let valeur = Math.abs(+d.properties.incid_evol * 100).toFixed(2).replace('.00', '').replace('.', ','); // Remplace le point en virgule et supprime les décimales nulles.
 
-            // efface les données du tooltip
-            custTooltip.html('')
+        // efface les données du tooltip
+        custTooltip.html('')
 
-            // affiche et positionne le tooltip avec les données
-            custTooltip
-                .style('opacity', '1')
-                .style('left', `${d3.event.pageX}px`)
-                .style('top', `${d3.event.pageY}px`)
-                .style('font-size', `${ graphCfg.size && graphCfg.size.tooltip && graphCfg.size.tooltip.font ? graphCfg.size.tooltip.font : commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font }px`)
-                .append('div')
-                .html(`<strong>${d.properties.name_fr}</strong>`);
+        // affiche et positionne le tooltip avec les données
+        custTooltip
+            .style('opacity', '1')
+            .style('left', `${d3.event.pageX}px`)
+            .style('top', `${d3.event.pageY}px`)
+            .style('font-size', `${ graphCfg.size && graphCfg.size.tooltip && graphCfg.size.tooltip.font ? graphCfg.size.tooltip.font : commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font }px`)
+            .append('div')
+            .html(`<strong>${d.properties.name_fr}</strong>`);
 
-            custTooltip
-                .append('div')
-                .html(`en ${variation} de ${valeur}% sur une semaine`);
+        custTooltip
+            .append('div')
+            .html(`en ${variation} de ${valeur}% sur une semaine`);
 
-        });
+    });
 
-        // efface le contenu du groupe g lorsque la souris ne survole plus le polygone
-        polygons.on("mouseout", function () {
-            d3.select(this).attr("opacity", 1); // rétablit l'opacité à 1
+    // efface le contenu du groupe g lorsque la souris ne survole plus le polygone
+    polygons.on("mouseout", function () {
+        d3.select(this).attr("opacity", 1); // rétablit l'opacité à 1
 
-            custTooltip.style('opacity', '0');
-        });
-    };
+        custTooltip.style('opacity', '0');
+    });
 });
