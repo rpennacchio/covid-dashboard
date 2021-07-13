@@ -3,7 +3,8 @@ d3.csv("data/owid_top5_newcases_eu.csv").then(data => {
     target: `#eu-graph03`,
     title: `Evolution du nombre de contaminations en Europe`,
     subtitle: `en moyenne lissée du nombre de cas pour un million d'habitants, depuis le [[startDate]]*`,
-    caption: `* dans les cinq pays européens qui comptent actuellement le plus grand nombre de nouveaux cas<br>Source. <a href='https://ourworldindata.org/coronavirus' target='_blank'>Our world in data</a>`,
+    note: `* en France et dans les cinq pays européens qui comptent actuellement le plus grand nombre de nouveaux cas`,
+    caption: `Source. <a href='https://ourworldindata.org/coronavirus' target='_blank'>Our world in data</a>`,
     startDate: { // définition de la date (si nécessaire)
       day: '01',
       month: '01',
@@ -91,11 +92,19 @@ d3.csv("data/owid_top5_newcases_eu.csv").then(data => {
     .attr('class', 'grph-date')
     .html(graphCfg.subtitle.replace(/\[\[\s*startDate\s*\]\]/, `${+graphCfg?.startDate?.day === 1 ? +graphCfg?.startDate?.day + 'er' : graphCfg?.startDate?.day} ${commonGraph.locale.months[+graphCfg?.startDate?.month - 1]} ${graphCfg?.startDate?.year}`))
 
-  // Écriture de la source
+  // Écriture de la note
   d3.select(graphCfg.target)
     .select('.grph-caption')
-    .html(graphCfg.caption)
     .style("padding", paddingTxt)
+    .append('span')
+    .attr('class', 'grph-note')
+    .html(graphCfg.note)
+
+  // Écriture de la note
+  d3.select(graphCfg.target)
+    .select('.grph-caption')
+    .append('span')
+    .html(graphCfg.caption)
 
   //---------------------------------------------------------------------------------------
 
