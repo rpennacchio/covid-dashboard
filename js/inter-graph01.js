@@ -2,8 +2,13 @@ d3.csv("data/owid_top5_newcases_world.csv").then(data => {
     const graphCfg = {
       target: `#inter-graph01`,
       title: `Evolution du nombre de contaminations dans le monde`,
-      subtitle: `en moyenne lissée du nombre de cas pour un million d'habitants*`,
+      subtitle: `en moyenne lissée du nombre de cas pour un million d'habitants, depuis le [[startDate]]*`,
       caption: `* dans les cinq pays qui comptent actuellement le plus grand nombre de nouveaux cas<br>Source. <a href='https://ourworldindata.org/coronavirus' target='_blank'>Our world in data</a>`,
+      startDate: { // définition de la date (si nécessaire)
+        day: '01',
+        month: '01',
+        year: '2021',
+      },
       type: 'landscape',
       device: window.screenDevice,
     }
@@ -84,7 +89,7 @@ d3.csv("data/owid_top5_newcases_world.csv").then(data => {
       .select('.grph-title')
       .append('span')
       .attr('class', 'grph-date')
-      .html(graphCfg.subtitle.replace(/\[\[\s*startDate\s*\]\]/, `${ graphCfg?.startDate?.day } ${ commonGraph.locale.months[graphCfg?.startDate?.month - 1] } ${ graphCfg?.startDate?.year }`))
+      .html(graphCfg.subtitle.replace(/\[\[\s*startDate\s*\]\]/, `${ +graphCfg?.startDate?.day === 1 ? +graphCfg?.startDate?.day + 'er' : graphCfg?.startDate?.day } ${ commonGraph.locale.months[+graphCfg?.startDate?.month - 1] } ${ graphCfg?.startDate?.year }`))
 
     // Écriture de la source
     d3.select(graphCfg.target)

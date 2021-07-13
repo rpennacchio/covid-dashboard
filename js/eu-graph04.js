@@ -240,7 +240,7 @@ const yAxis = (g) =>
       .forceSimulation()
       .nodes(labels)
       .force("collide", d3.forceCollide(7))
-      .force("y", d3.forceY((d) => d.targetY).strength(0.03))
+      .force("y", d3.forceY((d) => d.targetY).strength(0.06))
       .stop();
 
     // Execute la simulation
