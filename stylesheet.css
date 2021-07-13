@@ -469,9 +469,9 @@
 
 .grph-caption {
     box-sizing: border-box;
-    color: var(--color-gray);
-    font-size: .625em;
-    margin-top: .625em;
+    color: var(--color-gray-dark);
+    font-size: .6875em;
+    margin-top: 1em;
 }
 
 .grph-caption a,
@@ -479,12 +479,11 @@
 .grph-caption a:active,
 .grph-caption a:hover,
 .grph-caption a:visited {
-    color: var(--color-gray);
-    font-size: .625em;
+    color: var(--color-black);
+    font-size: 1em;
 }
 
 .grph-note {
     color: var(--color-gray-dark);
-    font-size: 1.1em;
     margin-bottom: .5em;
 }
