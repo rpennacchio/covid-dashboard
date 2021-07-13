@@ -208,7 +208,7 @@ Promise.all([
     legend.append("text")
         .attr("dy", "1.2em")
         .attr("dx", "-1.5em")
-        .attr("font-size", `${ graphCfg.size && graphCfg.size.legend && graphCfg.size.legend.font ? graphCfg.size.legend.font : commonGraph.size[graphCfg.type][graphCfg.device].legend.font }px`)
+        .attr("font-size", `${graphCfg.size && graphCfg.size.legend && graphCfg.size.legend.font ? graphCfg.size.legend.font : commonGraph.size[graphCfg.type][graphCfg.device].legend.font}px`)
         .text(d => d.toLocaleString("fr-FR"));
 
 
@@ -250,21 +250,27 @@ Promise.all([
         const formatTime = d3.timeFormat("%d %b %Y");
         const instantT = formatTime(d.date);
 
-        // efface les données du tooltip
-        custTooltip.html('')
+        // Indication du nombre de décès uniquement pour les pays qui
+        // ont un nombre de décès
+        if (!isNaN(d.properties.dc)) {
 
-        // affiche et positionne le tooltip avec les données
-        custTooltip
-            .style('opacity', '1')
-            .style('left', `${d3.event.pageX}px`)
-            .style('top', `${d3.event.pageY}px`)
-            .style('font-size', `${ graphCfg.size && graphCfg.size.tooltip && graphCfg.size.tooltip.font ? graphCfg.size.tooltip.font : commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font }px`)
-            .append('div')
-            .html(`<strong>${d.properties.name_fr}</strong>`);
+            // efface les données du tooltip
+            custTooltip.html('')
 
-        custTooltip
-            .append('div')
-            .html(`${Math.round(d.properties.dc).toLocaleString("fr-FR")} décès`);
+            // affiche et positionne le tooltip avec les données
+            custTooltip
+                .style('opacity', '1')
+                .style('left', `${d3.event.pageX}px`)
+                .style('top', `${d3.event.pageY}px`)
+                .style('font-size', `${graphCfg.size && graphCfg.size.tooltip && graphCfg.size.tooltip.font ? graphCfg.size.tooltip.font : commonGraph.size[graphCfg.type][graphCfg.device].tooltip.font}px`)
+                .append('div')
+                .html(`<strong>${d.properties.name_fr}</strong>`);
+
+            custTooltip
+                .append('div')
+                .html(`${Math.round(d.properties.dc).toLocaleString("fr-FR")} décès`);
+
+        };
 
     });
 
