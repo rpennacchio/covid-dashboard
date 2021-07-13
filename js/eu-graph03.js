@@ -96,11 +96,11 @@ d3.csv("data/owid_top5_newcases_eu.csv").then(data => {
   d3.select(graphCfg.target)
     .select('.grph-caption')
     .style("padding", paddingTxt)
-    .append('span')
+    .append('div')
     .attr('class', 'grph-note')
     .html(graphCfg.note)
 
-  // Écriture de la note
+  // Écriture de la source
   d3.select(graphCfg.target)
     .select('.grph-caption')
     .append('span')
