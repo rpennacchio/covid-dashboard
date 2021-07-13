@@ -248,9 +248,7 @@ Promise.all([
         const formatTime = d3.timeFormat("%d %b %Y");
         const instantT = formatTime(d.date);
 
-        // Indication du nombre de décès uniquement pour les pays qui
-        // ont un nombre de décès
-        if (!isNaN(d.properties.dc)) {
+        
 
             // efface les données du tooltip
             custTooltip.html('')
@@ -264,11 +262,21 @@ Promise.all([
                 .append('div')
                 .html(`<strong>${d.properties.name_fr}</strong>`);
 
+        // Indication du nombre de décès uniquement pour les pays qui
+        // ont un nombre de décès
+        if (!isNaN(d.properties.dc)) {
+
             custTooltip
                 .append('div')
                 .html(`${Math.round(d.properties.dc).toLocaleString("fr-FR")} décès`);
 
-        };
+        } else {
+
+            custTooltip
+                .append('div')
+                .html(`absence de données`);
+
+        }
 
     });
 
