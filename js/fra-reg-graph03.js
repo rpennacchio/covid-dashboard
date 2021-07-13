@@ -1,7 +1,7 @@
 d3.csv("data/hosp_reg.csv").then(data => {
   const graphCfg = {
     target: `#fra-reg-graph03`,
-    title: `Taux d'occupation des réanimations par des patients Covid par région`,
+    title: `Taux d'occupation des services de réanimation par des patients Covid-19 par région`,
     subtitle: `au [[autoDate]]`,
     caption: `Source : <a href='https://www.data.gouv.fr/fr/organizations/sante-publique-france/' target='_blank'>Santé publique France</a>, <a href='https://data.drees.solidarites-sante.gouv.fr/explore/dataset/707_bases-administratives-sae/information/' target='_blank'>Drees</a>`,
     type: 'square',

@@ -1,7 +1,7 @@
 d3.csv("data/hosp_reg.csv").then(data => {
   const graphCfg = {
     target: `#fra-reg-graph04`,
-    title: `Nouvelles hospitalisatons de patients Covid par région depuis une semaine`,
+    title: `Nouvelles hospitalisatons de patients Covid-19 par région depuis une semaine`,
     subtitle: `au [[autoDate]]`,
     caption: `Source : <a href='https://www.data.gouv.fr/fr/organizations/sante-publique-france/' target='_blank'>Santé publique France</a>`,
     type: 'square',
