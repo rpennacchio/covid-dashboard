@@ -1,4 +1,4 @@
-d3.csv('data/spf_fra_data.csv').then(data => {
+d3.csv("data/spf_fra_data.csv").then(data => {
   const graphCfg = {
     target: `#fra-nat-graph01`,
     title: `Evolution du nombre de contaminations au Covid-19`,
